@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -9,14 +10,17 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import {
+  Autoplay,
+  Pagination,
+  EffectFade,
+} from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/navigation";
+import "swiper/css/effect-fade";
 
 const slides = [
   {
@@ -52,13 +56,29 @@ const slides = [
 ];
 
 export default function Banner() {
+  const [isMounted, setIsMounted] = useState(false);
   const swiperRef = useRef<SwiperType | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Prevent Swiper from rendering during prerender
+  if (!isMounted) {
+    return (
+      <section className="bg-[#f8f7ef] px-3 py-5 sm:px-6 sm:py-8 lg:px-10">
+        <div className="mx-auto h-[540px] max-w-[1600px] animate-pulse rounded-[28px] bg-[#f7f6ec] sm:rounded-[36px] lg:h-[600px]" />
+      </section>
+    );
+  }
 
   return (
     <section className="bg-[#f8f7ef] px-3 py-5 sm:px-6 sm:py-8 lg:px-10">
       <div className="relative mx-auto max-w-[1600px] overflow-hidden rounded-[28px] bg-[#f7f6ec] shadow-xl sm:rounded-[36px]">
         <Swiper
-          modules={[Autoplay, Pagination, Navigation]}
+          modules={[Autoplay, Pagination, EffectFade]}
+          effect="fade"
+          fadeEffect={{ crossFade: true }}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
           }}
@@ -68,7 +88,6 @@ export default function Banner() {
           }}
           pagination={{
             clickable: true,
-            el: ".booknook-pagination",
           }}
           loop
           speed={700}
@@ -99,6 +118,7 @@ export default function Banner() {
                     {/* Heading */}
                     <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-[#123e2c] sm:text-5xl lg:text-6xl">
                       {slide.title}
+
                       <span className="mt-1 block text-orange-500">
                         {slide.highlight}
                       </span>
@@ -110,7 +130,13 @@ export default function Banner() {
                     </p>
 
                     {/* CTA */}
-                    <ButtonLink />
+                    <Link
+                      href="/books"
+                      className="mt-8 inline-flex h-12 items-center gap-3 rounded-full bg-orange-500 px-7 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600 sm:h-14 sm:px-9 sm:text-base"
+                    >
+                      Browse Books
+                      <ArrowRight className="size-5" />
+                    </Link>
                   </div>
                 </div>
 
@@ -123,7 +149,7 @@ export default function Banner() {
                     }}
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#f7f6ec] via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#f7f6ec]/10 lg:via-transparent lg:to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#f7f6ec] via-[#f7f6ec]/20 to-transparent lg:bg-gradient-to-r lg:from-[#f7f6ec]/10 lg:via-transparent lg:to-transparent" />
 
                   <div className="absolute inset-0 bg-[#123e2c]/10" />
 
@@ -144,6 +170,7 @@ export default function Banner() {
                       fill="#4f865d"
                       opacity="0.85"
                     />
+
                     <path
                       d="M0,110 C200,160 380,140 580,100 C800,50 920,70 1100,120 C1250,150 1350,140 1440,100 L1440,150 L0,150 Z"
                       fill="#236342"
@@ -155,7 +182,7 @@ export default function Banner() {
           ))}
         </Swiper>
 
-        {/* Navigation arrows */}
+        {/* Previous button */}
         <button
           type="button"
           onClick={() => swiperRef.current?.slidePrev()}
@@ -165,6 +192,7 @@ export default function Banner() {
           <ChevronLeft className="size-6" />
         </button>
 
+        {/* Next button */}
         <button
           type="button"
           onClick={() => swiperRef.current?.slideNext()}
@@ -173,14 +201,15 @@ export default function Banner() {
         >
           <ChevronRight className="size-6" />
         </button>
-
-        {/* Pagination */}
-        <div className="booknook-pagination absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center justify-center gap-2" />
       </div>
 
-      {/* Swiper pagination styling */}
+      {/* Pagination styling */}
       <style jsx global>{`
-        .booknook-pagination .swiper-pagination-bullet {
+        .booknook-swiper .swiper-pagination {
+          bottom: 22px !important;
+        }
+
+        .booknook-swiper .swiper-pagination-bullet {
           width: 10px;
           height: 10px;
           background: #ffffff;
@@ -188,26 +217,14 @@ export default function Banner() {
           opacity: 0.8;
         }
 
-        .booknook-pagination .swiper-pagination-bullet-active {
-          width: 15px;
-          height: 15px;
+        .booknook-swiper .swiper-pagination-bullet-active {
+          width: 26px;
+          border-radius: 999px;
           background: #f97316;
-          border: 2px solid white;
+          border: 1px solid #f97316;
           opacity: 1;
         }
       `}</style>
     </section>
-  );
-}
-
-function ButtonLink() {
-  return (
-    <Link
-      href="/books"
-      className="mt-8 inline-flex h-12 items-center gap-3 rounded-full bg-orange-500 px-7 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600 sm:h-14 sm:px-9 sm:text-base"
-    >
-      Browse Books
-      <ArrowRight className="size-5" />
-    </Link>
   );
 }

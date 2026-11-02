@@ -2,7 +2,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
+
 import {
   BookOpen,
   Search,
@@ -10,15 +12,11 @@ import {
   UserRound,
   Heart,
   Menu,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -30,8 +28,32 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
-  const isActive = (href: string) => pathname === href;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const search = searchTerm.trim();
+
+    if (!search) {
+      router.push("/books");
+      return;
+    }
+
+    router.push(`/books?search=${encodeURIComponent(search)}`);
+    setMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white text-gray-700 shadow-sm">
@@ -39,15 +61,19 @@ export default function Navbar() {
       <div className="border-b border-gray-100">
         <div className="mx-auto flex h-8 max-w-7xl items-center justify-between px-4 text-xs">
           <div className="hidden items-center gap-4 sm:flex">
-            <Link href="/books" className="hover:text-orange-500">
+            <Link href="/books" className="transition hover:text-orange-500">
               Membership
             </Link>
+
             <span className="text-gray-300">|</span>
-            <Link href="/books" className="hover:text-orange-500">
+
+            <Link href="/books" className="transition hover:text-orange-500">
               Coupons & Deals
             </Link>
+
             <span className="text-gray-300">|</span>
-            <Link href="/books" className="hover:text-orange-500">
+
+            <Link href="/books" className="transition hover:text-orange-500">
               Best Sellers
             </Link>
           </div>
@@ -55,7 +81,7 @@ export default function Navbar() {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href="/my-books"
-              className="flex items-center gap-1 hover:text-orange-500"
+              className="flex items-center gap-1 transition hover:text-orange-500"
             >
               <UserRound className="size-3.5" />
               My Account
@@ -63,7 +89,7 @@ export default function Navbar() {
 
             <Link
               href="/my-borrows"
-              className="flex items-center gap-1 hover:text-orange-500"
+              className="flex items-center gap-1 transition hover:text-orange-500"
             >
               <Heart className="size-3.5" />
               Wishlist
@@ -84,21 +110,16 @@ export default function Navbar() {
             <h1 className="text-xl font-bold leading-5 text-[#0b4d3b]">
               BookNook
             </h1>
+
             <p className="text-[10px] tracking-[0.2em] text-gray-500">
               ONLINE LIBRARY
             </p>
           </div>
         </Link>
 
-        {/* Search */}
+        {/* Desktop Search */}
         <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const search = formData.get("search")?.toString() ?? "";
-
-            window.location.href = `/books?search=${encodeURIComponent(search)}`;
-          }}
+          onSubmit={handleSearch}
           className="hidden h-10 max-w-xl flex-1 items-center border border-gray-200 md:flex"
         >
           <div className="flex h-full shrink-0 items-center border-r px-3 text-xs text-gray-500">
@@ -107,26 +128,29 @@ export default function Navbar() {
 
           <Input
             name="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
             placeholder="Search books..."
             className="h-full rounded-none border-0 shadow-none focus-visible:ring-0"
           />
 
           <Button
             type="submit"
-            className="h-full rounded-none bg-orange-500 px-5 hover:bg-orange-600"
             aria-label="Search books"
+            className="h-full rounded-none bg-orange-500 px-5 hover:bg-orange-600"
           >
             <Search className="size-4" />
           </Button>
         </form>
 
-        {/* Cart */}
+        {/* My Borrows */}
         <Link
           href="/my-borrows"
           className="hidden shrink-0 items-center gap-2 sm:flex"
         >
           <div className="relative">
             <ShoppingCart className="size-6 text-gray-700" />
+
             <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] text-white">
               0
             </span>
@@ -138,48 +162,69 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Mobile menu */}
-        <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                aria-label="Open navigation menu"
-              >
-                <Menu className="size-5" />
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent side="right" className="w-72">
-              <Link href="/" className="mb-6 flex items-center gap-2">
-                <BookOpen className="size-6 text-[#0b4d3b]" />
-                <span className="text-xl font-bold text-[#0b4d3b]">
-                  BookNook
-                </span>
-              </Link>
-
-              <nav className="flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
-                      isActive(link.href)
-                        ? "bg-[#0b4d3b] text-white"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
-            </SheetContent>
-          </Sheet>
+        {/* Mobile Menu Button */}
+        <div className="relative md:hidden">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((prev) => !prev)}
+          >
+            {menuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
+          </Button>
         </div>
       </div>
 
-      {/* Bottom navigation */}
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="absolute left-0 top-full z-50 w-full border-t border-gray-200 bg-white p-4 shadow-lg md:hidden">
+          {/* Mobile Search */}
+          <form onSubmit={handleSearch} className="mb-4 flex gap-2">
+            <Input
+              name="mobile-search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search books..."
+              className="min-w-0"
+            />
+
+            <Button
+              type="submit"
+              size="icon"
+              aria-label="Search books"
+              className="shrink-0 bg-orange-500 hover:bg-orange-600"
+            >
+              <Search className="size-4" />
+            </Button>
+          </form>
+
+          {/* Mobile Navigation Links */}
+          <nav className="flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
+                  isActive(link.href)
+                    ? "bg-[#0b4d3b] text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
+
+      {/* Bottom Navigation */}
       <div className="hidden bg-[#064b38] md:block">
         <nav className="mx-auto flex h-9 max-w-7xl items-center justify-center gap-2 px-4">
           {navLinks.map((link) => (
