@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 import {
   ImagePlus,
   Loader2,
@@ -24,6 +25,8 @@ type BookFormData = {
 
 export default function AddBookForm() {
   const router = useRouter();
+  const { data: session } = useSession();
+  console.log(session, "Data");
 
   const [loading, setLoading] = useState(false);
 
@@ -34,6 +37,9 @@ export default function AddBookForm() {
     description: "",
     image: "",
   });
+
+  const userName = session?.user?.name ?? "";
+  const userEmail = session?.user?.email ?? "";
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -49,8 +55,13 @@ export default function AddBookForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!userEmail) {
+      toast.error("Please log in before adding a book");
+      return;
+    }
+
     if (!formData.image.trim()) {
-      toast.error("Please enter a book cover image URL");
+      toast.error("Please enter a book image URL");
       return;
     }
 
@@ -60,6 +71,8 @@ export default function AddBookForm() {
       const bookData = {
         ...formData,
         image: formData.image.trim(),
+        userName,
+        email: userEmail,
         addedDate: new Date().toISOString(),
       };
 
@@ -245,6 +258,42 @@ export default function AddBookForm() {
                     className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
                   />
                 </div>
+
+                {/* User Name */}
+                <div>
+                  <label
+                    htmlFor="userName"
+                    className="mb-2 block text-sm font-semibold text-gray-700"
+                  >
+                    User Name
+                  </label>
+
+                  <input
+                    id="userName"
+                    type="text"
+                    value={userName}
+                    readOnly
+                    className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 px-4 py-3.5 text-sm text-gray-500"
+                  />
+                </div>
+
+                {/* User Email */}
+                <div>
+                  <label
+                    htmlFor="userEmail"
+                    className="mb-2 block text-sm font-semibold text-gray-700"
+                  >
+                    User Email
+                  </label>
+
+                  <input
+                    id="userEmail"
+                    type="email"
+                    value={userEmail}
+                    readOnly
+                    className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 px-4 py-3.5 text-sm text-gray-500"
+                  />
+                </div>
               </div>
 
               {/* Right: Image URL and Preview */}
@@ -253,7 +302,7 @@ export default function AddBookForm() {
                   htmlFor="image"
                   className="mb-2 block text-sm font-semibold text-gray-700"
                 >
-                  Book Cover URL{" "}
+                  Book Image URL{" "}
                   <span className="text-orange-500">*</span>
                 </label>
 
@@ -276,7 +325,7 @@ export default function AddBookForm() {
                         </span>
 
                         <span className="mt-2 text-xs text-gray-400">
-                          Enter an image URL below
+                          Paste an image URL below
                         </span>
                       </div>
                     )}
@@ -298,14 +347,15 @@ export default function AddBookForm() {
                       required
                       value={formData.image}
                       onChange={handleChange}
-                      placeholder="https://example.com/book-cover.jpg"
+                      placeholder="https://i.ibb.co/your-image.jpg"
                       className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:ring-4 focus:ring-green-500/10"
                     />
                   </div>
 
                   <div className="mt-3 flex items-start gap-2 text-xs leading-5 text-gray-400">
                     <CheckCircle2 size={15} className="mt-0.5 shrink-0" />
-                    Paste a direct image link ending in JPG, PNG, or WEBP.
+                    Upload your image to ImgBB and paste its direct image URL
+                    here.
                   </div>
                 </div>
               </div>

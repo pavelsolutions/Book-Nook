@@ -1,247 +1,228 @@
-
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-
+import { useState } from "react";
 import {
-  BookOpen,
   Search,
-  ShoppingCart,
-  UserRound,
-  Heart,
   Menu,
   X,
+  Heart,
+  ShoppingCart,
+  BookOpen,
 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import UserProfileDropdown from "./UserProfileDropdown";
 
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "All Books", href: "/books" },
-  { label: "Add Book", href: "/add-book" },
-  { label: "My Books", href: "/my-books" },
-  { label: "My Borrows", href: "/my-borrows" },
+  { name: "Membership", href: "/membership" },
+  { name: "Coupons & Deals", href: "/deals" },
+  { name: "Best Sellers", href: "/best-sellers" },
+  { name: "My Account", href: "/my-account" },
+  { name: "Wishlist", href: "/wishlist" },
+];
+
+const bottomLinks = [
+  { name: "Home", href: "/" },
+  { name: "Books", href: "/books" },
+  { name: "Categories", href: "/categories" },
+  { name: "My Borrows", href: "/my-borrows" },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const [searchValue, setSearchValue] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const isActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
-
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
-
-  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const search = searchTerm.trim();
+    const search = searchValue.trim();
 
-    if (!search) {
-      router.push("/books");
-      return;
+    if (search) {
+      window.location.href = `/books?search=${encodeURIComponent(search)}`;
     }
-
-    router.push(`/books?search=${encodeURIComponent(search)}`);
-    setMenuOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white text-gray-700 shadow-sm">
-      {/* Top bar */}
-      <div className="border-b border-gray-100">
-        <div className="mx-auto flex h-8 max-w-7xl items-center justify-between px-4 text-xs">
-          <div className="hidden items-center gap-4 sm:flex">
-            <Link href="/books" className="transition hover:text-orange-500">
-              Membership
-            </Link>
+    <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
+      {/* Top navigation */}
+      <div className="hidden border-b border-gray-100 md:block">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
+          <p className="text-xs text-gray-500">
+            Welcome to BookNook — your next favorite book awaits!
+          </p>
 
-            <span className="text-gray-300">|</span>
-
-            <Link href="/books" className="transition hover:text-orange-500">
-              Coupons & Deals
-            </Link>
-
-            <span className="text-gray-300">|</span>
-
-            <Link href="/books" className="transition hover:text-orange-500">
-              Best Sellers
-            </Link>
-          </div>
-
-          <div className="ml-auto flex items-center gap-4">
-            <Link
-              href="/my-books"
-              className="flex items-center gap-1 transition hover:text-orange-500"
-            >
-              <UserRound className="size-3.5" />
-              My Account
-            </Link>
-
-            <Link
-              href="/my-borrows"
-              className="flex items-center gap-1 transition hover:text-orange-500"
-            >
-              <Heart className="size-3.5" />
-              Wishlist
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Main bar */}
-      <div className="mx-auto flex min-h-[72px] max-w-7xl items-center justify-between gap-5 px-4 py-3">
-        {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2">
-          <div className="flex size-10 items-center justify-center rounded-md bg-[#0b4d3b] text-white">
-            <BookOpen className="size-6" />
-          </div>
-
-          <div>
-            <h1 className="text-xl font-bold leading-5 text-[#0b4d3b]">
-              BookNook
-            </h1>
-
-            <p className="text-[10px] tracking-[0.2em] text-gray-500">
-              ONLINE LIBRARY
-            </p>
-          </div>
-        </Link>
-
-        {/* Desktop Search */}
-        <form
-          onSubmit={handleSearch}
-          className="hidden h-10 max-w-xl flex-1 items-center border border-gray-200 md:flex"
-        >
-          <div className="flex h-full shrink-0 items-center border-r px-3 text-xs text-gray-500">
-            All Books
-          </div>
-
-          <Input
-            name="search"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Search books..."
-            className="h-full rounded-none border-0 shadow-none focus-visible:ring-0"
-          />
-
-          <Button
-            type="submit"
-            aria-label="Search books"
-            className="h-full rounded-none bg-orange-500 px-5 hover:bg-orange-600"
-          >
-            <Search className="size-4" />
-          </Button>
-        </form>
-
-        {/* My Borrows */}
-        <Link
-          href="/my-borrows"
-          className="hidden shrink-0 items-center gap-2 sm:flex"
-        >
-          <div className="relative">
-            <ShoppingCart className="size-6 text-gray-700" />
-
-            <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-orange-500 text-[10px] text-white">
-              0
-            </span>
-          </div>
-
-          <div className="text-xs">
-            <p className="font-medium text-gray-800">My Borrows</p>
-            <p className="text-gray-500">Books: 0</p>
-          </div>
-        </Link>
-
-        {/* Mobile Menu Button */}
-        <div className="relative md:hidden">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            {menuOpen ? (
-              <X className="size-5" />
-            ) : (
-              <Menu className="size-5" />
-            )}
-          </Button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="absolute left-0 top-full z-50 w-full border-t border-gray-200 bg-white p-4 shadow-lg md:hidden">
-          {/* Mobile Search */}
-          <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-            <Input
-              name="mobile-search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search books..."
-              className="min-w-0"
-            />
-
-            <Button
-              type="submit"
-              size="icon"
-              aria-label="Search books"
-              className="shrink-0 bg-orange-500 hover:bg-orange-600"
-            >
-              <Search className="size-4" />
-            </Button>
-          </form>
-
-          {/* Mobile Navigation Links */}
-          <nav className="flex flex-col gap-2">
+          <div className="flex items-center gap-5">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.name}
                 href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`rounded-md px-3 py-2.5 text-sm transition-colors ${
-                  isActive(link.href)
-                    ? "bg-[#0b4d3b] text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
+                className="text-xs font-medium text-gray-600 transition hover:text-amber-600"
               >
-                {link.label}
+                {link.name}
               </Link>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main navbar */}
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-6">
+        {/* Mobile menu button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="rounded-md p-2 text-gray-700 hover:bg-gray-100 md:hidden"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
+
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-2"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500">
+            <BookOpen className="h-6 w-6 text-white" />
+          </div>
+
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            Book<span className="text-amber-500">Nook</span>
+          </span>
+        </Link>
+
+        {/* Search bar */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden max-w-xl flex-1 md:flex"
+        >
+          <div className="flex w-full items-center overflow-hidden rounded-full border border-gray-200 bg-gray-50 transition focus-within:border-amber-400 focus-within:bg-white">
+            <input
+              type="text"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              placeholder="Search books, authors, or categories..."
+              className="w-full bg-transparent px-5 py-3 text-sm text-gray-700 outline-none"
+            />
+
+            <button
+              type="submit"
+              aria-label="Search books"
+              className="flex items-center justify-center bg-amber-500 px-5 py-3 text-white transition hover:bg-amber-600"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </div>
+        </form>
+
+        {/* Right side actions */}
+        <div className="flex shrink-0 items-center gap-3">
+          {/* Wishlist */}
+          <Link
+            href="/wishlist"
+            aria-label="Wishlist"
+            className="hidden rounded-full p-2 text-gray-700 transition hover:bg-amber-50 hover:text-amber-600 sm:block"
+          >
+            <Heart className="h-5 w-5" />
+          </Link>
+
+          {/* My Borrows */}
+          <Link
+            href="/my-borrows"
+            className="relative flex items-center gap-2 rounded-full p-2 text-gray-700 transition hover:bg-amber-50 hover:text-amber-600"
+          >
+            <ShoppingCart className="h-5 w-5" />
+
+            <span className="hidden text-sm font-medium lg:block">
+              My Borrows
+            </span>
+
+            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-xs font-semibold text-white">
+              0
+            </span>
+          </Link>
+
+          {/* User profile dropdown */}
+          <div className="hidden shrink-0 md:block">
+            <UserProfileDropdown />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile search */}
+      <div className="px-4 pb-4 md:hidden">
+        <form onSubmit={handleSearch}>
+          <div className="flex w-full items-center overflow-hidden rounded-full border border-gray-200 bg-gray-50">
+            <input
+              type="text"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
+              placeholder="Search books..."
+              className="w-full bg-transparent px-4 py-2.5 text-sm outline-none"
+            />
+
+            <button
+              type="submit"
+              aria-label="Search books"
+              className="bg-amber-500 px-4 py-2.5 text-white hover:bg-amber-600"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Desktop bottom navigation */}
+      <nav className="hidden border-t border-gray-100 md:block">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-10 px-6 py-3">
+          {bottomLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="text-sm font-medium text-gray-600 transition hover:text-amber-600"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="border-t border-gray-100 bg-white md:hidden">
+          <nav className="flex flex-col px-4 py-3">
+            {bottomLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-700 transition hover:text-amber-600"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-700 transition hover:text-amber-600"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {/* Mobile profile dropdown */}
+            <div className="py-3">
+              <UserProfileDropdown />
+            </div>
           </nav>
         </div>
       )}
-
-      {/* Bottom Navigation */}
-      <div className="hidden bg-[#064b38] md:block">
-        <nav className="mx-auto flex h-9 max-w-7xl items-center justify-center gap-2 px-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-5 py-2 text-[11px] font-medium transition-colors ${
-                isActive(link.href)
-                  ? "bg-[#0b6048] text-white"
-                  : "text-white/90 hover:bg-[#0b6048] hover:text-white"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
     </header>
   );
 }

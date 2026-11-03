@@ -28,7 +28,6 @@ import {
 
 export default function UserProfileDropdown() {
   const router = useRouter();
-
   const { data: session, isPending } = authClient.useSession();
   const [signingOut, setSigningOut] = useState(false);
 
@@ -57,14 +56,11 @@ export default function UserProfileDropdown() {
       }
 
       toast.success("You have signed out.");
-
-      router.push("/login");
+      router.push("/");
       router.refresh();
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong.";
+        error instanceof Error ? error.message : "Something went wrong.";
 
       toast.error(message);
     } finally {
@@ -72,7 +68,6 @@ export default function UserProfileDropdown() {
     }
   };
 
-  // Loading state
   if (isPending) {
     return (
       <div className="flex h-10 w-10 items-center justify-center">
@@ -81,45 +76,47 @@ export default function UserProfileDropdown() {
     );
   }
 
-  // User is not logged in
   if (!user) {
     return (
-      <Button asChild className="rounded-full">
-        <Link href="/login">Sign In</Link>
+      <Button
+        render={<Link href="/sign-in" />}
+        className="rounded-full"
+      >
+        Sign In
       </Button>
     );
   }
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="group h-auto rounded-full p-1.5 pr-3 transition hover:bg-violet-50"
-        >
-          <Avatar className="h-9 w-9 border border-violet-100">
-            <AvatarImage
-              src={user.image || ""}
-              alt={user.name || "User avatar"}
-            />
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            className="group h-auto rounded-full p-1.5 pr-3 transition hover:bg-violet-50"
+          />
+        }
+      >
+        <Avatar className="h-9 w-9 border border-violet-100">
+          <AvatarImage
+            src={user.image || ""}
+            alt={user.name || "User avatar"}
+          />
+          <AvatarFallback className="bg-violet-100 font-semibold text-violet-700">
+            {getInitials(user.name)}
+          </AvatarFallback>
+        </Avatar>
 
-            <AvatarFallback className="bg-violet-100 font-semibold text-violet-700">
-              {getInitials(user.name)}
-            </AvatarFallback>
-          </Avatar>
+        <div className="ml-2 hidden text-left sm:block">
+          <p className="max-w-32 truncate text-sm font-semibold text-slate-800">
+            {user.name || "User"}
+          </p>
+          <p className="max-w-32 truncate text-xs text-slate-500">
+            {user.email}
+          </p>
+        </div>
 
-          <div className="ml-2 hidden text-left sm:block">
-            <p className="max-w-32 truncate text-sm font-semibold text-slate-800">
-              {user.name || "User"}
-            </p>
-
-            <p className="max-w-32 truncate text-xs text-slate-500">
-              {user.email}
-            </p>
-          </div>
-
-          <ChevronDown className="ml-2 h-4 w-4 text-slate-500 transition-transform group-data-[state=open]:rotate-180" />
-        </Button>
+        <ChevronDown className="ml-2 h-4 w-4 text-slate-500 transition-transform group-data-[state=open]:rotate-180" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
@@ -127,59 +124,61 @@ export default function UserProfileDropdown() {
         sideOffset={10}
         className="w-64 rounded-2xl border border-slate-200 p-2 shadow-xl"
       >
-        {/* User details */}
-        <DropdownMenuLabel className="p-3 font-normal">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-11 w-11">
-              <AvatarImage
-                src={user.image || ""}
-                alt={user.name || "User avatar"}
-              />
-
-              <AvatarFallback className="bg-violet-100 font-semibold text-violet-700">
-                {getInitials(user.name)}
-              </AvatarFallback>
-            </Avatar>
-
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-slate-900">
-                {user.name || "User"}
-              </p>
-
-              <p className="truncate text-xs text-slate-500">
-                {user.email}
-              </p>
-            </div>
-          </div>
-        </DropdownMenuLabel>
-
-        <DropdownMenuSeparator />
-
-        {/* Menu items */}
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild className="cursor-pointer rounded-lg p-2.5">
-            <Link href="/profile">
-              <UserRound className="mr-2 h-4 w-4 text-slate-500" />
-              My Profile
-            </Link>
+          <DropdownMenuLabel className="p-3 font-normal">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-11 w-11">
+                <AvatarImage
+                  src={user.image || ""}
+                  alt={user.name || "User avatar"}
+                />
+                <AvatarFallback className="bg-violet-100 font-semibold text-violet-700">
+                  {getInitials(user.name)}
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-slate-900">
+                  {user.name || "User"}
+                </p>
+                <p className="truncate text-xs text-slate-500">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+          </DropdownMenuLabel>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            render={<Link href="/dashboard" />}
+            className="cursor-pointer rounded-lg p-2.5"
+          >
+            <UserRound className="mr-2 h-4 w-4 text-slate-500" />
+            Dashboard
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild className="cursor-pointer rounded-lg p-2.5">
-            <Link href="/settings">
-              <Settings className="mr-2 h-4 w-4 text-slate-500" />
-              Settings
-            </Link>
+          <DropdownMenuItem
+            render={<Link href="/profile" />}
+            className="cursor-pointer rounded-lg p-2.5"
+          >
+            <UserRound className="mr-2 h-4 w-4 text-slate-500" />
+            My Profile
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            render={<Link href="/settings" />}
+            className="cursor-pointer rounded-lg p-2.5"
+          >
+            <Settings className="mr-2 h-4 w-4 text-slate-500" />
+            Settings
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
 
-        {/* Sign out */}
         <DropdownMenuItem
-          onSelect={(event) => {
-            event.preventDefault();
-            void handleSignOut();
-          }}
+          onClick={() => void handleSignOut()}
           disabled={signingOut}
           className="cursor-pointer rounded-lg p-2.5 text-red-600 focus:bg-red-50 focus:text-red-600"
         >
