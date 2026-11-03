@@ -92,7 +92,7 @@ export default function Books() {
 // Async component: fetches and displays books
 async function BooksList() {
   const books = await getBooks();
-console.log(books, "books");
+  
   return (
     <section className="min-h-screen bg-[#f8f9fc] px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
