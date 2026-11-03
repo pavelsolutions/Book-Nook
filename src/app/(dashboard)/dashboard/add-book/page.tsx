@@ -48,66 +48,61 @@ export default function AddBookForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const newBook = Object.fromEntries(formData.entries());
-    console.log(newBook, "New Book");
 
-    const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`)
+    if (!formData.image.trim()) {
+      toast.error("Please enter a book cover image URL");
+      return;
+    }
 
-    // if (!formData.image.trim()) {
-    //   toast.error("Please enter a book cover image URL");
-    //   return;
-    // }
+    try {
+      setLoading(true);
 
-    // try {
-    //   setLoading(true);
+      const bookData = {
+        ...formData,
+        image: formData.image.trim(),
+        addedDate: new Date().toISOString(),
+      };
 
-    //   const bookData = {
-    //     ...formData,
-    //     image: formData.image.trim(),
-    //     addedDate: new Date().toISOString(),
-    //   };
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookData),
+        }
+      );
 
-    //   const response = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_URL}/api/books`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(bookData),
-    //     }
-    //   );
+      const result = await response.json();
 
-    //   const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to add book");
+      }
 
-    //   if (!response.ok) {
-    //     throw new Error(result.message || "Failed to add book");
-    //   }
+      toast.success("Book added successfully!");
 
-    //   toast.success("Book added successfully!");
+      setFormData({
+        title: "",
+        author: "",
+        category: "",
+        description: "",
+        image: "",
+      });
 
-    //   setFormData({
-    //     title: "",
-    //     author: "",
-    //     category: "",
-    //     description: "",
-    //     image: "",
-    //   });
+      router.push("/dashboard/my-books");
+      router.refresh();
+    } catch (error) {
+      console.error("Add book error:", error);
 
-    //   router.push("/dashboard/my-books");
-    //   router.refresh();
-    // } catch (error) {
-    //   console.error("Add book error:", error);
-
-    //   toast.error(
-    //     error instanceof Error
-    //       ? error.message
-    //       : "Something went wrong"
-    //   );
-    // } finally {
-    //   setLoading(false);
-    // }
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -269,12 +264,6 @@ export default function AddBookForm() {
                         src={formData.image}
                         alt="Book cover preview"
                         className="h-72 w-full rounded-xl bg-white object-cover shadow-sm"
-                        onError={(e) => {
-                          e.currentTarget.style.visibility = "hidden";
-                        }}
-                        onLoad={(e) => {
-                          e.currentTarget.style.visibility = "visible";
-                        }}
                       />
                     ) : (
                       <div className="flex h-72 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-white px-4 text-center">
