@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import BookCard from "@/components/shared/BookCard";
 import { notFound } from "next/navigation";
-import { getTokenFromServer } from "@/lib/getTokenFromServer";
 import { Metadata } from "next";
 
 
@@ -99,14 +98,17 @@ export default function Books() {
 async function BooksList() {
   // const books = await getBooks();
 
-  const token = await getTokenFromServer();
+  // const token = await getTokenFromServer();
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`, {
-    headers: {
-      authorization: `Bearer ${token}`
-    }
-  });
+  // const response = await fetch(
+  //   `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`, {
+  //   headers: {
+  //     authorization: `Bearer ${token}`
+  //   }
+  // });
+
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`);
 
   if (!response.ok) notFound();
   const  books = await response.json();

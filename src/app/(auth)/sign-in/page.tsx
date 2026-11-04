@@ -65,10 +65,11 @@ export default function SigninForm() {
         return;
       }
 
-      toast.success("Login successful!");
+      toast.success("Welcome to our library!");
 
-      router.push("/");
-      router.refresh();
+      // router.push("/");
+      // router.refresh();
+      window.location.replace("/");
     } catch (error) {
       const message =
         error instanceof Error

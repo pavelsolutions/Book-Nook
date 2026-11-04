@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
-        {/* <Footer/> */}
-         <Toaster
+        <Footer/>
+         {/* <Toaster
           position="top-right"
           reverseOrder={false}
           toastOptions={{
@@ -41,7 +44,9 @@ export default function RootLayout({
               zIndex: 9999,
             },
           }}
-        />
+        /> */}
+
+         <Toaster position="top-right" richColors />
       </body>
     </html>
   );

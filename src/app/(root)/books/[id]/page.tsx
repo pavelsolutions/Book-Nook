@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -27,15 +28,15 @@ type Book = {
   email?: string;
   userName?: string;
   addedDate?: string;
+  totalCopies: number;
+  availableCopies: number;
 };
 
 export default function BookDetailsPage() {
-
   const params = useParams();
   const router = useRouter();
 
   const { data: session, isPending } = useSession();
-
   const bookId = params.id as string;
   const user = session?.user;
 
@@ -56,27 +57,26 @@ export default function BookDetailsPage() {
 
         const token = await getTokenFromClient();
 
-        // const response = await fetch(`${SERVER_URL}/books/${bookId}`);
-
-        const response = await fetch(`${SERVER_URL}/books/${bookId}`,
-          {
-            headers: {
-              authorization: `Bearer ${token}`
-            }
-          }
-        );
+        const response = await fetch(`${SERVER_URL}/books/${bookId}`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Failed to load book details");
         }
 
         const data: Book = await response.json();
-        setBook(data);
+
+        setBook({
+          ...data,
+          totalCopies: Number(data.totalCopies ?? 0),
+          availableCopies: Number(data.availableCopies ?? 0),
+        });
       } catch (error) {
         toast.error(
-          error instanceof Error
-            ? error.message
-            : "Something went wrong"
+          error instanceof Error ? error.message : "Something went wrong"
         );
       } finally {
         setLoading(false);
@@ -96,6 +96,11 @@ export default function BookDetailsPage() {
       return;
     }
 
+    if (!book || book.availableCopies <= 0) {
+      toast.error("This book is not available");
+      return;
+    }
+
     setShowBorrowModal(true);
   };
 
@@ -103,8 +108,15 @@ export default function BookDetailsPage() {
   const handleBorrow = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (borrowing) return;
+
     if (!book || !user?.email) {
       toast.error("Please login first");
+      return;
+    }
+
+    if (book.availableCopies <= 0) {
+      toast.error("This book is not available");
       return;
     }
 
@@ -133,10 +145,13 @@ export default function BookDetailsPage() {
     try {
       setBorrowing(true);
 
+      const token = await getTokenFromClient();
+
       const response = await fetch(`${SERVER_URL}/borrows`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(borrowData),
       });
@@ -147,6 +162,19 @@ export default function BookDetailsPage() {
         throw new Error(result.message || "Failed to borrow book");
       }
 
+      // Update local stock after successful borrowing
+      setBook((currentBook) =>
+        currentBook
+          ? {
+              ...currentBook,
+              availableCopies: Math.max(
+                0,
+                currentBook.availableCopies - 1
+              ),
+            }
+          : currentBook
+      );
+
       toast.success("Book borrowed successfully!");
 
       setShowBorrowModal(false);
@@ -155,9 +183,7 @@ export default function BookDetailsPage() {
       router.push("/dashboard/my-borrows");
     } catch (error) {
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong"
+        error instanceof Error ? error.message : "Something went wrong"
       );
     } finally {
       setBorrowing(false);
@@ -199,6 +225,8 @@ export default function BookDetailsPage() {
       </div>
     );
   }
+
+  const isAvailable = book.availableCopies > 0;
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
@@ -256,8 +284,34 @@ export default function BookDetailsPage() {
             </h2>
 
             <p className="leading-7 text-gray-600">
-              {book.description || "No description available for this book."}
+              {book.description ||
+                "No description available for this book."}
             </p>
+
+            {/* Copy Availability */}
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <span className="font-medium text-gray-700">
+                Total Copies: {book.totalCopies}
+              </span>
+
+              <span className="text-gray-300">|</span>
+
+              <span className="font-medium text-gray-700">
+                Available Copies:
+              </span>
+
+              <span
+                className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                  isAvailable
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {isAvailable
+                  ? book.availableCopies
+                  : "Not Available"}
+              </span>
+            </div>
 
             {book.addedDate && (
               <div className="mt-5 flex items-center gap-2 text-sm text-gray-500">
@@ -266,11 +320,15 @@ export default function BookDetailsPage() {
               </div>
             )}
 
+            {/* Borrow Button */}
             <button
               onClick={handleOpenBorrowModal}
-              className="mt-8 w-full rounded-xl bg-indigo-600 px-6 py-4 font-semibold text-white shadow-md transition hover:bg-indigo-700 sm:w-fit"
+              disabled={!isAvailable || borrowing}
+              className="mt-8 w-full rounded-xl bg-indigo-600 px-6 py-4 font-semibold text-white shadow-md transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:shadow-none sm:w-fit"
             >
-              Borrow This Book
+              {!isAvailable
+                ? "Not Available"
+                : "Borrow This Book"}
             </button>
           </div>
         </div>
@@ -365,16 +423,21 @@ export default function BookDetailsPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={borrowing || !user?.email}
+                disabled={
+                  borrowing || !user?.email || !isAvailable
+                }
                 className="mt-2 w-full rounded-lg bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {borrowing ? "Confirming..." : "Confirm Borrow"}
+                {borrowing
+                  ? "Confirming..."
+                  : "Confirm Borrow"}
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowBorrowModal(false)}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 font-medium text-gray-600 transition hover:bg-gray-50"
+                disabled={borrowing}
+                className="w-full rounded-lg border border-gray-200 px-4 py-3 font-medium text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
               </button>

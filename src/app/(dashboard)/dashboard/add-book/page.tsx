@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authClient, useSession } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import {
   ImagePlus,
   Loader2,
@@ -22,6 +22,7 @@ type BookFormData = {
   category: string;
   description: string;
   image: string;
+  totalCopies: string;
 };
 
 export default function AddBookForm() {
@@ -36,6 +37,7 @@ export default function AddBookForm() {
     category: "",
     description: "",
     image: "",
+    totalCopies: "1",
   });
 
   const userName = session?.user?.name ?? "";
@@ -65,12 +67,24 @@ export default function AddBookForm() {
       return;
     }
 
+    const totalCopies = Number(formData.totalCopies);
+
+    if (!Number.isInteger(totalCopies) || totalCopies < 1) {
+      toast.error("Total copies must be at least 1.");
+      return;
+    }
+
     try {
       setLoading(true);
 
       const bookData = {
-        ...formData,
+        title: formData.title.trim(),
+        author: formData.author.trim(),
+        category: formData.category,
+        description: formData.description.trim(),
         image: formData.image.trim(),
+        totalCopies,
+        availableCopies: totalCopies,
         userName,
         email: userEmail,
         addedDate: new Date().toISOString(),
@@ -84,7 +98,7 @@ export default function AddBookForm() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(bookData),
         }
@@ -104,6 +118,7 @@ export default function AddBookForm() {
         category: "",
         description: "",
         image: "",
+        totalCopies: "1",
       });
 
       router.push("/dashboard/my-books");
@@ -233,6 +248,33 @@ export default function AddBookForm() {
                   </select>
                 </div>
 
+                {/* Total Copies - ADDED */}
+                <div>
+                  <label
+                    htmlFor="totalCopies"
+                    className="mb-2 block text-sm font-semibold text-gray-700"
+                  >
+                    Total Copies <span className="text-orange-500">*</span>
+                  </label>
+
+                  <input
+                    id="totalCopies"
+                    name="totalCopies"
+                    type="number"
+                    min={1}
+                    step={1}
+                    required
+                    value={formData.totalCopies}
+                    onChange={handleChange}
+                    placeholder="Enter total number of copies"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                  />
+
+                  <p className="mt-2 text-xs text-gray-400">
+                    Enter the total number of physical copies in your library.
+                  </p>
+                </div>
+
                 {/* Description */}
                 <div>
                   <div className="mb-2 flex items-center justify-between">
@@ -305,8 +347,7 @@ export default function AddBookForm() {
                   htmlFor="image"
                   className="mb-2 block text-sm font-semibold text-gray-700"
                 >
-                  Book Image URL{" "}
-                  <span className="text-orange-500">*</span>
+                  Book Image URL <span className="text-orange-500">*</span>
                 </label>
 
                 <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">

@@ -9,15 +9,9 @@ import {
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { IBook } from "@/types/types";
 
-type IBook = {
-  _id: string;
-  title: string;
-  author: string;
-  category: string;
-  image: string;
-  description?: string;
-};
+
 
 const BookCard = ({ book }: { book: IBook }) => {
   return (
