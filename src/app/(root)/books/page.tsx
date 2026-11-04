@@ -1,23 +1,24 @@
-import Link from "next/link";
 import {
   BookOpen,
   Search,
   SlidersHorizontal,
-  ArrowUpRight,
   LibraryBig,
 } from "lucide-react";
-import Image from "next/image";
 import { Suspense } from "react";
 
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import BookCard from "@/components/shared/BookCard";
+import { notFound } from "next/navigation";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+  title: "All Books",
+};
 
 type Book = {
   _id: string;
@@ -32,6 +33,11 @@ type Book = {
 async function getBooks(): Promise<Book[]> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`,
+    // {
+    //   headers: {
+    //     authorization: jwtToken?.token,
+    //   }
+    // }
     {
       cache: "no-store",
     }
@@ -91,8 +97,20 @@ export default function Books() {
 
 // Async component: fetches and displays books
 async function BooksList() {
-  const books = await getBooks();
-  
+  // const books = await getBooks();
+
+  const token = await getTokenFromServer();
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) notFound();
+  const  books = await response.json();
+
   return (
     <section className="min-h-screen bg-[#f8f9fc] px-4 py-10 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
@@ -176,7 +194,7 @@ async function BooksList() {
         {books.length > 0 ? (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {books.map((book) => (
-              <BookCard key={book._id} book= {book} />
+              <BookCard key={book._id} book={book} />
             ))}
           </div>
         ) : (

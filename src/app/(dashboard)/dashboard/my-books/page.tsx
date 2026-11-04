@@ -83,6 +83,9 @@ export default function MyBooksPage() {
           `${SERVER_URL}/my-books/${encodeURIComponent(email)}`
         );
 
+        const api = `${SERVER_URL}/my-books/${encodeURIComponent(email)}`;
+        console.group(api, "api");
+
         if (!response.ok) {
           throw new Error("Failed to fetch books");
         }
@@ -139,7 +142,7 @@ export default function MyBooksPage() {
       const response = await fetch(
         `${SERVER_URL}/books/${selectedBook._id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },

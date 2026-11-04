@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:5000";
@@ -30,6 +30,7 @@ type Book = {
 };
 
 export default function BookDetailsPage() {
+
   const params = useParams();
   const router = useRouter();
 
@@ -53,7 +54,17 @@ export default function BookDetailsPage() {
       try {
         setLoading(true);
 
-        const response = await fetch(`${SERVER_URL}/books/${bookId}`);
+        const token = await getTokenFromClient();
+
+        // const response = await fetch(`${SERVER_URL}/books/${bookId}`);
+
+        const response = await fetch(`${SERVER_URL}/books/${bookId}`,
+          {
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to load book details");

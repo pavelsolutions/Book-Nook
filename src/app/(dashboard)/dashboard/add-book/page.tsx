@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import {
   ImagePlus,
   Loader2,
@@ -12,6 +12,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -26,7 +27,6 @@ type BookFormData = {
 export default function AddBookForm() {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session, "Data");
 
   const [loading, setLoading] = useState(false);
 
@@ -76,12 +76,15 @@ export default function AddBookForm() {
         addedDate: new Date().toISOString(),
       };
 
+      const token = await getTokenFromClient();
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
           },
           body: JSON.stringify(bookData),
         }

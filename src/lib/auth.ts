@@ -17,15 +17,12 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  plugins: [
-        jwt(), 
-    ],
-
+  plugins: [jwt()],
   session: {
     cookieCache: {
       enabled: true,
       strategy: "jwt",
-      maxAge: 60 * 60 * 24 * 7   // 7 days
+      maxAge: 7 * 24 * 60 * 60   // 7 days
     }
   }
 });
