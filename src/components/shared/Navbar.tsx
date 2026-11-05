@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import {
   BookOpen,
   Search,
@@ -21,6 +22,7 @@ import {
 import { useSession, authClient } from "@/lib/auth-client";
 
 import { Button } from "@/components/ui/button";
+
 import {
   Avatar,
   AvatarFallback,
@@ -65,6 +67,7 @@ export default function Navbar() {
 
   const [searchValue, setSearchValue] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [borrowCount, setBorrowCount] = useState(0);
 
   const user = session?.user;
   const isLoggedIn = Boolean(user);
@@ -72,6 +75,52 @@ export default function Navbar() {
   const userName = user?.name || "User";
   const userEmail = user?.email || "";
   const userImage = user?.image || "";
+
+  // Fetch current user's borrow records
+  useEffect(() => {
+    if (!userEmail) {
+      setBorrowCount(0);
+      return;
+    }
+
+    let isMounted = true;
+
+    const fetchBorrowCount = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
+        if (!apiUrl) {
+          throw new Error("NEXT_PUBLIC_SERVER_BASE_URL is not configured");
+        }
+
+        const response = await fetch(
+          `${apiUrl}/my-borrows/${encodeURIComponent(userEmail)}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch borrowed books");
+        }
+
+        const borrows = await response.json();
+
+        if (isMounted) {
+          setBorrowCount(Array.isArray(borrows) ? borrows.length : 0);
+        }
+      } catch (error) {
+        console.error("Fetch borrow count error:", error);
+
+        if (isMounted) {
+          setBorrowCount(0);
+        }
+      }
+    };
+
+    fetchBorrowCount();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userEmail]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -96,6 +145,7 @@ export default function Navbar() {
     try {
       await authClient.signOut();
 
+      setBorrowCount(0);
       setMobileMenuOpen(false);
       window.location.replace("/");
     } catch (error) {
@@ -160,10 +210,8 @@ export default function Navbar() {
                   aria-label="Open user profile menu"
                 >
                   <Avatar className="h-7 w-7 border border-white/40">
-                    <AvatarImage
-                      src={userImage || undefined}
-                      alt={userName}
-                    />
+                    <AvatarImage src={userImage || undefined} alt={userName} />
+
                     <AvatarFallback className="bg-white text-xs font-semibold text-[#086781]">
                       {userName.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
@@ -181,6 +229,7 @@ export default function Navbar() {
                     <p className="truncate text-sm font-semibold">
                       {userName}
                     </p>
+
                     <p className="truncate text-xs font-normal text-slate-500">
                       {userEmail}
                     </p>
@@ -277,13 +326,13 @@ export default function Navbar() {
             {/* My Borrows */}
             <Link
               href={isLoggedIn ? "/dashboard/my-borrows" : "/sign-in"}
-              aria-label="My Borrows"
+              aria-label={`My Borrows: ${borrowCount} books`}
               className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full border border-slate-300 text-slate-800 transition hover:border-[#086781] hover:text-[#086781]"
             >
               <ShoppingCart className="h-5 w-5" />
 
               <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#086781] px-1 text-[10px] font-semibold text-white">
-                0
+                {borrowCount}
               </span>
             </Link>
 
@@ -306,6 +355,7 @@ export default function Navbar() {
                       <p className="truncate text-sm font-semibold">
                         {userName}
                       </p>
+
                       <p className="truncate text-xs font-normal text-slate-500">
                         {userEmail}
                       </p>
@@ -336,10 +386,7 @@ export default function Navbar() {
             )}
 
             {/* Mobile Menu */}
-            <Sheet
-              open={mobileMenuOpen}
-              onOpenChange={setMobileMenuOpen}
-            >
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger
                 className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-slate-300 text-slate-800 transition hover:border-[#086781] hover:bg-white hover:text-[#086781]"
                 aria-label="Open menu"
@@ -364,12 +411,10 @@ export default function Navbar() {
 
                 {/* Mobile Profile Info */}
                 {isLoggedIn && (
-                  <div className="my-5 mx-3 flex items-center gap-3 rounded-lg bg-[#eaf5f7] p-3">
+                  <div className="mx-3 my-5 flex items-center gap-3 rounded-lg bg-[#eaf5f7] p-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage
-                        src={userImage || undefined}
-                        alt={userName}
-                      />
+                      <AvatarImage src={userImage || undefined} alt={userName} />
+
                       <AvatarFallback className="bg-[#086781] text-white">
                         {userName.charAt(0).toUpperCase()}
                       </AvatarFallback>
@@ -379,6 +424,7 @@ export default function Navbar() {
                       <p className="truncate text-sm font-semibold">
                         {userName}
                       </p>
+
                       <p className="truncate text-xs text-slate-500">
                         {userEmail}
                       </p>
@@ -387,13 +433,11 @@ export default function Navbar() {
                 )}
 
                 {/* Mobile Search */}
-                <form onSubmit={handleSearch} className="my-5 mx-3">
+                <form onSubmit={handleSearch} className="mx-3 my-5">
                   <div className="flex h-11 overflow-hidden rounded-full border border-slate-300">
                     <input
                       value={searchValue}
-                      onChange={(event) =>
-                        setSearchValue(event.target.value)
-                      }
+                      onChange={(event) => setSearchValue(event.target.value)}
                       placeholder="Search books"
                       aria-label="Search books"
                       className="min-w-0 flex-1 bg-transparent px-4 text-sm outline-none"
@@ -411,7 +455,7 @@ export default function Navbar() {
                 </form>
 
                 {/* Mobile Navigation Links */}
-                <nav className="flex flex-col mx-3">
+                <nav className="mx-3 flex flex-col">
                   {[
                     ...publicLinks,
                     ...(isLoggedIn ? privateLinks : []),
@@ -466,9 +510,9 @@ export default function Navbar() {
                   <Button
                     onClick={handleLogout}
                     variant="outline"
-                    className="mt-6 mx-3 border-red-200 text-red-600 hover:bg-red-50"
+                    className="mx-3 mt-6 border-red-200 text-red-600 hover:bg-red-50"
                   >
-                    <LogOut className="mr-2 h-4 w-3" />
+                    <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </Button>
                 )}

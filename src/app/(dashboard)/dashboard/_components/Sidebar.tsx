@@ -42,11 +42,11 @@ const sidebarLinks = [
     href: "/dashboard/my-profile",
     icon: User,
   },
-  {
-    title: "Logout",
-    href: "/dashboard/logout",
-    icon: LogOutIcon,
-  },
+  // {
+  //   title: "Logout",
+  //   href: "/dashboard/logout",
+  //   icon: LogOutIcon,
+  // },
 ];
 
 export default function Sidebar() {

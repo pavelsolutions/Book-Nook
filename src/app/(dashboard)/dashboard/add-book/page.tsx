@@ -16,8 +16,8 @@ import {
   UserRound,
   Mail,
 } from "lucide-react";
-import toast from "react-hot-toast";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast } from "sonner";
 
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 

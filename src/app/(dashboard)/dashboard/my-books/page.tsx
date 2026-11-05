@@ -21,7 +21,7 @@ import {
   CheckCircle2,
   BookMarked,
 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:5000";
