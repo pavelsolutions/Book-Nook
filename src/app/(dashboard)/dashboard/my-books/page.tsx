@@ -532,7 +532,7 @@ export default function MyBooksPage() {
 
             {!searchTerm && (
               <button
-                onClick={() => router.push("/add-book")}
+                onClick={() => router.push("/dashboard/add-book")}
                 className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#063047] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#0B4962]"
               >
                 <Plus size={18} />

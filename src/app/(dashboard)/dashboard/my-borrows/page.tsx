@@ -12,6 +12,8 @@ import {
   RotateCcw,
   LibraryBig,
   ArrowLeft,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -36,6 +38,7 @@ export default function MyBorrowsPage() {
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [loading, setLoading] = useState(true);
   const [returningId, setReturningId] = useState<string | null>(null);
+  const [returnConfirm, setReturnConfirm] = useState<Borrow | null>(null);
 
   const email = session?.user?.email;
 
@@ -85,12 +88,6 @@ export default function MyBorrowsPage() {
       return;
     }
 
-    const confirmed = window.confirm(
-      `Are you sure you want to return "${borrow.bookTitle}"?`
-    );
-
-    if (!confirmed) return;
-
     try {
       setReturningId(borrow._id);
 
@@ -120,6 +117,7 @@ export default function MyBorrowsPage() {
         )
       );
 
+      setReturnConfirm(null);
       toast.success("Book returned successfully");
     } catch (error) {
       toast.error(
@@ -183,6 +181,7 @@ export default function MyBorrowsPage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#16A6B8]">
                   Your Library
                 </p>
+
                 <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#063047] sm:text-4xl">
                   My Borrows
                 </h1>
@@ -209,6 +208,7 @@ export default function MyBorrowsPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Total Borrowed
                 </p>
+
                 <p className="mt-2 text-3xl font-bold text-[#063047]">
                   {borrows.length}
                 </p>
@@ -226,6 +226,7 @@ export default function MyBorrowsPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Currently Reading
                 </p>
+
                 <p className="mt-2 text-3xl font-bold text-[#063047]">
                   {borrowedCount}
                 </p>
@@ -243,6 +244,7 @@ export default function MyBorrowsPage() {
                 <p className="text-sm font-medium text-gray-500">
                   Successfully Returned
                 </p>
+
                 <p className="mt-2 text-3xl font-bold text-[#063047]">
                   {returnedCount}
                 </p>
@@ -262,6 +264,7 @@ export default function MyBorrowsPage() {
               <h2 className="text-lg font-bold text-[#063047]">
                 Borrowing History
               </h2>
+
               <p className="mt-1 text-sm text-gray-500">
                 Your borrowed books and their current status
               </p>
@@ -347,6 +350,7 @@ export default function MyBorrowsPage() {
                               <p className="max-w-[240px] font-semibold text-[#063047]">
                                 {borrow.bookTitle}
                               </p>
+
                               <p className="mt-1 text-xs text-gray-400">
                                 Book ID: {borrow.bookId}
                               </p>
@@ -381,7 +385,7 @@ export default function MyBorrowsPage() {
                         <td className="px-6 py-4">
                           {borrow.status === "borrowed" ? (
                             <button
-                              onClick={() => handleReturn(borrow)}
+                              onClick={() => setReturnConfirm(borrow)}
                               disabled={returningId === borrow._id}
                               className="inline-flex items-center gap-2 rounded-xl border border-rose-100 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
                             >
@@ -443,6 +447,7 @@ export default function MyBorrowsPage() {
                           <CalendarDays size={15} />
                           Borrow Date
                         </span>
+
                         <span className="text-right font-medium text-[#063047]">
                           {borrow.borrowDate}
                         </span>
@@ -453,6 +458,7 @@ export default function MyBorrowsPage() {
                           <CalendarDays size={15} />
                           Return Date
                         </span>
+
                         <span className="text-right font-medium text-[#063047]">
                           {borrow.returnDate}
                         </span>
@@ -461,7 +467,7 @@ export default function MyBorrowsPage() {
 
                     {borrow.status === "borrowed" ? (
                       <button
-                        onClick={() => handleReturn(borrow)}
+                        onClick={() => setReturnConfirm(borrow)}
                         disabled={returningId === borrow._id}
                         className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-600 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
                       >
@@ -487,6 +493,109 @@ export default function MyBorrowsPage() {
           Happy reading! Keep exploring your library.
         </p>
       </div>
+
+      {/* Return Confirmation Modal */}
+      {returnConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#063047]/50 px-4 py-6 backdrop-blur-sm"
+          onClick={() => {
+            if (!returningId) setReturnConfirm(null);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="return-modal-title"
+            className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between border-b border-gray-100 px-6 py-5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-500">
+                  <AlertTriangle size={23} />
+                </div>
+
+                <div>
+                  <h2
+                    id="return-modal-title"
+                    className="text-xl font-bold text-[#063047]"
+                  >
+                    Return this book?
+                  </h2>
+
+                  <p className="mt-1 text-sm text-gray-500">
+                    Please confirm your action
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setReturnConfirm(null)}
+                disabled={!!returningId}
+                aria-label="Close modal"
+                className="rounded-full p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 disabled:opacity-50"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="px-6 py-6">
+              <p className="text-sm leading-6 text-gray-600">
+                Are you sure you want to return this book?
+              </p>
+
+              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#D9EEF1] bg-[#F7FAFB] p-4">
+                {returnConfirm.bookImage ? (
+                  <Image
+                    src={returnConfirm.bookImage}
+                    alt={returnConfirm.bookTitle}
+                    width={48}
+                    height={64}
+                    unoptimized
+                    className="h-16 w-12 shrink-0 rounded-lg object-cover"
+                  />
+                ) : (
+                  <div className="flex h-16 w-12 shrink-0 items-center justify-center rounded-lg bg-[#E5F6F8] text-[#16A6B8]">
+                    <BookOpen size={20} />
+                  </div>
+                )}
+
+                <div className="min-w-0">
+                  <p className="font-semibold text-[#063047]">
+                    {returnConfirm.bookTitle}
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-500">
+                    Book ID: {returnConfirm.bookId}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setReturnConfirm(null)}
+                  disabled={!!returningId}
+                  className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleReturn(returnConfirm)}
+                  disabled={!!returningId}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <RotateCcw size={16} />
+                  {returningId ? "Returning..." : "Yes, Return Book"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -511,6 +620,7 @@ function StatusBadge({
           isReturned ? "bg-green-500" : "bg-blue-500"
         }`}
       />
+
       {isReturned ? "Returned" : "Borrowed"}
     </span>
   );

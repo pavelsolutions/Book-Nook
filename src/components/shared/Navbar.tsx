@@ -45,6 +45,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { FaRegistered } from "react-icons/fa";
 
 const publicLinks = [
   { name: "Home", href: "/" },
@@ -77,50 +78,55 @@ export default function Navbar() {
   const userImage = user?.image || "";
 
   // Fetch current user's borrow records
-  useEffect(() => {
-    if (!userEmail) {
-      setBorrowCount(0);
-      return;
-    }
+ useEffect(() => {
+  if (!userEmail) {
+    setBorrowCount(0);
+    return;
+  }
 
-    let isMounted = true;
+  let isMounted = true;
 
-    const fetchBorrowCount = async () => {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+  const fetchBorrowCount = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
-        if (!apiUrl) {
-          throw new Error("NEXT_PUBLIC_SERVER_BASE_URL is not configured");
-        }
-
-        const response = await fetch(
-          `${apiUrl}/my-borrows/${encodeURIComponent(userEmail)}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch borrowed books");
-        }
-
-        const borrows = await response.json();
-
-        if (isMounted) {
-          setBorrowCount(Array.isArray(borrows) ? borrows.length : 0);
-        }
-      } catch (error) {
-        console.error("Fetch borrow count error:", error);
-
-        if (isMounted) {
-          setBorrowCount(0);
-        }
+      if (!apiUrl) {
+        throw new Error("NEXT_PUBLIC_SERVER_BASE_URL is not configured");
       }
-    };
 
-    fetchBorrowCount();
+      const response = await fetch(
+        `${apiUrl}/my-borrows/${encodeURIComponent(userEmail)}`
+      );
 
-    return () => {
-      isMounted = false;
-    };
-  }, [userEmail]);
+      if (!response.ok) {
+        throw new Error("Failed to fetch borrowed books");
+      }
+
+      const borrows = await response.json();
+
+      if (isMounted) {
+        setBorrowCount(Array.isArray(borrows) ? borrows.length : 0);
+      }
+    } catch (error) {
+      console.error("Fetch borrow count error:", error);
+
+      if (isMounted) {
+        setBorrowCount(0);
+      }
+    }
+  };
+
+  // Load count when Navbar mounts or user changes
+  fetchBorrowCount();
+
+  // Refresh count after a successful borrow
+  window.addEventListener("borrow-updated", fetchBorrowCount);
+
+  return () => {
+    isMounted = false;
+    window.removeEventListener("borrow-updated", fetchBorrowCount);
+  };
+}, [userEmail]);
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
@@ -194,6 +200,7 @@ export default function Navbar() {
           {/* Top Right Actions */}
           <div className="ml-auto flex items-center gap-5">
             {!isPending && !isLoggedIn && (
+              <>
               <Link
                 href="/sign-in"
                 className="flex items-center gap-2 text-sm transition hover:text-white/75"
@@ -201,6 +208,14 @@ export default function Navbar() {
                 <UserRound className="h-4 w-4" />
                 <span>Login</span>
               </Link>
+              <Link
+                href="/sign-up"
+                className="flex items-center gap-2 text-sm transition hover:text-white/75"
+              >
+                <FaRegistered className="h-4 w-4" />
+                <span>Register</span>
+              </Link>
+              </>
             )}
 
             {!isPending && isLoggedIn && (

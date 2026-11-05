@@ -218,7 +218,7 @@ export default function Banner() {
                         href="/books"
                         className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#0B6F83] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition duration-300 hover:-translate-y-1 hover:bg-[#102A43] sm:h-14 sm:px-8 sm:text-base"
                       >
-                        Explore Books
+                        Browse Books
 
                         <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                       </Link>

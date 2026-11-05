@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About | BookNook",
+  title: "About",
   description: "Explore the BookNook library and find your next favorite read.",
 };
 

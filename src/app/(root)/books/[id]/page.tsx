@@ -14,8 +14,9 @@ import {
   LibraryBig,
   CheckCircle2,
 } from "lucide-react";
-import toast from "react-hot-toast";
+
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
+import { toast } from "sonner";
 
 const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -89,22 +90,80 @@ export default function BookDetailsPage() {
   }, [bookId]);
 
   // Open borrow modal
-  const handleOpenBorrowModal = () => {
-    if (isPending) return;
+  // const handleOpenBorrowModal = () => {
+  //   if (isPending) return;
 
-    if (!user?.email) {
-      toast.error("Please login to borrow this book");
-      router.push("/login");
-      return;
+  //   if (!user?.email) {
+  //     toast.error("Please login to borrow this book");
+  //     router.push("/sign-in");
+  //     return;
+  //   }
+
+  //   if (!book || book.availableCopies <= 0) {
+  //     toast.error("This book is not available");
+  //     return;
+  //   }
+
+  //   setShowBorrowModal(true);
+  // };
+
+  const handleOpenBorrowModal = async () => {
+  if (isPending) return;
+
+  if (!user?.email) {
+    toast.error("Please login to borrow this book");
+    router.push("/sign-in");
+    return;
+  }
+
+  if (!book || book.availableCopies <= 0) {
+    toast.error("This book is not available");
+    return;
+  }
+
+  try {
+    const token = await getTokenFromClient();
+
+    const response = await fetch(
+      `${SERVER_URL}/my-borrows/${encodeURIComponent(user.email)}`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not check your borrowing history");
     }
 
-    if (!book || book.availableCopies <= 0) {
-      toast.error("This book is not available");
+    const borrowList = await response.json();
+
+    const alreadyBorrowed = borrowList.some(
+      (borrow: {
+        bookId?: string;
+        status?: string;
+      }) =>
+        borrow.bookId === book._id &&
+        ["borrowed", "active", "pending"].includes(
+          borrow.status?.toLowerCase() ?? ""
+        )
+    );
+
+    if (alreadyBorrowed) {
+      toast.error("Already borrowed! You have already borrowed this book.");
       return;
     }
 
     setShowBorrowModal(true);
-  };
+  } catch (error) {
+    toast.error(
+      error instanceof Error
+        ? error.message
+        : "Something went wrong"
+    );
+  }
+};
 
   // Confirm borrowing
   const handleBorrow = async (e: React.FormEvent<HTMLFormElement>) => {
