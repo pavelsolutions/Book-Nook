@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 const SERVER_URL =
-  process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 type Book = {
   _id: string;

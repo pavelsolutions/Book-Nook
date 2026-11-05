@@ -15,16 +15,12 @@ import {
   Search,
   Plus,
   AlertTriangle,
-  Library,
   Copy,
-  ArrowUpRight,
   CheckCircle2,
   BookMarked,
 } from "lucide-react";
 import { toast } from "sonner";
 
-const SERVER_URL =
-  process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:5000";
 
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
@@ -105,7 +101,7 @@ export default function MyBooksPage() {
         setLoading(true);
 
         const response = await fetch(
-          `${SERVER_URL}/my-books/${encodeURIComponent(email)}`,
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/my-books/${encodeURIComponent(email)}`,
           { cache: "no-store" }
         );
 
@@ -223,7 +219,7 @@ export default function MyBooksPage() {
       setEditLoading(true);
 
       const response = await fetch(
-        `${SERVER_URL}/books/${selectedBook._id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books/${selectedBook._id}`,
         {
           method: "PATCH",
           headers: {
@@ -273,7 +269,7 @@ export default function MyBooksPage() {
       setDeleteLoading(true);
 
       const response = await fetch(
-        `${SERVER_URL}/books/${deleteBook._id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books/${deleteBook._id}`,
         {
           method: "DELETE",
         }

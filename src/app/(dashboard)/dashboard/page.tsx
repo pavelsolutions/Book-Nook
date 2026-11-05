@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen,
@@ -11,78 +13,181 @@ import {
   TrendingUp,
   CalendarDays,
   Sparkles,
-  LibraryBig,
   ChevronRight,
 } from "lucide-react";
 
-const stats = [
-  {
-    title: "Total Books",
-    value: "1,248",
-    change: "+12.5%",
-    description: "Compared to last month",
-    icon: BookOpen,
-    iconBg: "bg-[#E6F5F7]",
-    iconColor: "text-[#0B6F83]",
-  },
-  {
-    title: "My Books",
-    value: "24",
-    change: "+4",
-    description: "Books in your collection",
-    icon: BookMarked,
-    iconBg: "bg-[#EAF1F8]",
-    iconColor: "text-[#426A91]",
-  },
-  {
-    title: "Borrowed Books",
-    value: "08",
-    change: "2 due soon",
-    description: "Currently borrowed",
-    icon: Users,
-    iconBg: "bg-[#E8F5EF]",
-    iconColor: "text-[#368466]",
-  },
-  {
-    title: "Pending Returns",
-    value: "03",
-    change: "View details",
-    description: "Books to return",
-    icon: Clock,
-    iconBg: "bg-[#FFF3E8]",
-    iconColor: "text-[#D88745]",
-  },
-];
+import { useSession } from "@/lib/auth-client";
 
-const recentBooks = [
-  {
-    title: "Atomic Habits",
-    author: "James Clear",
-    status: "Reading",
-    date: "Today",
-    iconBg: "bg-[#FFF3E0]",
-    iconColor: "text-[#C78A36]",
-  },
-  {
-    title: "The Psychology of Money",
-    author: "Morgan Housel",
-    status: "Borrowed",
-    date: "Yesterday",
-    iconBg: "bg-[#E8F5EF]",
-    iconColor: "text-[#368466]",
-  },
-  {
-    title: "Deep Work",
-    author: "Cal Newport",
-    status: "Completed",
-    date: "Oct 28, 2026",
-    iconBg: "bg-[#E6F5F7]",
-    iconColor: "text-[#0B6F83]",
-  },
-];
+type Book = {
+  _id: string;
+  title: string;
+  author?: string;
+  userEmail?: string;
+  addedBy?: string;
+  createdAt?: string;
+};
+
+type Borrow = {
+  _id: string;
+  bookTitle?: string;
+  title?: string;
+  author?: string;
+  userEmail?: string;
+  status?: string;
+  createdAt?: string;
+  dueDate?: string;
+  returnDate?: string;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
+
+const isBorrowed = (borrow: Borrow) =>
+  ["borrowed", "active", "pending"].includes(
+    borrow.status?.toLowerCase() ?? ""
+  );
+
+const isPendingReturn = (borrow: Borrow) => {
+  if (!isBorrowed(borrow)) return false;
+
+  if (!borrow.dueDate) return true;
+
+  return new Date(borrow.dueDate).getTime() <= Date.now();
+};
+
+const formatDate = (date?: string) => {
+  if (!date) return "Recently";
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) return "Recently";
+
+  return parsedDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { data: session, isPending: sessionLoading } = useSession();
+
+  const userEmail = session?.user?.email ?? "";
+
+  const [books, setBooks] = useState<Book[]>([]);
+  const [borrows, setBorrows] = useState<Borrow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (sessionLoading) return;
+
+    if (!userEmail) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const [booksResponse, borrowsResponse] = await Promise.all([
+          fetch(`${API_URL}/books`),
+          fetch(
+            `${API_URL}/my-borrows/${encodeURIComponent(userEmail)}`
+          ),
+        ]);
+
+        if (!booksResponse.ok) {
+          throw new Error("Could not load books.");
+        }
+
+        if (!borrowsResponse.ok) {
+          throw new Error("Could not load borrowed books.");
+        }
+
+        const booksData: Book[] = await booksResponse.json();
+        const borrowsData: Borrow[] = await borrowsResponse.json();
+
+        setBooks(Array.isArray(booksData) ? booksData : []);
+        setBorrows(Array.isArray(borrowsData) ? borrowsData : []);
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+        setError("Unable to load dashboard data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [userEmail, sessionLoading]);
+
+  const myBooks = useMemo(() => {
+    return books.filter(
+      (book) =>
+        book.userEmail === userEmail || book.addedBy === userEmail
+    );
+  }, [books, userEmail]);
+
+  const activeBorrows = useMemo(
+    () => borrows.filter(isBorrowed),
+    [borrows]
+  );
+
+  const pendingReturns = useMemo(
+    () => borrows.filter(isPendingReturn),
+    [borrows]
+  );
+
+  const recentActivity = useMemo(() => {
+    return [...borrows]
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt ?? 0).getTime() -
+          new Date(a.createdAt ?? 0).getTime()
+      )
+      .slice(0, 3);
+  }, [borrows]);
+
+  const stats = [
+    {
+      title: "Total Books",
+      value: books.length.toLocaleString(),
+      change: "Library collection",
+      description: "Books available in the library",
+      icon: BookOpen,
+      iconBg: "bg-[#E6F5F7]",
+      iconColor: "text-[#0B6F83]",
+    },
+    {
+      title: "My Books",
+      value: myBooks.length.toString().padStart(2, "0"),
+      change: "My collection",
+      description: "Books added by you",
+      icon: BookMarked,
+      iconBg: "bg-[#EAF1F8]",
+      iconColor: "text-[#426A91]",
+    },
+    {
+      title: "Borrowed Books",
+      value: activeBorrows.length.toString().padStart(2, "0"),
+      change: "Currently active",
+      description: "Books currently borrowed",
+      icon: Users,
+      iconBg: "bg-[#E8F5EF]",
+      iconColor: "text-[#368466]",
+    },
+    {
+      title: "Pending Returns",
+      value: pendingReturns.length.toString().padStart(2, "0"),
+      change: "Due or overdue",
+      description: "Books to return",
+      icon: Clock,
+      iconBg: "bg-[#FFF3E8]",
+      iconColor: "text-[#D88745]",
+    },
+  ];
 
   const quickActions = [
     {
@@ -111,6 +216,40 @@ export default function DashboardPage() {
     },
   ];
 
+  if (sessionLoading || loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F4F8FA]">
+        <div className="text-center">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-[#D5E9EC] border-t-[#0B6F83]" />
+          <p className="mt-4 text-sm text-[#718096]">
+            Loading your dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userEmail) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F4F8FA] px-4">
+        <div className="rounded-2xl border border-[#E1EAF0] bg-white p-8 text-center shadow-sm">
+          <h2 className="text-xl font-bold text-[#102A43]">
+            Please sign in
+          </h2>
+          <p className="mt-2 text-sm text-[#718096]">
+            Sign in to view your personal dashboard.
+          </p>
+          <button
+            onClick={() => router.push("/login")}
+            className="mt-5 rounded-xl bg-[#0B6F83] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#07576B]"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F8FA] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
@@ -123,7 +262,7 @@ export default function DashboardPage() {
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight text-[#102A43] sm:text-3xl">
-              Welcome back, Reader!
+              Welcome back, {session?.user?.name || "Reader"}!
               <span className="ml-2">👋</span>
             </h1>
 
@@ -140,6 +279,13 @@ export default function DashboardPage() {
             Add New Book
           </button>
         </section>
+
+        {/* Error Message */}
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            {error}
+          </div>
+        )}
 
         {/* Stats */}
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -190,12 +336,12 @@ export default function DashboardPage() {
                 </h2>
 
                 <p className="mt-1 text-sm text-[#718096]">
-                  Your latest reading activities
+                  Your latest borrowing activities
                 </p>
               </div>
 
               <button
-                onClick={() => router.push("/dashboard/my-books")}
+                onClick={() => router.push("/my-borrows")}
                 className="flex shrink-0 items-center gap-1 text-sm font-semibold text-[#0B6F83] transition hover:text-[#07576B]"
               >
                 View all
@@ -204,64 +350,72 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-3">
-              {recentBooks.map((book) => (
-                <div
-                  key={book.title}
-                  className="flex items-center gap-4 rounded-xl border border-[#EDF2F5] p-3 transition hover:border-[#CDE5E9] hover:bg-[#F8FBFC]"
-                >
-                  <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${book.iconBg} ${book.iconColor}`}
-                  >
-                    <BookOpen size={22} strokeWidth={1.8} />
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-semibold text-[#263B50]">
-                      {book.title}
-                    </h3>
-
-                    <p className="mt-1 text-xs text-[#718096]">
-                      {book.author}
-                    </p>
-
-                    <div className="mt-2 flex items-center gap-2 sm:hidden">
-                      <span
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
-                          book.status === "Completed"
-                            ? "bg-[#EAF5EF] text-[#368466]"
-                            : book.status === "Borrowed"
-                              ? "bg-[#EAF6F7] text-[#0B6F83]"
-                              : "bg-[#FFF3E8] text-[#D88745]"
-                        }`}
-                      >
-                        {book.status}
-                      </span>
-
-                      <span className="text-[11px] text-[#94A3B8]">
-                        {book.date}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="hidden text-right sm:block">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        book.status === "Completed"
-                          ? "bg-[#EAF5EF] text-[#368466]"
-                          : book.status === "Borrowed"
-                            ? "bg-[#EAF6F7] text-[#0B6F83]"
-                            : "bg-[#FFF3E8] text-[#D88745]"
-                      }`}
-                    >
-                      {book.status}
-                    </span>
-
-                    <p className="mt-2 text-xs text-[#94A3B8]">
-                      {book.date}
-                    </p>
-                  </div>
+              {recentActivity.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-[#D9E6EC] py-10 text-center">
+                  <BookOpen className="mx-auto text-[#94A3B8]" size={28} />
+                  <p className="mt-3 text-sm font-medium text-[#263B50]">
+                    No recent activity
+                  </p>
+                  <p className="mt-1 text-xs text-[#718096]">
+                    Your borrowed books will appear here.
+                  </p>
                 </div>
-              ))}
+              ) : (
+                recentActivity.map((borrow) => {
+                  const status = borrow.status ?? "Borrowed";
+                  const title =
+                    borrow.bookTitle || borrow.title || "Untitled book";
+
+                  const statusClass = isBorrowed(borrow)
+                    ? "bg-[#EAF6F7] text-[#0B6F83]"
+                    : "bg-[#EAF5EF] text-[#368466]";
+
+                  return (
+                    <div
+                      key={borrow._id}
+                      className="flex items-center gap-4 rounded-xl border border-[#EDF2F5] p-3 transition hover:border-[#CDE5E9] hover:bg-[#F8FBFC]"
+                    >
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#E6F5F7] text-[#0B6F83]">
+                        <BookOpen size={22} strokeWidth={1.8} />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-sm font-semibold text-[#263B50]">
+                          {title}
+                        </h3>
+
+                        <p className="mt-1 text-xs text-[#718096]">
+                          {borrow.author || "BookNook Library"}
+                        </p>
+
+                        <div className="mt-2 flex items-center gap-2 sm:hidden">
+                          <span
+                            className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${statusClass}`}
+                          >
+                            {status}
+                          </span>
+
+                          <span className="text-[11px] text-[#94A3B8]">
+                            {formatDate(borrow.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="hidden text-right sm:block">
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-medium ${statusClass}`}
+                        >
+                          {status}
+                        </span>
+
+                        <p className="mt-2 text-xs text-[#94A3B8]">
+                          {formatDate(borrow.createdAt)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
 
@@ -320,7 +474,6 @@ export default function DashboardPage() {
             <div>
               <div className="mb-3 flex items-center gap-2 text-[#C9F1F3]">
                 <TrendingUp size={18} />
-
                 <span className="text-sm font-medium">
                   Your Reading Insight
                 </span>
@@ -331,8 +484,9 @@ export default function DashboardPage() {
               </h2>
 
               <p className="mt-2 max-w-xl text-sm leading-6 text-white/75">
-                You have been making great progress. Read a little every
-                day and keep building your knowledge.
+                You currently have {activeBorrows.length} active borrowed{" "}
+                {activeBorrows.length === 1 ? "book" : "books"}. Read a little
+                every day and keep building your knowledge.
               </p>
             </div>
 

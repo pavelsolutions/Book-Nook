@@ -159,7 +159,7 @@ export default function MyProfilePage() {
               Please login to view and edit your profile.
             </p>
 
-            <Link href="/login">
+            <Link href="/sign-in">
               <Button className="mt-5 rounded-xl bg-[#0B6A80] text-white hover:bg-[#084F63]">
                 Go to Login
               </Button>

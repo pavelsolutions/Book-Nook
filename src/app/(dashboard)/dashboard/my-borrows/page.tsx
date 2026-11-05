@@ -15,8 +15,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-const SERVER_URL =
-  process.env.NEXT_PUBLIC_SERVER_BASE_URL || "http://localhost:5000";
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
 type Borrow = {
   _id: string;
