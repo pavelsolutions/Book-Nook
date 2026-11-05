@@ -1,145 +1,153 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, Sparkles } from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
+
+import { Card } from "@/components/ui/card";
 
 const categories = [
   {
     name: "Fiction",
-    subtitle: "Stories & Imagination",
-    icon: "📚",
-    bgColor: "bg-[#F4E7E5]",
-    iconBg: "bg-[#EBD3D0]",
-    accent: "#B66B63",
+    icon: "📖",
+    description: "Stories that spark imagination",
+    href: "/books?category=fiction",
+    bg: "bg-[#F0FDF4]",
+    border: "border-[#D1FAE5]",
+    iconBg: "bg-[#DCFCE7]",
+    text: "text-[#047857]",
   },
   {
     name: "Science",
-    subtitle: "Discover New Ideas",
     icon: "🔬",
-    bgColor: "bg-[#F2FBEA]",
-    iconBg: "bg-[#E2F1D4]",
-    accent: "#6B9B50",
+    description: "Explore the world of science",
+    href: "/books?category=science",
+    bg: "bg-[#FFFBEB]",
+    border: "border-[#FEF3C7]",
+    iconBg: "bg-[#FEF3C7]",
+    text: "text-[#B45309]",
   },
   {
     name: "History",
-    subtitle: "Explore the Past",
     icon: "🏛️",
-    bgColor: "bg-[#F1FAFC]",
-    iconBg: "bg-[#DCEFF3]",
-    accent: "#4C91A2",
+    description: "Discover stories from the past",
+    href: "/books?category=history",
+    bg: "bg-[#FFF7ED]",
+    border: "border-[#FFEDD5]",
+    iconBg: "bg-[#FFEDD5]",
+    text: "text-[#C2410C]",
   },
   {
     name: "Kids",
-    subtitle: "Books for Young Minds",
     icon: "🧸",
-    bgColor: "bg-[#F8F0FC]",
-    iconBg: "bg-[#EEDDF6]",
-    accent: "#A477B7",
+    description: "Fun reads for little readers",
+    href: "/books?category=kids",
+    bg: "bg-[#ECFEFF]",
+    border: "border-[#CFFAFE]",
+    iconBg: "bg-[#CFFAFE]",
+    text: "text-[#0E7490]",
+  },
+  {
+    name: "Romance",
+    icon: "💗",
+    description: "Heartwarming love stories",
+    href: "/books?category=romance",
+    bg: "bg-[#FFF1F2]",
+    border: "border-[#FFE4E6]",
+    iconBg: "bg-[#FFE4E6]",
+    text: "text-[#BE123C]",
   },
   {
     name: "Others",
-    subtitle: "More to Explore",
     icon: "✨",
-    bgColor: "bg-[#F8F2E9]",
-    iconBg: "bg-[#F0E3CF]",
-    accent: "#B28B50",
+    description: "Find your next favorite read",
+    href: "/books?category=others",
+    bg: "bg-[#EFF6FF]",
+    border: "border-[#DBEAFE]",
+    iconBg: "bg-[#DBEAFE]",
+    text: "text-[#1D4ED8]",
   },
 ];
 
 export default function Categories() {
   return (
-    <section className="relative overflow-hidden bg-[#F4F8FA] py-12 sm:py-16 lg:py-20">
-      {/* Background Decoration */}
-      <div className="pointer-events-none absolute -left-24 top-20 h-64 w-64 rounded-full bg-[#20B8C4]/5 blur-3xl" />
-
-      <div className="pointer-events-none absolute -right-24 bottom-10 h-64 w-64 rounded-full bg-[#0B6F83]/5 blur-3xl" />
-
-      {/* Content Container */}
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
-        <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D5EBEE] bg-white px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#0B6F83]">
-              <Sparkles size={14} />
-              Explore Our Library
-            </div>
-
-            <h2 className="text-3xl font-bold tracking-tight text-[#102A43] sm:text-4xl lg:text-[42px]">
-              Browse by{" "}
-              <span className="text-[#0B6F83]">Category</span>
-            </h2>
-
-            <p className="mt-3 max-w-xl text-sm leading-7 text-[#718096] sm:text-base">
-              Discover your next favorite book from our carefully
-              organized collections. There is a story for everyone.
-            </p>
+    <section className="bg-[#F4F8FA] px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        {/* Section heading */}
+        <div className="mb-10 text-center">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#E5F6F8] px-4 py-2 text-sm font-medium text-[#0B6F83]">
+            <BookOpen size={16} />
+            <span>Explore our collection</span>
           </div>
 
-          <Link
-            href="/books"
-            className="group inline-flex w-fit items-center gap-2 rounded-xl border border-[#D5E5E9] bg-white px-4 py-3 text-sm font-semibold text-[#0B6F83] shadow-sm transition hover:border-[#0B6F83] hover:bg-[#EAF6F7]"
-          >
-            View all books
+          <h2 className="text-3xl font-bold tracking-tight text-[#102A43] sm:text-4xl">
+            Popular Categories
+          </h2>
 
-            <ArrowUpRight
-              size={17}
-              className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          </Link>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[#718096] sm:text-base">
+            Discover books from your favorite genres and find your next
+            unforgettable read.
+          </p>
         </div>
 
-        {/* Category Cards */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+        {/* Category cards */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {categories.map((category) => (
             <Link
               key={category.name}
-              href={`/books?category=${encodeURIComponent(category.name)}`}
-              className={`group relative flex min-h-[230px] flex-col overflow-hidden rounded-2xl border border-white/80 ${category.bgColor} p-5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-[#102A43]/8 sm:min-h-[250px] sm:p-6`}
+              href={category.href}
+              className="group block outline-none"
             >
-              {/* Decorative Circle */}
-              <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/35 transition-transform duration-500 group-hover:scale-150" />
+              <Card
+                className={`
+                  relative flex h-full min-h-[190px] flex-col items-center
+                  justify-center overflow-hidden rounded-2xl border
+                  ${category.bg} ${category.border}
+                  p-5 text-center shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-1.5 hover:shadow-lg
+                  focus-visible:ring-2 focus-visible:ring-[#0B6F83]
+                  focus-visible:ring-offset-2
+                `}
+              >
+                {/* Decorative circle */}
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/40 transition-transform duration-500 group-hover:scale-150" />
 
-              {/* Card Content */}
-              <div className="relative z-10 flex h-full flex-col">
-                {/* Category Icon */}
+                {/* Icon */}
                 <div
-                  className={`mb-6 flex h-[66px] w-[66px] items-center justify-center rounded-2xl ${category.iconBg} text-4xl shadow-sm transition-all duration-300 group-hover:rotate-3 group-hover:scale-110`}
+                  className={`
+                    relative mb-4 flex h-16 w-16 items-center
+                    justify-center rounded-2xl ${category.iconBg}
+                    text-3xl shadow-sm transition-transform duration-300
+                    group-hover:rotate-[-6deg] group-hover:scale-110
+                  `}
                 >
-                  {category.icon}
+                  <span aria-hidden="true">{category.icon}</span>
                 </div>
 
-                {/* Category Details */}
-                <div className="mt-auto">
-                  <h3 className="text-lg font-bold tracking-tight text-[#102A43] transition-colors duration-300 group-hover:text-[#0B6F83] sm:text-xl">
-                    {category.name}
-                  </h3>
+                {/* Category name */}
+                <h3
+                  className={`relative text-base font-bold ${category.text}`}
+                >
+                  {category.name}
+                </h3>
 
-                  <p className="mt-2 text-xs leading-5 text-[#718096] sm:text-sm">
-                    {category.subtitle}
-                  </p>
+                {/* Description */}
+                <p className="relative mt-2 text-xs leading-5 text-[#718096]">
+                  {category.description}
+                </p>
 
-                  {/* Explore Link */}
-                  <div className="mt-5 flex items-center justify-between">
-                    <span
-                      className="text-xs font-semibold"
-                      style={{ color: category.accent }}
-                    >
-                      Explore category
-                    </span>
-
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-[#0B6F83] transition-all duration-300 group-hover:bg-[#0B6F83] group-hover:text-white">
-                      <ArrowUpRight size={16} />
-                    </span>
-                  </div>
+                {/* Hover arrow */}
+                <div
+                  className={`
+                    absolute right-3 top-3 flex h-7 w-7 items-center
+                    justify-center rounded-full bg-white/70 ${category.text}
+                    opacity-0 transition-all duration-300
+                    group-hover:translate-x-0.5 group-hover:opacity-100
+                  `}
+                >
+                  <ArrowUpRight size={15} />
                 </div>
-              </div>
+              </Card>
             </Link>
           ))}
-        </div>
-
-        {/* Bottom Note */}
-        <div className="mt-8 flex items-center justify-center gap-2 text-center text-xs text-[#8A9AA8]">
-          <BookOpen size={15} className="text-[#0B6F83]" />
-
-          Find a book that inspires your next chapter.
         </div>
       </div>
     </section>

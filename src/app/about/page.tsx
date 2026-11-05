@@ -11,6 +11,10 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
 const features = [
   {
     icon: BookOpen,
@@ -51,17 +55,19 @@ const stats = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F4F8FA]">
-      {/* Hero */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-white via-[#F7FBFC] to-[#E5F6F8]">
         <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-[#20B8C4]/10 blur-3xl" />
+
         <div className="pointer-events-none absolute -bottom-32 -left-20 size-80 rounded-full bg-[#0B6F83]/5 blur-3xl" />
 
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-2 lg:px-8">
+          {/* Hero Content */}
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#20B8C4]/20 bg-[#E5F6F8] px-4 py-2 text-sm font-semibold text-[#0B6F83]">
-              <Sparkles size={15} />
+            <Badge className="border border-[#20B8C4]/20 bg-[#E5F6F8] px-4 py-2 text-sm text-[#0B6F83] hover:bg-[#E5F6F8]">
+              <Sparkles className="mr-2 size-4" />
               About BookNook
-            </span>
+            </Badge>
 
             <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-[#102A43] sm:text-5xl lg:text-6xl">
               A Modern Library for
@@ -77,118 +83,139 @@ export default function AboutPage() {
               enjoyable for everyone.
             </p>
 
+            {/* Hero Buttons */}
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/books"
-                className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#0B6F83] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition hover:-translate-y-1 hover:bg-[#102A43] sm:text-base"
+              <Button
+                className="group h-12 rounded-full border-0 bg-gradient-to-r from-[#0B6F83] to-[#20B8C4] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition-all duration-300 hover:-translate-y-1 hover:from-[#102A43] hover:to-[#0B6F83] hover:shadow-xl hover:shadow-[#0B6F83]/30 sm:h-14 sm:px-8 sm:text-base"
               >
-                Explore Books
-                <ArrowRight
-                  size={18}
-                  className="transition-transform group-hover:translate-x-1"
-                />
-              </Link>
+                <Link href="/books">
+                  Explore Books
+                  <ArrowRight className="ml-2 size-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </Button>
 
-              <Link
-                href="/add-book"
-                className="inline-flex h-12 items-center gap-2 rounded-full border border-[#0B6F83]/20 bg-white/80 px-7 text-sm font-semibold text-[#102A43] transition hover:border-[#0B6F83] hover:bg-[#E5F6F8] sm:text-base"
+              <Button
+                variant="outline"
+                className="group h-12 rounded-full border border-[#0B6F83]/25 bg-white px-7 text-sm font-bold text-[#102A43] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#0B6F83] hover:bg-[#E5F6F8] hover:shadow-md sm:h-14 sm:px-8 sm:text-base"
               >
-                Add a Book
-                <BookOpen size={17} />
-              </Link>
+                <Link href="/add-book">
+                  Add a Book
+                  <BookOpen className="ml-2 size-5 text-[#0B6F83] transition-transform duration-300 group-hover:rotate-6" />
+                </Link>
+              </Button>
             </div>
           </div>
 
-          {/* Book illustration */}
+          {/* Book Illustration */}
           <div className="relative mx-auto flex h-[300px] w-full max-w-[520px] items-center justify-center sm:h-[380px]">
             <div className="absolute size-64 rounded-full bg-[#20B8C4]/10 blur-2xl sm:size-80" />
 
             <div className="relative flex items-end justify-center gap-3">
-              <div className="relative h-52 w-24 -rotate-6 rounded-r-xl bg-[#0B6F83] shadow-xl sm:h-64 sm:w-32">
-                <div className="absolute left-0 top-0 h-full w-3 rounded-l-md bg-[#064B5B]" />
-                <div className="absolute inset-x-4 top-8 border-y border-white/30 py-5 text-center text-xs font-bold tracking-widest text-white">
-                  BOOK
-                </div>
-                <div className="absolute bottom-5 left-4 right-4 text-center text-[10px] font-semibold text-white/70">
-                  BOOKNOOK
-                </div>
-              </div>
+              {[
+                {
+                  name: "BOOK",
+                  color: "#0B6F83",
+                  spine: "#064B5B",
+                  height: "h-52 sm:h-64",
+                  rotation: "-rotate-6",
+                },
+                {
+                  name: "READ",
+                  color: "#20B8C4",
+                  spine: "#0B6F83",
+                  height: "h-60 sm:h-72",
+                  rotation: "rotate-2",
+                },
+                {
+                  name: "LEARN",
+                  color: "#102A43",
+                  spine: "#071B2C",
+                  height: "h-48 sm:h-60",
+                  rotation: "rotate-6",
+                },
+              ].map((book) => (
+                <div
+                  key={book.name}
+                  className={`relative w-24 rounded-r-xl shadow-xl sm:w-32 ${book.height} ${book.rotation}`}
+                  style={{ backgroundColor: book.color }}
+                >
+                  <div
+                    className="absolute left-0 top-0 h-full w-3 rounded-l-md"
+                    style={{ backgroundColor: book.spine }}
+                  />
 
-              <div className="relative h-60 w-28 rotate-2 rounded-r-xl bg-[#20B8C4] shadow-xl sm:h-72 sm:w-36">
-                <div className="absolute left-0 top-0 h-full w-3 rounded-l-md bg-[#0B6F83]" />
-                <div className="absolute inset-x-4 top-8 border-y border-white/30 py-5 text-center text-xs font-bold tracking-widest text-white">
-                  READ
-                </div>
-                <div className="absolute bottom-5 left-4 right-4 text-center text-[10px] font-semibold text-white/70">
-                  DISCOVER
-                </div>
-              </div>
+                  <div className="absolute inset-x-4 top-8 border-y border-white/30 py-5 text-center text-xs font-bold tracking-widest text-white">
+                    {book.name}
+                  </div>
 
-              <div className="relative h-48 w-24 rotate-6 rounded-r-xl bg-[#102A43] shadow-xl sm:h-60 sm:w-32">
-                <div className="absolute left-0 top-0 h-full w-3 rounded-l-md bg-[#071B2C]" />
-                <div className="absolute inset-x-4 top-8 border-y border-white/30 py-5 text-center text-xs font-bold tracking-widest text-white">
-                  LEARN
+                  <div className="absolute bottom-5 left-4 right-4 text-center text-[10px] font-semibold text-white/70">
+                    BOOKNOOK
+                  </div>
                 </div>
-                <div className="absolute bottom-5 left-4 right-4 text-center text-[10px] font-semibold text-white/70">
-                  GROW
-                </div>
-              </div>
+              ))}
             </div>
 
-            <div className="absolute bottom-3 right-2 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md sm:bottom-8 sm:right-4">
-              <div className="flex size-11 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#0B6F83]">
-                <BookOpen size={24} />
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">Welcome to</p>
-                <p className="text-sm font-bold text-[#102A43]">
-                  Your Library
-                </p>
-              </div>
-            </div>
+            {/* Floating Library Card */}
+            <Card className="absolute bottom-3 right-2 border-white/80 bg-white/95 shadow-xl backdrop-blur-md sm:bottom-8 sm:right-4">
+              <CardContent className="flex items-center gap-3 p-3">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#0B6F83]">
+                  <BookOpen className="size-6" />
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-500">Welcome to</p>
+                  <p className="text-sm font-bold text-[#102A43]">
+                    Your Library
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Features */}
+      {/* Features Section */}
       <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-5 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
           {features.map((feature) => {
             const Icon = feature.icon;
 
             return (
-              <div
+              <Card
                 key={feature.title}
-                className="group text-center"
+                className="group border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#20B8C4]/30 hover:shadow-lg"
               >
-                <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#0B6F83] transition duration-300 group-hover:-translate-y-1 group-hover:bg-[#0B6F83] group-hover:text-white">
-                  <Icon size={30} strokeWidth={1.8} />
-                </div>
+                <CardContent className="p-6 text-center">
+                  <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#0B6F83] transition-all duration-300 group-hover:bg-[#0B6F83] group-hover:text-white">
+                    <Icon className="size-8" strokeWidth={1.8} />
+                  </div>
 
-                <h2 className="mt-4 text-lg font-bold text-[#102A43]">
-                  {feature.title}
-                </h2>
+                  <h2 className="mt-4 text-lg font-bold text-[#102A43]">
+                    {feature.title}
+                  </h2>
 
-                <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-600">
-                  {feature.description}
-                </p>
-              </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Mission Section */}
       <section className="bg-[#F4F8FA] py-16 sm:py-20">
         <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          {/* Image-style panel */}
-          <div className="relative flex min-h-[320px] items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0B6F83] to-[#102A43] p-8 shadow-xl shadow-[#102A43]/10 sm:min-h-[420px]">
+          {/* Mission Illustration */}
+          <div className="relative flex min-h-[320px] items-center justify-center overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0B6F83] to-[#102A43] p-8 shadow-xl sm:min-h-[420px]">
             <div className="absolute -right-16 -top-16 size-64 rounded-full bg-[#20B8C4]/20 blur-3xl" />
+
             <div className="absolute -bottom-20 -left-16 size-64 rounded-full bg-white/10 blur-3xl" />
 
             <div className="relative flex flex-col items-center text-center">
-              <div className="flex size-24 items-center justify-center rounded-3xl border border-white/20 bg-white/10 text-[#B9F2F5] shadow-2xl backdrop-blur">
-                <BookOpen size={54} strokeWidth={1.4} />
+              <div className="flex size-24 items-center justify-center rounded-3xl border border-white/20 bg-white/10 text-[#B9F2F5] shadow-2xl">
+                <BookOpen className="size-14" strokeWidth={1.4} />
               </div>
 
               <p className="mt-6 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -201,17 +228,18 @@ export default function AboutPage() {
                 and a new possibility.
               </p>
 
-              <div className="mt-7 flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white/90">
-                <Heart size={15} className="text-[#20B8C4]" />
+              <Badge className="mt-7 border border-white/15 bg-white/10 px-4 py-2 text-white hover:bg-white/10">
+                <Heart className="mr-2 size-4 text-[#20B8C4]" />
                 Made for book lovers
-              </div>
+              </Badge>
             </div>
           </div>
 
+          {/* Mission Content */}
           <div>
-            <span className="inline-flex rounded-full bg-[#E5F6F8] px-4 py-2 text-sm font-semibold text-[#0B6F83]">
+            <Badge className="border-0 bg-[#E5F6F8] px-4 py-2 text-[#0B6F83] hover:bg-[#E5F6F8]">
               Our Mission
-            </span>
+            </Badge>
 
             <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#102A43] sm:text-4xl">
               Why We Built BookNook
@@ -227,10 +255,8 @@ export default function AboutPage() {
             <div className="mt-7 space-y-4">
               {missionPoints.map((point) => (
                 <div key={point} className="flex items-start gap-3">
-                  <CheckCircle2
-                    size={21}
-                    className="mt-0.5 shrink-0 text-[#20B8C4]"
-                  />
+                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#20B8C4]" />
+
                   <p className="text-sm leading-6 text-slate-700 sm:text-base">
                     {point}
                   </p>
@@ -241,7 +267,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Statistics */}
+      {/* Statistics Section */}
       <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-4 rounded-[28px] bg-gradient-to-br from-[#F4F8FA] to-[#E5F6F8] p-6 sm:gap-6 sm:p-8 lg:grid-cols-4">
           {stats.map((stat) => {
@@ -253,8 +279,7 @@ export default function AboutPage() {
                 className="flex flex-col items-center text-center"
               >
                 <Icon
-                  size={32}
-                  className="text-[#0B6F83]"
+                  className="size-8 text-[#0B6F83]"
                   strokeWidth={1.8}
                 />
 
@@ -271,11 +296,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA Section */}
       <section className="bg-[#F4F8FA] px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[28px] bg-[#102A43] px-6 py-12 text-center sm:px-12 sm:py-16">
+        <div className="mx-auto max-w-7xl rounded-[28px] bg-[#102A43] px-6 py-12 text-center sm:px-12 sm:py-16">
           <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-white/10 text-[#B9F2F5]">
-            <BookOpen size={28} />
+            <BookOpen className="size-7" />
           </div>
 
           <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -287,16 +312,14 @@ export default function AboutPage() {
             a part of your everyday life with BookNook.
           </p>
 
-          <Link
-            href="/books"
-            className="group mt-7 inline-flex h-12 items-center gap-3 rounded-full bg-[#20B8C4] px-7 text-sm font-bold text-[#102A43] transition hover:-translate-y-1 hover:bg-[#B9F2F5] sm:text-base"
+          <Button
+            className="group mt-7 h-12 rounded-full border-0 bg-gradient-to-r from-[#0B6F83] to-[#20B8C4] px-8 text-sm font-bold text-white shadow-lg shadow-[#20B8C4]/20 transition-all duration-300 hover:-translate-y-1 hover:from-[#20B8C4] hover:to-[#B9F2F5] hover:text-[#102A43] hover:shadow-xl hover:shadow-[#20B8C4]/30 sm:h-14 sm:px-9 sm:text-base"
           >
-            Start Exploring
-            <ArrowRight
-              size={18}
-              className="transition-transform group-hover:translate-x-1"
-            />
-          </Link>
+            <Link href="/books">
+              Start Exploring
+              <ArrowRight className="ml-2 size-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </Button>
         </div>
       </section>
     </main>
