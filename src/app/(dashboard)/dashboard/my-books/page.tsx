@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-
 const categories = ["Fiction", "Science", "History", "Kids", "Others"];
 
 type Book = {
@@ -69,7 +68,7 @@ async function readResponse(response: Response) {
 }
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#16A6B8] focus:ring-4 focus:ring-[#16A6B8]/10";
+  "w-full rounded-xl border border-slate-200 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] px-4 py-3 text-sm text-slate-800 dark:text-[#E5EEF3] outline-none transition placeholder:text-slate-400 dark:placeholder:text-[#829BAA] focus:border-[#16A6B8] focus:ring-4 focus:ring-[#16A6B8]/10";
 
 export default function MyBooksPage() {
   const router = useRouter();
@@ -328,16 +327,16 @@ export default function MyBooksPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center bg-[#F7FAFB]">
+      <div className="flex min-h-[70vh] items-center justify-center bg-[#F7FAFB] dark:bg-[#071D2B]">
         <div className="flex flex-col items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8]">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] dark:bg-[#103746]">
             <Loader2
-              className="animate-spin text-[#16A6B8]"
+              className="animate-spin text-[#16A6B8] dark:text-[#20B8C4]"
               size={30}
             />
           </div>
 
-          <p className="text-sm font-medium text-slate-500">
+          <p className="text-sm font-medium text-slate-500 dark:text-[#9FB4C2]">
             Loading your library...
           </p>
         </div>
@@ -348,17 +347,17 @@ export default function MyBooksPage() {
   // Login required
   if (!email) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center bg-[#F7FAFB] px-4">
-        <div className="w-full max-w-md rounded-3xl border border-slate-100 bg-white p-8 text-center shadow-sm">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8]">
+      <div className="flex min-h-[70vh] items-center justify-center bg-[#F7FAFB] dark:bg-[#071D2B] px-4">
+        <div className="w-full max-w-md rounded-3xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] dark:bg-[#103746] text-[#16A6B8] dark:text-[#20B8C4]">
             <BookOpen size={30} />
           </div>
 
-          <h2 className="mt-5 text-2xl font-bold te-xt-[#063047]">
+          <h2 className="mt-5 text-2xl font-bold text-[#063047] dark:text-[#E5F2F7]">
             Please log in
           </h2>
 
-          <p className="mt-2 text-sm leading-6 text-slate-500">
+          <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-[#9FB4C2]">
             You need to log in to see and manage your books.
           </p>
 
@@ -374,109 +373,75 @@ export default function MyBooksPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7FAFB] px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#F7FAFB] dark:bg-[#071D2B] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Page Header */}
-        {/* <section className="relative mb-8 overflow-hidden rounded-[28px] bg-[#063047] px-6 py-8 text-white shadow-xl shadow-[#063047]/10 sm:px-9 sm:py-10">
-          <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-[#16A6B8]/20 blur-3xl" />
-          <div className="absolute -bottom-28 right-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
-
-          <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-            <div>
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3.5 py-2 text-xs font-semibold text-[#B9F2F5]">
-                <BookOpen size={14} />
-                BookNook Library
-              </div>
-
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                My Books
-              </h1>
-
-              <p className="mt-3 max-w-xl text-sm leading-6 text-white/65 sm:text-base">
-                Keep your personal library organized. Manage your books,
-                update details, and track available copies.
-              </p>
-
-              <button
-                onClick={() => router.push("/add-book")}
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#16A6B8] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:bg-[#128D9D]"
-              >
-                <Plus size={18} />
-                Add New Book
-                <ArrowUpRight size={16} />
-              </button>
-            </div>
-
-            <div className="hidden h-24 w-24 shrink-0 items-center justify-center rounded-3xl border border-white/10 bg-white/10 text-[#B9F2F5] sm:flex">
-              <Library size={42} strokeWidth={1.5} />
-            </div>
-          </div>
-        </section> */}
+        {/* Header hero section is currently disabled in the original design. */}
 
         {/* Stats */}
         <section className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-2xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#16A6B8]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E5F6F8] dark:bg-[#103746] text-[#16A6B8] dark:text-[#20B8C4]">
                 <BookOpen size={23} />
               </div>
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-500 dark:text-[#9FB4C2]">
                   Total Titles
                 </p>
-                <h2 className="mt-1 text-2xl font-bold text-[#063047]">
+                <h2 className="mt-1 text-2xl font-bold text-[#063047] dark:text-[#E5F2F7]">
                   {books.length}
                 </h2>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-2xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-[#103746] text-blue-600 dark:text-[#7DD3FC]">
                 <Copy size={23} />
               </div>
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-500 dark:text-[#9FB4C2]">
                   Available Copies
                 </p>
-                <h2 className="mt-1 text-2xl font-bold text-[#063047]">
+                <h2 className="mt-1 text-2xl font-bold text-[#063047] dark:text-[#E5F2F7]">
                   {availableTotal}
                 </h2>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-2xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 dark:bg-[#3A3020] text-amber-600 dark:text-[#FBBF24]">
                 <BookMarked size={23} />
               </div>
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-500 dark:text-[#9FB4C2]">
                   Borrowed Copies
                 </p>
-                <h2 className="mt-1 text-2xl font-bold text-[#063047]">
+                <h2 className="mt-1 text-2xl font-bold text-[#063047] dark:text-[#E5F2F7]">
                   {borrowedTotal}
                 </h2>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <div className="rounded-2xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 dark:bg-[#302744] text-violet-600 dark:text-[#C4B5FD]">
                 <UserRound size={23} />
               </div>
 
               <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-500 dark:text-[#9FB4C2]">
                   Added By
                 </p>
-                <p className="mt-1 truncate text-sm font-semibold text-[#063047]">
+                <p className="mt-1 truncate text-sm font-semibold text-[#063047] dark:text-[#E5F2F7]">
                   {session?.user?.name || email}
                 </p>
               </div>
@@ -487,11 +452,11 @@ export default function MyBooksPage() {
         {/* Search and Section Title */}
         <section className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-[#063047]">
+            <h2 className="text-2xl font-bold tracking-tight text-[#063047] dark:text-[#E5F2F7]">
               Your Library
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-500 dark:text-[#9FB4C2]">
               {books.length} {books.length === 1 ? "book" : "books"} in your
               collection
             </p>
@@ -500,7 +465,7 @@ export default function MyBooksPage() {
           <div className="relative w-full sm:max-w-sm">
             <Search
               size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#829BAA]"
             />
 
             <input
@@ -508,23 +473,22 @@ export default function MyBooksPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by title, author, category..."
-              className="w-full rounded-xl border border-slate-200 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#16A6B8] focus:ring-4 focus:ring-[#16A6B8]/10"
+              className="w-full rounded-xl border border-slate-200 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] py-3.5 pl-11 pr-4 text-sm text-slate-800 dark:text-[#E5EEF3] outline-none transition placeholder:text-slate-400 dark:placeholder:text-[#829BAA] focus:border-[#16A6B8] focus:ring-4 focus:ring-[#16A6B8]/10"
             />
           </div>
         </section>
-
-        {/* Book List */}
+                {/* Book List */}
         {filteredBooks.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8]">
+          <div className="rounded-3xl border border-dashed border-slate-300 dark:border-[#294656] bg-white dark:bg-[#102A3A] px-6 py-16 text-center">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] dark:bg-[#103746] text-[#16A6B8] dark:text-[#20B8C4]">
               <BookOpen size={30} />
             </div>
 
-            <h3 className="text-xl font-bold text-[#063047]">
+            <h3 className="text-xl font-bold text-[#063047] dark:text-[#E5F2F7]">
               {searchTerm ? "No matching books" : "Your library is empty"}
             </h3>
 
-            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500 dark:text-[#9FB4C2]">
               {searchTerm
                 ? "Try searching with another title, author, or category."
                 : "You have not added any books yet. Add your first book to get started."}
@@ -551,10 +515,10 @@ export default function MyBooksPage() {
               return (
                 <article
                   key={book._id}
-                  className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#063047]/[0.07]"
+                  className="group overflow-hidden rounded-2xl border border-slate-100 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#063047]/[0.07]"
                 >
                   {/* Book Cover */}
-                  <div className="relative h-60 overflow-hidden bg-gradient-to-br from-[#E5F6F8] to-slate-100">
+                  <div className="relative h-60 overflow-hidden bg-gradient-to-br from-[#E5F6F8] to-slate-100 dark:from-[#103746] dark:to-[#0B2635]">
                     {book.image ? (
                       <img
                         src={book.image}
@@ -562,22 +526,22 @@ export default function MyBooksPage() {
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-[#16A6B8]/50">
+                      <div className="flex h-full items-center justify-center text-[#16A6B8] dark:text-[#20B8C4]/50">
                         <BookOpen size={54} strokeWidth={1.2} />
                       </div>
                     )}
 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#063047]/25 via-transparent to-transparent" />
 
-                    <span className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#063047] shadow-sm backdrop-blur">
+                    <span className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/90 dark:border-[#294656] dark:bg-[#102A3A]/90 px-3 py-1.5 text-xs font-semibold text-[#063047] dark:text-[#E5F2F7] shadow-sm backdrop-blur">
                       {book.category}
                     </span>
 
                     <span
                       className={`absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-sm ${
                         availableCopies > 0
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-rose-50 text-rose-700"
+                          ? "bg-emerald-50 dark:bg-[#12382F] text-emerald-700 dark:text-[#6EE7B7]"
+                          : "bg-rose-50 dark:bg-[#3A202A] text-rose-700 dark:text-[#FDA4AF]"
                       }`}
                     >
                       {availableCopies > 0 ? (
@@ -591,41 +555,41 @@ export default function MyBooksPage() {
 
                   {/* Book Details */}
                   <div className="p-5">
-                    <h3 className="line-clamp-1 text-lg font-bold text-[#063047] transition group-hover:text-[#16A6B8]">
+                    <h3 className="line-clamp-1 text-lg font-bold text-[#063047] dark:text-[#E5F2F7] transition group-hover:text-[#16A6B8] dark:group-hover:text-[#20B8C4]">
                       {book.title}
                     </h3>
 
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-slate-500 dark:text-[#9FB4C2]">
                       By {book.author}
                     </p>
 
                     {book.description && (
-                      <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">
+                      <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500 dark:text-[#9FB4C2]">
                         {book.description}
                       </p>
                     )}
 
                     <div className="mt-4 grid grid-cols-2 gap-3">
-                      <div className="rounded-xl bg-[#F7FAFB] p-3.5">
-                        <p className="text-xs font-medium text-slate-500">
+                      <div className="rounded-xl bg-[#F7FAFB] dark:bg-[#071D2B] p-3.5">
+                        <p className="text-xs font-medium text-slate-500 dark:text-[#9FB4C2]">
                           Total Copies
                         </p>
-                        <p className="mt-1 text-lg font-bold text-[#063047]">
+                        <p className="mt-1 text-lg font-bold text-[#063047] dark:text-[#E5F2F7]">
                           {totalCopies}
                         </p>
                       </div>
 
-                      <div className="rounded-xl bg-[#E5F6F8]/70 p-3.5">
-                        <p className="text-xs font-medium text-slate-500">
+                      <div className="rounded-xl bg-[#E5F6F8]/70 dark:bg-[#103746] p-3.5">
+                        <p className="text-xs font-medium text-slate-500 dark:text-[#9FB4C2]">
                           Available
                         </p>
-                        <p className="mt-1 text-lg font-bold text-[#16A6B8]">
+                        <p className="mt-1 text-lg font-bold text-[#16A6B8] dark:text-[#20B8C4]">
                           {availableCopies}
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
+                    <div className="mt-4 flex items-center gap-2 text-xs text-slate-400 dark:text-[#829BAA]">
                       <CalendarDays size={14} />
                       {book.addedDate
                         ? new Date(book.addedDate).toLocaleDateString()
@@ -633,10 +597,10 @@ export default function MyBooksPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-5 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4">
+                    <div className="mt-5 grid grid-cols-2 gap-3 border-t border-slate-100 dark:border-[#1E3A4A] pt-4">
                       <button
                         onClick={() => handleEditClick(book)}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#16A6B8]/20 bg-[#E5F6F8]/70 px-4 py-2.5 text-sm font-semibold text-[#087F8C] transition hover:border-[#16A6B8] hover:bg-[#16A6B8] hover:text-white"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#16A6B8]/20 bg-[#E5F6F8]/70 dark:bg-[#103746] px-4 py-2.5 text-sm font-semibold text-[#087F8C] dark:text-[#20B8C4] transition hover:border-[#16A6B8] hover:bg-[#16A6B8] hover:text-white"
                       >
                         <Edit3 size={16} />
                         Edit
@@ -644,7 +608,7 @@ export default function MyBooksPage() {
 
                       <button
                         onClick={() => setDeleteBook(book)}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-100 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:border-rose-500 hover:bg-rose-500 hover:text-white"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-100 dark:border-[#57313D] bg-rose-50 dark:bg-[#3A202A] px-4 py-2.5 text-sm font-semibold text-rose-600 dark:text-[#FDA4AF] transition hover:border-rose-500 hover:bg-rose-500 hover:text-white"
                       >
                         <Trash2 size={16} />
                         Delete
@@ -661,20 +625,20 @@ export default function MyBooksPage() {
       {/* Edit Modal */}
       {selectedBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#063047]/55 p-4 backdrop-blur-sm">
-          <div className="my-8 w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+          <div className="my-8 w-full max-w-2xl overflow-hidden rounded-3xl bg-white dark:bg-[#102A3A] shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 bg-[#F7FAFB] px-6 py-5 sm:px-8">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#1E3A4A] bg-[#F7FAFB] dark:bg-[#071D2B] px-6 py-5 sm:px-8">
               <div>
-                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#E5F6F8] px-3 py-1 text-xs font-semibold text-[#087F8C]">
+                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-[#E5F6F8] dark:bg-[#103746] px-3 py-1 text-xs font-semibold text-[#087F8C] dark:text-[#20B8C4]">
                   <Edit3 size={13} />
                   Update Book
                 </div>
 
-                <h2 className="text-xl font-bold text-[#063047]">
+                <h2 className="text-xl font-bold text-[#063047] dark:text-[#E5F2F7]">
                   Edit Book Details
                 </h2>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-slate-500 dark:text-[#9FB4C2]">
                   Update your book information and copy count.
                 </p>
               </div>
@@ -683,7 +647,7 @@ export default function MyBooksPage() {
                 type="button"
                 onClick={closeEditModal}
                 disabled={editLoading}
-                className="rounded-xl p-2.5 text-slate-400 transition hover:bg-white hover:text-[#063047] disabled:opacity-50"
+                className="rounded-xl p-2.5 text-slate-400 dark:text-[#829BAA] transition hover:bg-white dark:hover:bg-[#173747] hover:text-[#063047] dark:hover:text-[#E5F2F7] disabled:opacity-50"
                 aria-label="Close edit modal"
               >
                 <X size={22} />
@@ -693,7 +657,7 @@ export default function MyBooksPage() {
             <form onSubmit={handleUpdateBook}>
               <div className="grid gap-5 p-6 sm:grid-cols-2 sm:p-8">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Book Title *
                   </label>
 
@@ -708,7 +672,7 @@ export default function MyBooksPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Author Name *
                   </label>
 
@@ -723,7 +687,7 @@ export default function MyBooksPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Category *
                   </label>
 
@@ -745,7 +709,7 @@ export default function MyBooksPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Total Copies *
                   </label>
 
@@ -760,13 +724,12 @@ export default function MyBooksPage() {
                     className={inputClass}
                   />
 
-                  <p className="mt-2 text-xs leading-5 text-slate-400">
+                  <p className="mt-2 text-xs leading-5 text-slate-400 dark:text-[#829BAA]">
                     Available copies are adjusted based on current borrows.
                   </p>
                 </div>
-
-                <div className="sm:col-span-2">
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                                <div className="sm:col-span-2">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Book Image URL
                   </label>
 
@@ -781,7 +744,7 @@ export default function MyBooksPage() {
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  <label className="mb-2 block text-sm font-semibold text-slate-700 dark:text-[#D6E3EA]">
                     Short Description
                   </label>
 
@@ -795,19 +758,19 @@ export default function MyBooksPage() {
                     className={`${inputClass} resize-none`}
                   />
 
-                  <p className="mt-1 text-right text-xs text-slate-400">
+                  <p className="mt-1 text-right text-xs text-slate-400 dark:text-[#829BAA]">
                     {editFormData.description.length}/500
                   </p>
                 </div>
               </div>
 
               {/* Modal Footer */}
-              <div className="flex flex-col-reverse gap-3 border-t border-slate-100 bg-[#F7FAFB] px-6 py-5 sm:flex-row sm:justify-end sm:px-8">
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-100 dark:border-[#1E3A4A] bg-[#F7FAFB] dark:bg-[#071D2B] px-6 py-5 sm:flex-row sm:justify-end sm:px-8">
                 <button
                   type="button"
                   onClick={closeEditModal}
                   disabled={editLoading}
-                  className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+                  className="rounded-xl border border-slate-200 dark:border-[#1E3A4A] bg-white dark:bg-[#102A3A] px-5 py-3 text-sm font-semibold text-slate-600 dark:text-[#C4D4DE] transition hover:bg-slate-50 dark:hover:bg-[#0B2635] disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -838,19 +801,19 @@ export default function MyBooksPage() {
       {/* Delete Confirmation Modal */}
       {deleteBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#063047]/55 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-white/50 bg-white p-6 shadow-2xl sm:p-8">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50 text-rose-500">
+          <div className="w-full max-w-md rounded-3xl border border-white/50 dark:border-[#294656] bg-white dark:bg-[#102A3A] p-6 shadow-2xl sm:p-8">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-50 dark:bg-[#3A202A] text-rose-500 dark:text-[#FDA4AF]">
               <AlertTriangle size={30} />
             </div>
 
             <div className="mt-5 text-center">
-              <h2 className="text-xl font-bold text-[#063047]">
+              <h2 className="text-xl font-bold text-[#063047] dark:text-[#E5F2F7]">
                 Delete this book?
               </h2>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
+              <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-[#9FB4C2]">
                 Are you sure you want to delete{" "}
-                <span className="font-semibold text-[#063047]">
+                <span className="font-semibold text-[#063047] dark:text-[#E5F2F7]">
                   {deleteBook.title}
                 </span>
                 ? This action cannot be undone.
@@ -862,7 +825,7 @@ export default function MyBooksPage() {
                 type="button"
                 onClick={() => setDeleteBook(null)}
                 disabled={deleteLoading}
-                className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-xl border border-slate-200 dark:border-[#1E3A4A] px-4 py-3 text-sm font-semibold text-slate-600 dark:text-[#C4D4DE] transition hover:bg-slate-50 dark:hover:bg-[#0B2635] disabled:opacity-50"
               >
                 Cancel
               </button>

@@ -83,124 +83,57 @@ export default function SigninForm() {
     }
   };
 
-
-
   return (
-    <main className="min-h-screen bg-[#F7FAFB]">
-      <div className="grid  lg:grid-cols-1">
-        {/* Left Brand Panel */}
-        {/* <section className="relative hidden min-h-screen flex-col justify-between overflow-hidden bg-[#063047] p-10 text-white lg:flex xl:p-14">
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#16A6B8]/20 blur-3xl" />
-          <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#16A6B8]/15 blur-3xl" />
-          <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.03] blur-2xl" />
-          <Link
-            href="/"
-            className="relative z-10 flex w-fit items-center gap-3"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16A6B8] shadow-lg shadow-black/10">
-              <BookOpen className="h-6 w-6 text-white" />
-            </div>
-
-            <span className="text-2xl font-bold tracking-tight">
-              BookNook
-            </span>
-          </Link>
-
-          <div className="relative z-10 max-w-lg">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-[#B9F2F5]">
-              <Sparkles size={15} />
-              Welcome back, reader
-            </div>
-
-            <h1 className="text-4xl font-bold leading-tight tracking-tight xl:text-5xl">
-              Your next chapter
-              <br />
-              <span className="text-[#63D5DF]">is waiting.</span>
-            </h1>
-
-            <p className="mt-6 max-w-md text-base leading-7 text-white/65">
-              Sign in to continue your reading journey. Discover new stories,
-              explore your collection, and keep your favorite books close.
-            </p>
-
-            <div className="mt-12 flex items-end gap-4">
-              <div className="flex h-36 w-24 rotate-[-8deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-amber-200 to-orange-400 p-3 shadow-2xl">
-                <span className="text-xs font-bold leading-5 text-orange-950">
-                  THE ART
-                  <br />
-                  OF STORIES
-                </span>
-              </div>
-
-              <div className="flex h-44 w-28 rotate-[3deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-[#63D5DF] to-[#087F8C] p-3 shadow-2xl">
-                <span className="text-xs font-bold leading-5 text-white">
-                  FIND
-                  <br />
-                  YOURSELF
-                </span>
-              </div>
-
-              <div className="flex h-32 w-24 rotate-[8deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-emerald-200 to-teal-600 p-3 shadow-2xl">
-                <span className="text-xs font-bold leading-5 text-emerald-950">
-                  NEW
-                  <br />
-                  WORLDS
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <p className="relative z-10 text-sm text-white/40">
-            © 2026 BookNook. Made for book lovers.
-          </p>
-        </section> */}
-
+    <main className="min-h-screen bg-[#F7FAFB] transition-colors duration-300 dark:bg-[#071D2B]">
+      <div className="grid min-h-screen lg:grid-cols-1">
         {/* Login Section */}
         <section className="flex items-center justify-center px-4 py-10 sm:px-8 lg:px-12">
           <div className="w-full max-w-md">
-            {/* Mobile brand */}
+            {/* Mobile Brand */}
             <Link
               href="/"
-              className="mb-8 flex items-center justify-center gap-3 lg:hidden"
+              className="mb-8 flex items-center justify-center gap-3"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#063047]">
-                <BookOpen className="h-5 w-5 text-white" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#063047] transition-colors duration-300 dark:bg-[#20B8C4]">
+                <BookOpen className="h-5 w-5 text-white dark:text-[#071D2B]" />
               </div>
 
-              <span className="text-2xl font-bold tracking-tight text-[#063047]">
+              <span className="text-2xl font-bold tracking-tight text-[#063047] transition-colors duration-300 dark:text-[#E2EDF2]">
                 BookNook
               </span>
             </Link>
 
             {/* Login Card */}
-            <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#063047]/[0.06] sm:p-9">
+            <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#063047]/[0.06] transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#102A3A] sm:p-9">
+              {/* Card Header */}
               <div className="mb-8">
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8]">
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8] transition-colors duration-300 dark:bg-[#103746] dark:text-[#20B8C4]">
                   <BookOpen size={27} />
                 </div>
 
-                <h2 className="text-3xl font-bold tracking-tight text-[#063047]">
+                <h2 className="text-3xl font-bold tracking-tight text-[#063047] transition-colors duration-300 dark:text-[#E2EDF2]">
                   Welcome back
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-slate-500">
+                <p className="mt-2 text-sm leading-6 text-slate-500 transition-colors duration-300 dark:text-[#9FB4C2]">
                   Sign in to your BookNook account and pick up where you left
                   off.
                 </p>
               </div>
 
+              {/* Sign In Form */}
               <form onSubmit={handleSignin} className="space-y-5">
                 {/* Email */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-sm font-semibold text-slate-700"
+                    className="text-sm font-semibold text-slate-700 dark:text-[#B6C7D2]"
                   >
                     Email address
                   </Label>
 
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-[#7893A3]" />
 
                     <Input
                       id="email"
@@ -211,7 +144,7 @@ export default function SigninForm() {
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       required
-                      className="h-12 rounded-xl border-slate-200 pl-11 text-sm transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                      className="h-12 rounded-xl border-slate-200 bg-white pl-11 text-sm text-[#102A43] placeholder:text-slate-400 transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                     />
                   </div>
                 </div>
@@ -221,21 +154,21 @@ export default function SigninForm() {
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
-                      className="text-sm font-semibold text-slate-700"
+                      className="text-sm font-semibold text-slate-700 dark:text-[#B6C7D2]"
                     >
                       Password
                     </Label>
 
                     <Link
                       href="/forgot-password"
-                      className="text-xs font-semibold text-[#087F8C] transition hover:text-[#063047] hover:underline"
+                      className="text-xs font-semibold text-[#087F8C] transition hover:text-[#063047] hover:underline dark:text-[#20B8C4] dark:hover:text-[#63D5DF]"
                     >
                       Forgot password?
                     </Link>
                   </div>
 
                   <div className="relative">
-                    <LockKeyhole className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <LockKeyhole className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-[#7893A3]" />
 
                     <Input
                       id="password"
@@ -246,7 +179,7 @@ export default function SigninForm() {
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
                       required
-                      className="h-12 rounded-xl border-slate-200 pl-11 pr-11 text-sm transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                      className="h-12 rounded-xl border-slate-200 bg-white pl-11 pr-11 text-sm text-[#102A43] placeholder:text-slate-400 transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                     />
 
                     <button
@@ -257,7 +190,7 @@ export default function SigninForm() {
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
                       }
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#063047]"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#063047] dark:text-[#7893A3] dark:hover:text-[#20B8C4]"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -272,7 +205,7 @@ export default function SigninForm() {
                 <Button
                   type="submit"
                   disabled={loading || googleLoading}
-                  className="h-12 w-full rounded-xl bg-[#063047] font-semibold text-white shadow-lg shadow-[#063047]/10 transition hover:bg-[#0B4962] disabled:opacity-60"
+                  className="h-12 w-full rounded-xl bg-[#063047] font-semibold text-white shadow-lg shadow-[#063047]/10 transition hover:bg-[#0B4962] disabled:opacity-60 dark:bg-[#20B8C4] dark:text-[#071D2B] dark:hover:bg-[#63D5DF]"
                 >
                   {loading ? (
                     <>
@@ -291,11 +224,11 @@ export default function SigninForm() {
               {/* Divider */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-slate-100" />
+                  <span className="w-full border-t border-slate-100 dark:border-[#1E3A4A]" />
                 </div>
 
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-3 font-medium tracking-wide text-slate-400">
+                  <span className="bg-white px-3 font-medium tracking-wide text-slate-400 transition-colors duration-300 dark:bg-[#102A3A] dark:text-[#9FB4C2]">
                     Or continue with
                   </span>
                 </div>
@@ -307,26 +240,29 @@ export default function SigninForm() {
                 variant="outline"
                 disabled={loading || googleLoading}
                 onClick={handleGoogleSignin}
-                className="h-12 w-full rounded-xl border-slate-200 bg-white font-semibold text-slate-700 transition hover:border-[#16A6B8]/40 hover:bg-[#F7FAFB]"
+                className="h-12 w-full rounded-xl border-slate-200 bg-white font-semibold text-slate-700 transition hover:border-[#16A6B8]/40 hover:bg-[#F7FAFB] dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:hover:border-[#20B8C4] dark:hover:bg-[#103746]"
               >
                 <GoogleIcon />
 
-                {googleLoading ? "Connecting to Google..." : "Continue with Google"}
+                {googleLoading
+                  ? "Connecting to Google..."
+                  : "Continue with Google"}
               </Button>
 
               {/* Register Link */}
-              <p className="mt-7 text-center text-sm text-slate-500">
+              <p className="mt-7 text-center text-sm text-slate-500 transition-colors duration-300 dark:text-[#9FB4C2]">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/sign-up"
-                  className="font-bold text-[#087F8C] transition hover:text-[#063047] hover:underline"
+                  className="font-bold text-[#087F8C] transition hover:text-[#063047] hover:underline dark:text-[#20B8C4] dark:hover:text-[#63D5DF]"
                 >
                   Create account
                 </Link>
               </p>
             </div>
 
-            <p className="mt-6 text-center text-xs text-slate-400">
+            {/* Terms */}
+            <p className="mt-6 text-center text-xs text-slate-400 transition-colors duration-300 dark:text-[#7893A3]">
               By continuing, you agree to BookNook&apos;s terms and privacy
               policy.
             </p>

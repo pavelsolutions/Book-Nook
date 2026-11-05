@@ -125,86 +125,39 @@ export default function SignupForm() {
     }
   };
 
-
   return (
-    <main className="min-h-screen bg-[#F7FAFB]">
-      <div className="grid lg:grid-cols-1">
-        {/* Left Brand Section */}
-        {/* <section className="relative hidden min-h-screen flex-col justify-between overflow-hidden bg-[#063047] px-10 py-12 text-white lg:flex xl:px-16 xl:py-14">
-          <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#16A6B8]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
-          <Link
-            href="/"
-            className="relative z-10 flex w-fit items-center gap-3"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16A6B8] shadow-lg shadow-black/10">
-              <UserPlus className="h-6 w-6 text-white" />
-            </div>
-
-            <span className="text-2xl font-bold tracking-tight">
-              BookNook
-            </span>
-          </Link>
-          <div className="relative z-10 max-w-xl py-12">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-cyan-100">
-              <Sparkles className="h-4 w-4 text-[#55D6E4]" />
-              Your next chapter starts here
-            </div>
-
-            <h1 className="text-4xl font-bold leading-tight tracking-tight xl:text-6xl">
-              Discover stories.
-              <span className="mt-2 block text-[#55D6E4]">
-                Build your library.
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-md text-base leading-8 text-slate-300 xl:text-lg">
-              Create your account and explore a world of books.
-              Save your favorites and make reading a part of your
-              everyday life.
-            </p>
-            <div className="mt-10 flex items-center gap-3">
-              <div className="h-1.5 w-12 rounded-full bg-[#16A6B8]" />
-              <div className="h-1.5 w-6 rounded-full bg-white/30" />
-              <div className="h-1.5 w-6 rounded-full bg-white/30" />
-            </div>
-          </div>
-
-          <p className="relative z-10 text-sm text-slate-400">
-            © 2026 BookNook. Made for book lovers.
-          </p>
-        </section> */}
-
+    <main className="min-h-screen bg-[#F7FAFB] transition-colors duration-300 dark:bg-[#071D2B]">
+      <div className="grid min-h-screen lg:grid-cols-1">
         {/* Signup Form Section */}
-        <section className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-8 lg:px-12">
+        <section className="flex min-h-screen items-center justify-center px-4 py-8 transition-colors duration-300 sm:px-8 lg:px-12">
           <div className="w-full max-w-md">
             {/* Mobile Brand */}
             <Link
               href="/"
-              className="mb-8 flex items-center justify-center gap-3 lg:hidden"
+              className="mb-8 flex items-center justify-center gap-3"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#16A6B8]">
-                <UserPlus className="h-5 w-5 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#063047] transition-colors duration-300 dark:bg-[#20B8C4]">
+                <UserPlus className="h-5 w-5 text-white dark:text-[#071D2B]" />
               </div>
 
-              <span className="text-2xl font-bold tracking-tight text-[#063047]">
+              <span className="text-2xl font-bold tracking-tight text-[#063047] transition-colors duration-300 dark:text-[#E2EDF2]">
                 BookNook
               </span>
             </Link>
 
-            <Card className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-[0_20px_60px_rgba(6,48,71,0.08)]">
+            {/* Signup Card */}
+            <Card className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-[0_20px_60px_rgba(6,48,71,0.08)] transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#102A3A]">
               <CardHeader className="space-y-3 px-6 pb-5 pt-7 sm:px-8 sm:pt-9">
-                <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E5F6F8]">
-                  <UserPlus className="h-7 w-7 text-[#16A6B8]" />
+                <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E5F6F8] transition-colors duration-300 dark:bg-[#103746]">
+                  <UserPlus className="h-7 w-7 text-[#16A6B8] dark:text-[#20B8C4]" />
                 </div>
 
-                <CardTitle className="text-3xl font-bold tracking-tight text-[#063047]">
+                <CardTitle className="text-3xl font-bold tracking-tight text-[#063047] transition-colors duration-300 dark:text-[#E2EDF2]">
                   Create an account
                 </CardTitle>
 
-                <CardDescription className="text-sm leading-6 text-slate-500">
-                  Join BookNook and start exploring your next
-                  favorite book.
+                <CardDescription className="text-sm leading-6 text-slate-500 transition-colors duration-300 dark:text-[#9FB4C2]">
+                  Join BookNook and start exploring your next favorite book.
                 </CardDescription>
               </CardHeader>
 
@@ -214,13 +167,13 @@ export default function SignupForm() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="name"
-                      className="text-sm font-semibold text-[#063047]"
+                      className="text-sm font-semibold text-[#063047] dark:text-[#B6C7D2]"
                     >
                       Full name
                     </Label>
 
                     <div className="relative">
-                      <UserRound className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <UserRound className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-[#7893A3]" />
 
                       <Input
                         id="name"
@@ -229,11 +182,9 @@ export default function SignupForm() {
                         placeholder="Enter your full name"
                         autoComplete="name"
                         value={name}
-                        onChange={(event) =>
-                          setName(event.target.value)
-                        }
+                        onChange={(event) => setName(event.target.value)}
                         required
-                        className="h-12 rounded-xl border-slate-200 pl-10 text-sm focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                        className="h-12 rounded-xl border-slate-200 bg-white pl-10 text-sm text-[#102A43] placeholder:text-slate-400 focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                       />
                     </div>
                   </div>
@@ -242,13 +193,13 @@ export default function SignupForm() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="email"
-                      className="text-sm font-semibold text-[#063047]"
+                      className="text-sm font-semibold text-[#063047] dark:text-[#B6C7D2]"
                     >
                       Email address
                     </Label>
 
                     <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-[#7893A3]" />
 
                       <Input
                         id="email"
@@ -257,11 +208,9 @@ export default function SignupForm() {
                         placeholder="name@example.com"
                         autoComplete="email"
                         value={email}
-                        onChange={(event) =>
-                          setEmail(event.target.value)
-                        }
+                        onChange={(event) => setEmail(event.target.value)}
                         required
-                        className="h-12 rounded-xl border-slate-200 pl-10 text-sm focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                        className="h-12 rounded-xl border-slate-200 bg-white pl-10 text-sm text-[#102A43] placeholder:text-slate-400 focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                       />
                     </div>
                   </div>
@@ -270,10 +219,10 @@ export default function SignupForm() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="photoURL"
-                      className="text-sm font-semibold text-[#063047]"
+                      className="text-sm font-semibold text-[#063047] dark:text-[#B6C7D2]"
                     >
                       Profile photo URL
-                      <span className="ml-1 font-normal text-slate-400">
+                      <span className="ml-1 font-normal text-slate-400 dark:text-[#7893A3]">
                         (Optional)
                       </span>
                     </Label>
@@ -284,10 +233,8 @@ export default function SignupForm() {
                       type="url"
                       placeholder="https://example.com/photo.jpg"
                       value={photoURL}
-                      onChange={(event) =>
-                        setPhotoURL(event.target.value)
-                      }
-                      className="h-12 rounded-xl border-slate-200 text-sm focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                      onChange={(event) => setPhotoURL(event.target.value)}
+                      className="h-12 rounded-xl border-slate-200 bg-white text-sm text-[#102A43] placeholder:text-slate-400 focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                     />
                   </div>
 
@@ -295,13 +242,13 @@ export default function SignupForm() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="password"
-                      className="text-sm font-semibold text-[#063047]"
+                      className="text-sm font-semibold text-[#063047] dark:text-[#B6C7D2]"
                     >
                       Password
                     </Label>
 
                     <div className="relative">
-                      <LockKeyhole className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      <LockKeyhole className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-[#7893A3]" />
 
                       <Input
                         id="password"
@@ -317,7 +264,7 @@ export default function SignupForm() {
                           setPasswordError(validatePassword(value));
                         }}
                         required
-                        className="h-12 rounded-xl border-slate-200 pl-10 pr-11 text-sm focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                        className="h-12 rounded-xl border-slate-200 bg-white pl-10 pr-11 text-sm text-[#102A43] placeholder:text-slate-400 focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:placeholder:text-[#7893A3] dark:focus-visible:border-[#20B8C4]"
                       />
 
                       <button
@@ -328,7 +275,7 @@ export default function SignupForm() {
                         aria-label={
                           showPassword ? "Hide password" : "Show password"
                         }
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#063047]"
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#063047] dark:text-[#7893A3] dark:hover:text-[#20B8C4]"
                       >
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
@@ -344,9 +291,9 @@ export default function SignupForm() {
                       </p>
                     )}
 
-                    <p className="text-xs leading-5 text-slate-400">
-                      Use uppercase and lowercase letters, with at
-                      least 6 characters.
+                    <p className="text-xs leading-5 text-slate-400 dark:text-[#9FB4C2]">
+                      Use uppercase and lowercase letters, with at least 6
+                      characters.
                     </p>
                   </div>
 
@@ -354,11 +301,9 @@ export default function SignupForm() {
                   <Button
                     type="submit"
                     disabled={
-                      loading ||
-                      googleLoading ||
-                      Boolean(passwordError)
+                      loading || googleLoading || Boolean(passwordError)
                     }
-                    className="h-12 w-full rounded-xl bg-[#063047] text-sm font-semibold text-white shadow-lg shadow-[#063047]/10 transition hover:bg-[#0A465F] disabled:opacity-60"
+                    className="h-12 w-full rounded-xl bg-[#063047] text-sm font-semibold text-white shadow-lg shadow-[#063047]/10 transition hover:bg-[#0A465F] disabled:opacity-60 dark:bg-[#20B8C4] dark:text-[#071D2B] dark:hover:bg-[#63D5DF]"
                   >
                     {loading ? (
                       "Creating account..."
@@ -374,11 +319,11 @@ export default function SignupForm() {
                 {/* Divider */}
                 <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-slate-100" />
+                    <span className="w-full border-t border-slate-100 dark:border-[#1E3A4A]" />
                   </div>
 
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-3 font-medium tracking-wider text-slate-400">
+                    <span className="bg-white px-3 font-medium tracking-wider text-slate-400 transition-colors duration-300 dark:bg-[#102A3A] dark:text-[#9FB4C2]">
                       Or continue with
                     </span>
                   </div>
@@ -390,9 +335,10 @@ export default function SignupForm() {
                   variant="outline"
                   disabled={loading || googleLoading}
                   onClick={handleGoogleSignup}
-                  className="h-12 w-full rounded-xl border-slate-200 bg-white text-sm font-semibold text-[#063047] transition hover:bg-slate-50"
+                  className="h-12 w-full rounded-xl border-slate-200 bg-white text-sm font-semibold text-[#063047] transition hover:bg-slate-50 dark:border-[#1E3A4A] dark:bg-[#0B2635] dark:text-[#E2EDF2] dark:hover:border-[#20B8C4] dark:hover:bg-[#103746]"
                 >
                   <GoogleIcon />
+
                   <span className="ml-2">
                     {googleLoading
                       ? "Connecting to Google..."
@@ -401,11 +347,11 @@ export default function SignupForm() {
                 </Button>
 
                 {/* Login Link */}
-                <p className="mt-6 text-center text-sm text-slate-500">
+                <p className="mt-6 text-center text-sm text-slate-500 dark:text-[#9FB4C2]">
                   Already have an account?{" "}
                   <Link
                     href="/sign-in"
-                    className="font-semibold text-[#0B899B] transition hover:text-[#063047] hover:underline"
+                    className="font-semibold text-[#0B899B] transition hover:text-[#063047] hover:underline dark:text-[#20B8C4] dark:hover:text-[#63D5DF]"
                   >
                     Login
                   </Link>

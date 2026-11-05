@@ -44,24 +44,24 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[#E1EAF0] bg-white">
+    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[#E1EAF0] bg-white transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#071D2B]">
       {/* Logo */}
-      <div className="flex h-20 items-center gap-3 border-b border-[#E8EEF2] px-6">
+      <div className="flex h-20 items-center gap-3 border-b border-[#E8EEF2] px-6 dark:border-[#1E3A4A]">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#20B8C4] text-white shadow-lg shadow-[#0B6F83]/20">
             <BookOpen size={24} strokeWidth={2} />
 
-            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#F5B942]">
+            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#F5B942] dark:border-[#071D2B]">
               <span className="h-1 w-1 rounded-full bg-white" />
             </span>
           </div>
 
           <div>
-            <h1 className="text-xl font-extrabold tracking-tight text-[#102A43]">
-              Book<span className="text-[#0B6F83]">Nook</span>
+            <h1 className="text-xl font-extrabold tracking-tight text-[#102A43] dark:text-[#E6F1F5]">
+              Book<span className="text-[#0B6F83] dark:text-[#20B8C4]">Nook</span>
             </h1>
 
-            <p className="mt-0.5 text-[10px] font-medium tracking-wide text-[#718096]">
+            <p className="mt-0.5 text-[10px] font-medium tracking-wide text-[#718096] dark:text-[#9FB4C2]">
               Your cozy corner for books
             </p>
           </div>
@@ -71,7 +71,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-2 px-4 py-7">
         <div className="mb-5 flex items-center justify-between px-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8] dark:text-[#7893A4]">
             Main Menu
           </p>
 
@@ -92,13 +92,13 @@ export default function Sidebar() {
               href={item.href}
               className={`group relative flex items-center gap-3 overflow-hidden rounded-xl px-4 py-3.5 text-sm font-semibold transition-all duration-200 ${
                 isActive
-                  ? "bg-[#EAF6F7] text-[#0B6F83]"
-                  : "text-[#607486] hover:bg-[#F4F9FA] hover:text-[#0B6F83]"
+                  ? "bg-[#EAF6F7] text-[#0B6F83] dark:bg-[#103746] dark:text-[#20B8C4]"
+                  : "text-[#607486] hover:bg-[#F4F9FA] hover:text-[#0B6F83] dark:text-[#B6C7D2] dark:hover:bg-[#102A3A] dark:hover:text-[#20B8C4]"
               }`}
             >
               {/* Active Indicator */}
               {isActive && (
-                <span className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-[#0B6F83]" />
+                <span className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-[#0B6F83] dark:bg-[#20B8C4]" />
               )}
 
               <Icon
@@ -106,8 +106,8 @@ export default function Sidebar() {
                 strokeWidth={isActive ? 2.2 : 1.8}
                 className={`shrink-0 transition-colors ${
                   isActive
-                    ? "text-[#0B6F83]"
-                    : "text-[#8AA0AE] group-hover:text-[#0B6F83]"
+                    ? "text-[#0B6F83] dark:text-[#20B8C4]"
+                    : "text-[#8AA0AE] group-hover:text-[#0B6F83] dark:text-[#7893A4] dark:group-hover:text-[#20B8C4]"
                 }`}
               />
 
@@ -126,7 +126,7 @@ export default function Sidebar() {
 
       {/* Library Promo */}
       <div className="px-4 pb-5">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#087D91] p-4 text-white">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#087D91] p-4 text-white dark:from-[#103746] dark:to-[#0B5263]">
           <div className="relative z-10">
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
               <BookOpen size={19} />
@@ -154,12 +154,12 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-[#E8EEF2] px-4 py-5">
-        <p className="text-center text-xs font-medium text-[#94A3B8]">
+      <div className="border-t border-[#E8EEF2] px-4 py-5 dark:border-[#1E3A4A]">
+        <p className="text-center text-xs font-medium text-[#94A3B8] dark:text-[#7893A4]">
           © 2026 BookNook
         </p>
 
-        <p className="mt-1 text-center text-[10px] text-[#B0BCC5]">
+        <p className="mt-1 text-center text-[10px] text-[#B0BCC5] dark:text-[#607D8D]">
           Made for every book lover
         </p>
       </div>
