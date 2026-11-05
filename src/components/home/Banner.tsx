@@ -60,15 +60,13 @@ const slides = [
   },
 ];
 
-function BookArtwork({
-  books,
-}: {
-  books: {
-    name: string;
-    color: string;
-    spine: string;
-  }[];
-}) {
+type Book = {
+  name: string;
+  color: string;
+  spine: string;
+};
+
+function BookArtwork({ books }: { books: Book[] }) {
   const bookHeights = ["h-48", "h-56", "h-52"];
   const bookRotations = ["-rotate-6", "rotate-2", "rotate-6"];
 
@@ -88,7 +86,7 @@ function BookArtwork({
       <Sparkles className="absolute left-12 top-24 size-5 text-[#0B6F83]/50" />
 
       {/* Book platform */}
-      <div className="absolute bottom-10 left-1/2 h-8 w-[80%] -translate-x-1/2 rounded-full bg-[#102A43]/10 blur-md" />
+      <div className="absolute bottom-10 left-1/2 h-8 w-[80%] -translate-x-1/2 rounded-full bg-[#102A43]/10 blur-md dark:bg-black/30" />
 
       {/* Books */}
       <div className="relative z-10 flex items-end justify-center gap-2 sm:gap-4">
@@ -121,20 +119,23 @@ function BookArtwork({
             </div>
 
             {/* Book pages */}
-            <div className="absolute -right-1 top-1 h-[calc(100%-8px)] w-1 rounded-r-sm bg-[#F4F8FA]" />
+            <div className="absolute -right-1 top-1 h-[calc(100%-8px)] w-1 rounded-r-sm bg-[#F4F8FA] dark:bg-[#DCE7EA]" />
           </div>
         ))}
       </div>
 
       {/* Floating library card */}
-      <div className="absolute bottom-5 right-0 z-20 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-3 py-3 shadow-xl backdrop-blur-md sm:bottom-8 sm:right-4 sm:px-4">
-        <div className="flex size-10 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#0B6F83] sm:size-12">
+      <div className="absolute bottom-5 right-0 z-20 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-3 py-3 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-[#102A43]/95 sm:bottom-8 sm:right-4 sm:px-4">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#0B6F83] dark:bg-[#0B6F83]/30 dark:text-[#20B8C4] sm:size-12">
           <LibraryBig className="size-6" />
         </div>
 
         <div>
-          <p className="text-xs text-slate-500">Explore</p>
-          <p className="text-sm font-bold text-[#102A43]">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Explore
+          </p>
+
+          <p className="text-sm font-bold text-[#102A43] dark:text-white">
             Your Library
           </p>
         </div>
@@ -147,14 +148,14 @@ export default function Banner() {
   const swiperRef = useRef<SwiperType | null>(null);
 
   return (
-    <section className="bg-[#F4F8FA] py-5 sm:py-8">
+    <section className="bg-[#F4F8FA] py-5 transition-colors duration-300 dark:bg-[#031F2C] sm:py-8">
       {/* Fixed shared width */}
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative h-[700px] overflow-hidden rounded-[28px] border border-white bg-gradient-to-br from-white via-[#F7FBFC] to-[#E5F6F8] shadow-lg shadow-[#102A43]/5 sm:h-[650px] sm:rounded-[36px] lg:h-[600px]">
+        <div className="relative h-[700px] overflow-hidden rounded-[28px] border border-white bg-gradient-to-br from-white via-[#F7FBFC] to-[#E5F6F8] shadow-lg shadow-[#102A43]/5 transition-colors duration-300 dark:border-white/10 dark:from-[#063047] dark:via-[#082C40] dark:to-[#0B4355] dark:shadow-black/20 sm:h-[650px] sm:rounded-[36px] lg:h-[600px]">
           {/* Background accents */}
           <div className="pointer-events-none absolute -right-28 -top-28 size-80 rounded-full bg-[#20B8C4]/10 blur-3xl" />
 
-          <div className="pointer-events-none absolute -bottom-32 -left-20 size-80 rounded-full bg-[#0B6F83]/5 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 -left-20 size-80 rounded-full bg-[#0B6F83]/5 blur-3xl dark:bg-[#20B8C4]/10" />
 
           <Swiper
             modules={[Autoplay, Pagination]}
@@ -186,20 +187,20 @@ export default function Banner() {
                         <BookOpen className="size-6" />
                       </span>
 
-                      <span className="text-2xl font-extrabold tracking-tight text-[#102A43]">
+                      <span className="text-2xl font-extrabold tracking-tight text-[#102A43] dark:text-white">
                         BookNook
                       </span>
 
-                      <span className="rounded-full border border-[#20B8C4]/20 bg-white/80 px-4 py-2 text-xs font-semibold text-[#0B6F83] sm:text-sm">
+                      <span className="rounded-full border border-[#20B8C4]/20 bg-white/80 px-4 py-2 text-xs font-semibold text-[#0B6F83] dark:border-[#20B8C4]/30 dark:bg-white/5 dark:text-[#20B8C4] sm:text-sm">
                         {slide.eyebrow}
                       </span>
                     </Link>
 
                     {/* Heading */}
-                    <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-[#102A43] sm:text-5xl lg:text-6xl">
+                    <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-[#102A43] dark:text-white sm:text-5xl lg:text-6xl">
                       {slide.title}
 
-                      <span className="mt-2 block text-[#0B6F83]">
+                      <span className="mt-2 block text-[#0B6F83] dark:text-[#20B8C4]">
                         {slide.highlight}
                       </span>
                     </h1>
@@ -208,7 +209,7 @@ export default function Banner() {
                     <div className="mx-auto mt-5 h-1.5 w-16 rounded-full bg-[#20B8C4] lg:mx-0" />
 
                     {/* Description */}
-                    <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7 lg:mx-0 lg:text-lg">
+                    <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-7 lg:mx-0 lg:text-lg">
                       {slide.description}
                     </p>
 
@@ -216,7 +217,7 @@ export default function Banner() {
                     <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                       <Link
                         href="/books"
-                        className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#0B6F83] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition duration-300 hover:-translate-y-1 hover:bg-[#102A43] sm:h-14 sm:px-8 sm:text-base"
+                        className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#0B6F83] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition duration-300 hover:-translate-y-1 hover:bg-[#102A43] dark:hover:bg-[#20B8C4] dark:hover:text-[#063047] sm:h-14 sm:px-8 sm:text-base"
                       >
                         Browse Books
 
@@ -225,24 +226,24 @@ export default function Banner() {
 
                       <Link
                         href="/about"
-                        className="inline-flex h-12 items-center rounded-full border border-[#0B6F83]/20 bg-white/80 px-6 text-sm font-semibold text-[#102A43] transition hover:border-[#0B6F83] hover:bg-[#E5F6F8] sm:h-14 sm:px-7 sm:text-base"
+                        className="inline-flex h-12 items-center rounded-full border border-[#0B6F83]/20 bg-white/80 px-6 text-sm font-semibold text-[#102A43] transition hover:border-[#0B6F83] hover:bg-[#E5F6F8] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:border-[#20B8C4] dark:hover:bg-[#20B8C4]/10 sm:h-14 sm:px-7 sm:text-base"
                       >
                         Learn More
                       </Link>
                     </div>
 
                     {/* Small detail */}
-                    <div className="mt-6 flex items-center justify-center gap-3 text-sm text-slate-500 lg:justify-start">
+                    <div className="mt-6 flex items-center justify-center gap-3 text-sm text-slate-500 dark:text-slate-400 lg:justify-start">
                       <span className="flex -space-x-2">
-                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#0B6F83] text-[10px] text-white">
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#0B6F83] text-[10px] text-white dark:border-[#063047]">
                           B
                         </span>
 
-                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#20B8C4] text-[10px] text-white">
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#20B8C4] text-[10px] text-white dark:border-[#063047]">
                           N
                         </span>
 
-                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#102A43] text-[10px] text-white">
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#102A43] text-[10px] text-white dark:border-[#063047]">
                           +
                         </span>
                       </span>
@@ -265,7 +266,7 @@ export default function Banner() {
             type="button"
             onClick={() => swiperRef.current?.slidePrev()}
             aria-label="Previous slide"
-            className="absolute left-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white md:flex"
+            className="absolute left-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white dark:border-white/10 dark:bg-[#102A43]/90 dark:text-white dark:hover:bg-[#20B8C4] dark:hover:text-[#063047] md:flex"
           >
             <ChevronLeft className="size-5" />
           </button>
@@ -275,15 +276,15 @@ export default function Banner() {
             type="button"
             onClick={() => swiperRef.current?.slideNext()}
             aria-label="Next slide"
-            className="absolute right-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white md:flex"
+            className="absolute right-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white dark:border-white/10 dark:bg-[#102A43]/90 dark:text-white dark:hover:bg-[#20B8C4] dark:hover:text-[#063047] md:flex"
           >
             <ChevronRight className="size-5" />
           </button>
         </div>
       </div>
 
-      {/* Pagination */}
-      {/* <style jsx global>{`
+      {/* Pagination styles */}
+      <style jsx global>{`
         .booknook-swiper .swiper-pagination {
           bottom: 18px !important;
         }
@@ -296,13 +297,21 @@ export default function Banner() {
           transition: all 0.3s ease;
         }
 
+        .dark .booknook-swiper .swiper-pagination-bullet {
+          background: #20b8c4;
+        }
+
         .booknook-swiper .swiper-pagination-bullet-active {
           width: 26px;
           border-radius: 999px;
           background: #0b6f83;
           opacity: 1;
         }
-      `}</style> */}
+
+        .dark .booknook-swiper .swiper-pagination-bullet-active {
+          background: #20b8c4;
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import {
   BookOpen,
@@ -60,8 +59,8 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#063047] text-white">
-      {/* Decorative background */}
+    <footer className="relative overflow-hidden border-t border-[#1E3A4A] bg-[#063047] text-white transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#071D2B] dark:text-white">
+      {/* Decorative Background */}
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#20B8C4]/10 blur-3xl" />
 
       <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#20B8C4]/10 blur-3xl" />
@@ -77,17 +76,21 @@ export default function Footer() {
               aria-label="BookNook Home"
               className="group mb-5 inline-flex items-center gap-3"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white transition-transform duration-300 group-hover:-rotate-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white transition-transform duration-300 group-hover:-rotate-3 dark:bg-[#20B8C4]">
                 <BookOpen
-                  className="h-7 w-7 text-[#20B8C4]"
+                  className="h-7 w-7 text-[#20B8C4] dark:text-[#071D2B]"
                   strokeWidth={2.2}
                 />
               </div>
 
               <div className="flex flex-col leading-none">
                 <span className="text-[25px] font-extrabold tracking-tight">
-                  <span className="text-white">Book</span>
-                  <span className="text-[#20B8C4]">Nook</span>
+                  <span className="text-white dark:text-white">
+                    Book
+                  </span>
+                  <span className="text-[#20B8C4] dark:text-[#20B8C4]">
+                    Nook
+                  </span>
                 </span>
 
                 <span className="mt-1 text-[10px] font-medium tracking-wide text-white/60">
@@ -97,9 +100,9 @@ export default function Footer() {
             </Link>
 
             <p className="max-w-sm text-sm leading-7 text-white/65">
-              Discover your next favorite book, borrow stories you love, and
-              build your own little library with BookNook. Your next great read
-              is just a page away.
+              Discover your next favorite book, borrow stories you love,
+              and build your own little library with BookNook. Your next
+              great read is just a page away.
             </p>
 
             {/* Social Links */}
@@ -113,7 +116,7 @@ export default function Footer() {
                       key={social.label}
                       href={social.href}
                       aria-label={social.label}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-[#20B8C4] transition-all duration-300 hover:-translate-y-1 hover:border-[#20B8C4] hover:bg-[#20B8C4] hover:text-white"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-[#20B8C4] transition-all duration-300 hover:-translate-y-1 hover:border-[#20B8C4] hover:bg-[#20B8C4] hover:text-[#071D2B]"
                     >
                       <Icon className="h-4 w-4" />
                     </Link>
@@ -192,7 +195,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="border-t border-white/10 bg-[#0B6F83]">
+      <div className="border-t border-white/10 bg-[#0B6F83] dark:bg-[#102A3A]">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-center sm:flex-row sm:px-6 lg:px-8">
           <p className="text-xs leading-6 text-white">
             BookNook Book Library - © {new Date().getFullYear()} All Rights
@@ -203,7 +206,9 @@ export default function Footer() {
             Made with
             <Heart className="h-3.5 w-3.5 fill-[#20B8C4] text-[#20B8C4]" />
             by
-            <span className="font-medium text-white">BookNook</span>
+            <span className="font-medium text-white">
+              BookNook
+            </span>
           </p>
         </div>
       </div>
