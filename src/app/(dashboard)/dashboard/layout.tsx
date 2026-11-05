@@ -12,7 +12,7 @@ const Layout = ({
       <Sidebar />
 
       {/* Main Content */}
-      <main className="min-w-0 flex-1 bg-[#F7FAFB] transition-colors duration-300 dark:bg-[#071D2B]">
+      <main className="min-w-0 flex-1 bg-[#F7FAFB] pt-16 transition-colors duration-300 dark:bg-[#071D2B] md:pt-0">
         {children}
       </main>
     </div>
