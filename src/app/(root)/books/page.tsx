@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BooksClient from "@/components/books/BooksClient";
+import { IBook } from "@/types/types";
 
 export const metadata: Metadata = {
   title: "All Books | BookNook",
   description: "Explore the BookNook library and find your next favorite read.",
 };
 
-export type Book = {
-  _id: string;
-  title: string;
-  author: string;
-  category: string;
-  image: string;
-  description?: string;
-};
-
-async function getBooks(): Promise<Book[]> {
+async function getBooks(): Promise<IBook[]> {
   const baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
 
   if (!baseUrl) {

@@ -14,6 +14,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About | BookNook",
+  description: "Explore the BookNook library and find your next favorite read.",
+};
 
 const features = [
   {
