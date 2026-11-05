@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import {
   Search,
@@ -34,18 +33,24 @@ const steps = [
 
 export default function HowBorrowingWorks() {
   return (
-    <section className="bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
-      <div className="mx-auto max-w-7xl">
+    <section className="relative overflow-hidden bg-[#F7FAFB] py-16 lg:py-20">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#16A6B8]/5 blur-3xl" />
+
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#063047]/5 blur-3xl" />
+
+      {/* Content Container */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-[#176344]">
-            <BookOpen className="size-4" />
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#E5F6F8] px-4 py-2 text-sm font-semibold text-[#16A6B8]">
+            <BookOpen className="h-4 w-4" />
             Simple & Easy
           </span>
 
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#123e2c] sm:text-4xl lg:text-5xl">
+          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-[#063047] sm:text-4xl lg:text-5xl">
             How Borrowing{" "}
-            <span className="text-orange-500">Works</span>
+            <span className="text-[#16A6B8]">Works</span>
           </h2>
 
           <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base">
@@ -56,34 +61,37 @@ export default function HowBorrowingWorks() {
 
         {/* Steps */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {steps.map((step, index) => {
+          {steps.map((step) => {
             const Icon = step.icon;
 
             return (
               <div
                 key={step.number}
-                className="group relative rounded-3xl border border-[#e9eee7] bg-[#faf9f4] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-xl sm:p-9"
+                className="group relative rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#16A6B8]/40 hover:shadow-xl sm:p-9"
               >
-                {/* Step number */}
-                <div className="absolute right-7 top-7 text-5xl font-black text-green-100 transition-colors group-hover:text-orange-100">
+                {/* Step Number */}
+                <div className="absolute right-7 top-7 text-5xl font-black text-[#063047]/5 transition-colors duration-300 group-hover:text-[#16A6B8]/10">
                   {step.number}
                 </div>
 
                 {/* Icon */}
-                <div className="relative flex size-16 items-center justify-center rounded-2xl bg-[#e8f1e7] text-[#176344] transition-colors group-hover:bg-orange-100 group-hover:text-orange-600">
-                  <Icon className="size-7" />
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8] transition-all duration-300 group-hover:bg-[#16A6B8] group-hover:text-white">
+                  <Icon className="h-7 w-7" />
                 </div>
 
-                <h3 className="mt-7 text-xl font-bold text-[#123e2c]">
+                {/* Title */}
+                <h3 className="mt-7 text-xl font-bold text-[#063047] transition-colors group-hover:text-[#16A6B8]">
                   {step.title}
                 </h3>
 
+                {/* Description */}
                 <p className="mt-3 text-sm leading-7 text-slate-600">
                   {step.description}
                 </p>
 
-                <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[#176344]">
-                  <CheckCircle2 className="size-4 text-orange-500" />
+                {/* Bottom Info */}
+                <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-[#063047]">
+                  <CheckCircle2 className="h-4 w-4 text-[#16A6B8]" />
                   <span>Easy and convenient</span>
                 </div>
               </div>
@@ -95,10 +103,10 @@ export default function HowBorrowingWorks() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/books"
-            className="inline-flex items-center gap-3 rounded-full bg-orange-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600"
+            className="inline-flex items-center gap-3 rounded-full bg-[#063047] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#063047]/15 transition-all hover:-translate-y-0.5 hover:bg-[#16A6B8] sm:px-9"
           >
             Start Exploring
-            <ArrowRight className="size-4" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

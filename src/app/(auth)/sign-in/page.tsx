@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Eye,
@@ -10,28 +9,19 @@ import {
   LockKeyhole,
   Mail,
   BookOpen,
+  Loader2,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { authClient } from "@/lib/auth-client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export default function SigninForm() {
-  const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -40,12 +30,7 @@ export default function SigninForm() {
   const handleSignin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-
-    const email = String(formData.get("email") ?? "");
-    const password = String(formData.get("password") ?? "");
-
-    if (!email || !password) {
+    if (!email.trim() || !password) {
       toast.error("Please enter your email and password.");
       return;
     }
@@ -54,29 +39,24 @@ export default function SigninForm() {
 
     try {
       const result = await authClient.signIn.email({
-        email,
+        email: email.trim(),
         password,
       });
 
       if (result.error) {
-        toast.error(
-          result.error.message || "Invalid email or password."
-        );
+        toast.error(result.error.message || "Invalid email or password.");
         return;
       }
 
-      toast.success("Welcome to our library!");
+      toast.success("Welcome to BookNook!");
 
-      // router.push("/");
-      // router.refresh();
       window.location.replace("/");
     } catch (error) {
-      const message =
+      toast.error(
         error instanceof Error
           ? error.message
-          : "Something went wrong. Please try again.";
-
-      toast.error(message);
+          : "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -93,83 +73,76 @@ export default function SigninForm() {
       });
 
       if (result.error) {
-        toast.error(
-          result.error.message || "Google login failed."
-        );
+        toast.error(result.error.message || "Google login failed.");
       }
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Google login failed.";
-
-      toast.error(message);
+      toast.error(
+        error instanceof Error ? error.message : "Google login failed."
+      );
     } finally {
       setGoogleLoading(false);
     }
   };
 
+
+
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="grid min-h-screen lg:grid-cols-2">
-        {/* Left Brand Section */}
-        <section className="relative hidden flex-col justify-between overflow-hidden bg-[#171923] p-10 text-white lg:flex xl:p-14">
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-violet-500/20 blur-3xl" />
-
-          <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-indigo-500/20 blur-3xl" />
-
+    <main className="min-h-screen bg-[#F7FAFB]">
+      <div className="grid  lg:grid-cols-1">
+        {/* Left Brand Panel */}
+        {/* <section className="relative hidden min-h-screen flex-col justify-between overflow-hidden bg-[#063047] p-10 text-white lg:flex xl:p-14">
+          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#16A6B8]/20 blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#16A6B8]/15 blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.03] blur-2xl" />
           <Link
             href="/"
-            className="relative z-10 flex items-center gap-3"
+            className="relative z-10 flex w-fit items-center gap-3"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15">
-              <BookOpen className="h-5 w-5" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16A6B8] shadow-lg shadow-black/10">
+              <BookOpen className="h-6 w-6 text-white" />
             </div>
 
-            <span className="text-xl font-bold tracking-tight">
+            <span className="text-2xl font-bold tracking-tight">
               BookNook
             </span>
           </Link>
 
           <div className="relative z-10 max-w-lg">
-            <div className="mb-6 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70">
-              <span className="mr-2 h-2 w-2 rounded-full bg-violet-400" />
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-[#B9F2F5]">
+              <Sparkles size={15} />
               Welcome back, reader
             </div>
 
             <h1 className="text-4xl font-bold leading-tight tracking-tight xl:text-5xl">
               Your next chapter
               <br />
-              <span className="text-violet-300">
-                is waiting.
-              </span>
+              <span className="text-[#63D5DF]">is waiting.</span>
             </h1>
 
-            <p className="mt-6 max-w-md text-base leading-7 text-white/60">
-              Sign in to continue your reading journey.
-              Discover new stories and keep your favorite books
-              close at hand.
+            <p className="mt-6 max-w-md text-base leading-7 text-white/65">
+              Sign in to continue your reading journey. Discover new stories,
+              explore your collection, and keep your favorite books close.
             </p>
 
             <div className="mt-12 flex items-end gap-4">
-              <div className="flex h-36 w-24 rotate-[-8deg] items-end rounded-lg bg-gradient-to-br from-amber-200 to-orange-400 p-3 shadow-xl">
-                <span className="text-xs font-bold text-orange-950">
+              <div className="flex h-36 w-24 rotate-[-8deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-amber-200 to-orange-400 p-3 shadow-2xl">
+                <span className="text-xs font-bold leading-5 text-orange-950">
                   THE ART
                   <br />
                   OF STORIES
                 </span>
               </div>
 
-              <div className="flex h-44 w-28 rotate-[3deg] items-end rounded-lg bg-gradient-to-br from-violet-300 to-indigo-600 p-3 shadow-xl">
-                <span className="text-xs font-bold text-white">
+              <div className="flex h-44 w-28 rotate-[3deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-[#63D5DF] to-[#087F8C] p-3 shadow-2xl">
+                <span className="text-xs font-bold leading-5 text-white">
                   FIND
                   <br />
                   YOURSELF
                 </span>
               </div>
 
-              <div className="flex h-32 w-24 rotate-[8deg] items-end rounded-lg bg-gradient-to-br from-emerald-200 to-teal-600 p-3 shadow-xl">
-                <span className="text-xs font-bold text-emerald-950">
+              <div className="flex h-32 w-24 rotate-[8deg] items-end rounded-xl border border-white/20 bg-gradient-to-br from-emerald-200 to-teal-600 p-3 shadow-2xl">
+                <span className="text-xs font-bold leading-5 text-emerald-950">
                   NEW
                   <br />
                   WORLDS
@@ -181,176 +154,183 @@ export default function SigninForm() {
           <p className="relative z-10 text-sm text-white/40">
             © 2026 BookNook. Made for book lovers.
           </p>
-        </section>
+        </section> */}
 
-        {/* Sign In Form Section */}
-        <section className="flex items-center justify-center px-4 py-10 sm:px-8">
+        {/* Login Section */}
+        <section className="flex items-center justify-center px-4 py-10 sm:px-8 lg:px-12">
           <div className="w-full max-w-md">
-            {/* Mobile Brand */}
+            {/* Mobile brand */}
             <Link
               href="/"
-              className="mb-8 flex items-center justify-center gap-2 lg:hidden"
+              className="mb-8 flex items-center justify-center gap-3 lg:hidden"
             >
-              <BookOpen className="h-6 w-6 text-violet-600" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#063047]">
+                <BookOpen className="h-5 w-5 text-white" />
+              </div>
 
-              <span className="text-xl font-bold tracking-tight">
+              <span className="text-2xl font-bold tracking-tight text-[#063047]">
                 BookNook
               </span>
             </Link>
 
-            <Card className="border-slate-200 shadow-sm">
-              <CardHeader className="space-y-2 pb-6">
-                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100">
-                  <BookOpen className="h-6 w-6 text-violet-600" />
+            {/* Login Card */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#063047]/[0.06] sm:p-9">
+              <div className="mb-8">
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E5F6F8] text-[#16A6B8]">
+                  <BookOpen size={27} />
                 </div>
 
-                <CardTitle className="text-3xl font-bold tracking-tight">
+                <h2 className="text-3xl font-bold tracking-tight text-[#063047]">
                   Welcome back
-                </CardTitle>
+                </h2>
 
-                <CardDescription>
-                  Sign in to your BookNook account.
-                </CardDescription>
-              </CardHeader>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Sign in to your BookNook account and pick up where you left
+                  off.
+                </p>
+              </div>
 
-              <CardContent>
-                <form
-                  onSubmit={handleSignin}
-                  className="space-y-5"
-                >
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="name@example.com"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(event) =>
-                          setEmail(event.target.value)
-                        }
-                        required
-                        className="h-11 rounded-xl pl-10"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Password */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password">
-                        Password
-                      </Label>
-
-                      <Link
-                        href="/forgot-password"
-                        className="text-xs font-medium text-violet-600 hover:underline"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-
-                    <div className="relative">
-                      <LockKeyhole className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-
-                      <Input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={(event) =>
-                          setPassword(event.target.value)
-                        }
-                        required
-                        className="h-11 rounded-xl pl-10 pr-11"
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setShowPassword((previous) => !previous)
-                        }
-                        aria-label={
-                          showPassword
-                            ? "Hide password"
-                            : "Show password"
-                        }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Sign In Button */}
-                  <Button
-                    type="submit"
-                    disabled={loading || googleLoading}
-                    className="h-11 w-full rounded-xl bg-violet-600 font-semibold hover:bg-violet-700"
+              <form onSubmit={handleSignin} className="space-y-5">
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-semibold text-slate-700"
                   >
-                    {loading ? (
-                      "Signing in..."
-                    ) : (
-                      <>
-                        Sign In
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
-                </form>
+                    Email address
+                  </Label>
 
-                {/* Divider */}
-                <div className="relative my-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                  </div>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="name@example.com"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      required
+                      className="h-12 rounded-xl border-slate-200 pl-11 text-sm transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                    />
                   </div>
                 </div>
 
-                {/* Google Sign In */}
+                {/* Password */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label
+                      htmlFor="password"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      Password
+                    </Label>
+
+                    <Link
+                      href="/forgot-password"
+                      className="text-xs font-semibold text-[#087F8C] transition hover:text-[#063047] hover:underline"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
+
+                  <div className="relative">
+                    <LockKeyhole className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      required
+                      className="h-12 rounded-xl border-slate-200 pl-11 pr-11 text-sm transition focus-visible:border-[#16A6B8] focus-visible:ring-[#16A6B8]/20"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowPassword((previous) => !previous)
+                      }
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#063047]"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sign In Button */}
                 <Button
-                  type="button"
-                  variant="outline"
+                  type="submit"
                   disabled={loading || googleLoading}
-                  onClick={handleGoogleSignin}
-                  className="h-11 w-full rounded-xl"
+                  className="h-12 w-full rounded-xl bg-[#063047] font-semibold text-white shadow-lg shadow-[#063047]/10 transition hover:bg-[#0B4962] disabled:opacity-60"
                 >
-                  <GoogleIcon />
-
-                  {googleLoading
-                    ? "Connecting to Google..."
-                    : "Continue with Google"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
                 </Button>
+              </form>
 
-                {/* Register Link */}
-                <p className="mt-6 text-center text-sm text-muted-foreground">
-                  Don&apos;t have an account?{" "}
-                  <Link
-                    href="/sign-up"
-                    className="font-semibold text-violet-600 hover:underline"
-                  >
-                    Create account
-                  </Link>
-                </p>
-              </CardContent>
-            </Card>
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-slate-100" />
+                </div>
+
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-3 font-medium tracking-wide text-slate-400">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              {/* Google Login */}
+              <Button
+                type="button"
+                variant="outline"
+                disabled={loading || googleLoading}
+                onClick={handleGoogleSignin}
+                className="h-12 w-full rounded-xl border-slate-200 bg-white font-semibold text-slate-700 transition hover:border-[#16A6B8]/40 hover:bg-[#F7FAFB]"
+              >
+                <GoogleIcon />
+
+                {googleLoading ? "Connecting to Google..." : "Continue with Google"}
+              </Button>
+
+              {/* Register Link */}
+              <p className="mt-7 text-center text-sm text-slate-500">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href="/sign-up"
+                  className="font-bold text-[#087F8C] transition hover:text-[#063047] hover:underline"
+                >
+                  Create account
+                </Link>
+              </p>
+            </div>
+
+            <p className="mt-6 text-center text-xs text-slate-400">
+              By continuing, you agree to BookNook&apos;s terms and privacy
+              policy.
+            </p>
           </div>
         </section>
       </div>

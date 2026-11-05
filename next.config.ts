@@ -17,8 +17,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        pathname: '/**',
         protocol: "https",
-        hostname: "ibb.co.com",
+        hostname: "**",
       },
     ],
   },

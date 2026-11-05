@@ -1,76 +1,90 @@
-
 import Link from "next/link";
-import {
-  ArrowRight,
-  BookOpen,
-} from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
+
 import { IBook } from "@/types/types";
 import BookCard from "../shared/BookCard";
 
 async function getBooks(): Promise<IBook[]> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/books`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/new-arrivals`,
     {
       cache: "no-store",
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch books");
+    throw new Error("Failed to fetch new arrivals");
   }
 
-  return response.json();
+  const result = await response.json();
+
+  const books: IBook[] = Array.isArray(result)
+    ? result
+    : result.data ?? result.books ?? [];
+
+  return books;
 }
 
-
-
 export default async function NewArrivals() {
-
   const books = await getBooks();
-  return (
-    <section className="relative overflow-hidden bg-[#faf9f4] px-4 py-16 sm:px-6 lg:px-10 lg:py-20">
-      {/* Decorative background */}
-      <div className="pointer-events-none absolute -right-20 top-10 size-64 rounded-full bg-green-100/50 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 bottom-10 size-64 rounded-full bg-orange-100/50 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl">
+  return (
+    <section className="relative overflow-hidden bg-white py-14 sm:py-16 lg:py-20">
+      {/* Decorative Background */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#16A6B8]/5 blur-3xl" />
+
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-[#063047]/5 blur-3xl" />
+
+      {/* Content Container */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Heading */}
-        <div className="mb-12 text-center">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-orange-100 px-5 py-2 text-sm font-semibold text-orange-600">
-            <BookOpen className="size-5" />
+        <div className="mb-10">
+          <div className="mb-3 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#16A6B8]">
+            <BookOpen className="h-5 w-5" />
             <span>New Arrivals</span>
           </div>
 
-          <h2 className="text-3xl font-extrabold tracking-tight text-[#123e2c] sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-[#063047] sm:text-4xl lg:text-5xl">
             Latest Books in{" "}
-            <span className="text-orange-500">
-              Our Library
-            </span>
+            <span className="text-[#16A6B8]">Our Library</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-            Discover the newest additions to our library.
-            Fresh stories, new knowledge, and must-read titles,
-            all in one place.
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+            Discover the newest additions to our library. Fresh stories,
+            new knowledge, and must-read titles, all in one place.
           </p>
         </div>
 
-        {/* Static Book Cards */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {books.map((book: IBook) => (
-            <BookCard key={book._id} book={book} />
-          ))}
-        </div>
+        {/* Book Cards */}
+        {books.length > 0 ? (
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            {books.map((book) => (
+              <BookCard key={book._id} book={book} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8 text-center">
+            <BookOpen className="mx-auto h-10 w-10 text-[#16A6B8]" />
+
+            <p className="mt-3 font-semibold text-[#063047]">
+              No books available yet
+            </p>
+
+            <p className="mt-1 text-sm text-slate-500">
+              New books will appear here when they are added.
+            </p>
+          </div>
+        )}
 
         {/* See All Books */}
-        <div className="mt-12 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <Link
             href="/books"
-            className="inline-flex items-center gap-3 rounded-full bg-orange-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition-all hover:-translate-y-0.5 hover:bg-orange-600 sm:px-9 sm:text-base"
+            className="inline-flex items-center gap-3 rounded-full bg-[#063047] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#063047]/15 transition-all hover:-translate-y-0.5 hover:bg-[#16A6B8] sm:px-9 sm:text-base"
           >
-            <BookOpen className="size-5" />
+            <BookOpen className="h-5 w-5" />
             See All Books
-            <ArrowRight className="size-5" />
+            <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </div>

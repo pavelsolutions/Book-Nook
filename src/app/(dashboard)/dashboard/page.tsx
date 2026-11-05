@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import {
   BookOpen,
   BookMarked,
@@ -7,6 +10,9 @@ import {
   ArrowUpRight,
   TrendingUp,
   CalendarDays,
+  Sparkles,
+  LibraryBig,
+  ChevronRight,
 } from "lucide-react";
 
 const stats = [
@@ -16,7 +22,8 @@ const stats = [
     change: "+12.5%",
     description: "Compared to last month",
     icon: BookOpen,
-    color: "bg-blue-100 text-blue-600",
+    iconBg: "bg-[#E6F5F7]",
+    iconColor: "text-[#0B6F83]",
   },
   {
     title: "My Books",
@@ -24,7 +31,8 @@ const stats = [
     change: "+4",
     description: "Books in your collection",
     icon: BookMarked,
-    color: "bg-violet-100 text-violet-600",
+    iconBg: "bg-[#EAF1F8]",
+    iconColor: "text-[#426A91]",
   },
   {
     title: "Borrowed Books",
@@ -32,7 +40,8 @@ const stats = [
     change: "2 due soon",
     description: "Currently borrowed",
     icon: Users,
-    color: "bg-emerald-100 text-emerald-600",
+    iconBg: "bg-[#E8F5EF]",
+    iconColor: "text-[#368466]",
   },
   {
     title: "Pending Returns",
@@ -40,7 +49,8 @@ const stats = [
     change: "View details",
     description: "Books to return",
     icon: Clock,
-    color: "bg-orange-100 text-orange-600",
+    iconBg: "bg-[#FFF3E8]",
+    iconColor: "text-[#D88745]",
   },
 ];
 
@@ -50,45 +60,82 @@ const recentBooks = [
     author: "James Clear",
     status: "Reading",
     date: "Today",
-    color: "bg-amber-100",
+    iconBg: "bg-[#FFF3E0]",
+    iconColor: "text-[#C78A36]",
   },
   {
     title: "The Psychology of Money",
     author: "Morgan Housel",
     status: "Borrowed",
     date: "Yesterday",
-    color: "bg-emerald-100",
+    iconBg: "bg-[#E8F5EF]",
+    iconColor: "text-[#368466]",
   },
   {
     title: "Deep Work",
     author: "Cal Newport",
     status: "Completed",
     date: "Oct 28, 2026",
-    color: "bg-blue-100",
+    iconBg: "bg-[#E6F5F7]",
+    iconColor: "text-[#0B6F83]",
   },
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
+
+  const quickActions = [
+    {
+      title: "Add a new book",
+      description: "Expand your collection",
+      icon: Plus,
+      iconBg: "bg-[#0B6F83]",
+      background: "bg-[#EAF6F7]",
+      path: "/dashboard/add-book",
+    },
+    {
+      title: "Browse my books",
+      description: "Explore your collection",
+      icon: BookMarked,
+      iconBg: "bg-[#426A91]",
+      background: "bg-[#EDF3F9]",
+      path: "/dashboard/my-books",
+    },
+    {
+      title: "Manage borrowings",
+      description: "Track borrowed books",
+      icon: CalendarDays,
+      iconBg: "bg-[#368466]",
+      background: "bg-[#EAF5EF]",
+      path: "/my-borrows",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#F4F8FA] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Welcome Header */}
         <section className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="mb-2 text-sm font-medium text-slate-500">
-              Tuesday, November 3, 2026
-            </p>
+            <div className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-[#0B6F83]">
+              <Sparkles size={15} />
+              Your personal library
+            </div>
 
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Welcome back, Reader! 👋
+            <h1 className="text-2xl font-bold tracking-tight text-[#102A43] sm:text-3xl">
+              Welcome back, Reader!
+              <span className="ml-2">👋</span>
             </h1>
 
-            <p className="mt-2 text-sm text-slate-500 sm:text-base">
+            <p className="mt-2 text-sm leading-6 text-[#718096] sm:text-base">
               Here&apos;s what&apos;s happening with your library today.
             </p>
           </div>
 
-          <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
+          <button
+            onClick={() => router.push("/dashboard/add-book")}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B6F83] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0B6F83]/15 transition hover:-translate-y-0.5 hover:bg-[#07576B]"
+          >
             <Plus size={18} />
             Add New Book
           </button>
@@ -102,29 +149,29 @@ export default function DashboardPage() {
             return (
               <div
                 key={stat.title}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                className="group rounded-2xl border border-[#E1EAF0] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#102A43]/5"
               >
                 <div className="flex items-start justify-between">
                   <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.color}`}
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconBg} ${stat.iconColor}`}
                   >
-                    <Icon size={22} />
+                    <Icon size={22} strokeWidth={1.8} />
                   </div>
 
-                  <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600">
+                  <span className="rounded-full bg-[#EAF5EF] px-2.5 py-1 text-xs font-semibold text-[#368466]">
                     {stat.change}
                   </span>
                 </div>
 
-                <p className="mt-5 text-sm font-medium text-slate-500">
+                <p className="mt-5 text-sm font-medium text-[#718096]">
                   {stat.title}
                 </p>
 
-                <h2 className="mt-1 text-3xl font-bold tracking-tight text-slate-900">
+                <h2 className="mt-1 text-3xl font-bold tracking-tight text-[#102A43]">
                   {stat.value}
                 </h2>
 
-                <p className="mt-2 text-xs text-slate-400">
+                <p className="mt-2 text-xs text-[#94A3B8]">
                   {stat.description}
                 </p>
               </div>
@@ -135,57 +182,83 @@ export default function DashboardPage() {
         {/* Main Content */}
         <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
           {/* Recent Activity */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6 xl:col-span-2">
-            <div className="mb-6 flex items-center justify-between">
+          <div className="rounded-2xl border border-[#E1EAF0] bg-white p-5 shadow-sm sm:p-6 xl:col-span-2">
+            <div className="mb-6 flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">
+                <h2 className="text-lg font-bold text-[#102A43]">
                   Recent Activity
                 </h2>
-                <p className="mt-1 text-sm text-slate-500">
+
+                <p className="mt-1 text-sm text-[#718096]">
                   Your latest reading activities
                 </p>
               </div>
 
-              <button className="flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              <button
+                onClick={() => router.push("/dashboard/my-books")}
+                className="flex shrink-0 items-center gap-1 text-sm font-semibold text-[#0B6F83] transition hover:text-[#07576B]"
+              >
                 View all
                 <ArrowUpRight size={16} />
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {recentBooks.map((book) => (
                 <div
                   key={book.title}
-                  className="flex items-center gap-4 rounded-xl border border-slate-100 p-3 transition hover:bg-slate-50"
+                  className="flex items-center gap-4 rounded-xl border border-[#EDF2F5] p-3 transition hover:border-[#CDE5E9] hover:bg-[#F8FBFC]"
                 >
                   <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${book.color}`}
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${book.iconBg} ${book.iconColor}`}
                   >
-                    <BookOpen className="text-slate-700" size={22} />
+                    <BookOpen size={22} strokeWidth={1.8} />
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-semibold text-slate-800">
+                    <h3 className="truncate text-sm font-semibold text-[#263B50]">
                       {book.title}
                     </h3>
-                    <p className="mt-1 text-xs text-slate-500">
+
+                    <p className="mt-1 text-xs text-[#718096]">
                       {book.author}
                     </p>
+
+                    <div className="mt-2 flex items-center gap-2 sm:hidden">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                          book.status === "Completed"
+                            ? "bg-[#EAF5EF] text-[#368466]"
+                            : book.status === "Borrowed"
+                              ? "bg-[#EAF6F7] text-[#0B6F83]"
+                              : "bg-[#FFF3E8] text-[#D88745]"
+                        }`}
+                      >
+                        {book.status}
+                      </span>
+
+                      <span className="text-[11px] text-[#94A3B8]">
+                        {book.date}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="hidden text-right sm:block">
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-medium ${
                         book.status === "Completed"
-                          ? "bg-emerald-50 text-emerald-600"
+                          ? "bg-[#EAF5EF] text-[#368466]"
                           : book.status === "Borrowed"
-                            ? "bg-blue-50 text-blue-600"
-                            : "bg-amber-50 text-amber-600"
+                            ? "bg-[#EAF6F7] text-[#0B6F83]"
+                            : "bg-[#FFF3E8] text-[#D88745]"
                       }`}
                     >
                       {book.status}
                     </span>
-                    <p className="mt-2 text-xs text-slate-400">{book.date}</p>
+
+                    <p className="mt-2 text-xs text-[#94A3B8]">
+                      {book.date}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -193,67 +266,61 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <h2 className="text-lg font-bold text-slate-900">
-              Quick Actions
-            </h2>
+          <div className="rounded-2xl border border-[#E1EAF0] bg-white p-5 shadow-sm sm:p-6">
+            <div>
+              <h2 className="text-lg font-bold text-[#102A43]">
+                Quick Actions
+              </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
-              Manage your library faster
-            </p>
+              <p className="mt-1 text-sm text-[#718096]">
+                Manage your library faster
+              </p>
+            </div>
 
             <div className="mt-6 space-y-3">
-              <button className="flex w-full items-center gap-3 rounded-xl bg-indigo-50 p-4 text-left transition hover:bg-indigo-100">
-                <div className="rounded-lg bg-indigo-600 p-2 text-white">
-                  <Plus size={18} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Add a new book
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Expand your collection
-                  </p>
-                </div>
-              </button>
+              {quickActions.map((action) => {
+                const Icon = action.icon;
 
-              <button className="flex w-full items-center gap-3 rounded-xl bg-emerald-50 p-4 text-left transition hover:bg-emerald-100">
-                <div className="rounded-lg bg-emerald-600 p-2 text-white">
-                  <BookMarked size={18} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Browse my books
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Explore your collection
-                  </p>
-                </div>
-              </button>
+                return (
+                  <button
+                    key={action.title}
+                    onClick={() => router.push(action.path)}
+                    className={`group flex w-full items-center gap-3 rounded-xl ${action.background} p-4 text-left transition hover:-translate-y-0.5 hover:shadow-md`}
+                  >
+                    <div
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${action.iconBg} text-white shadow-sm`}
+                    >
+                      <Icon size={18} />
+                    </div>
 
-              <button className="flex w-full items-center gap-3 rounded-xl bg-orange-50 p-4 text-left transition hover:bg-orange-100">
-                <div className="rounded-lg bg-orange-500 p-2 text-white">
-                  <CalendarDays size={18} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-800">
-                    Manage borrowings
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    Track borrowed books
-                  </p>
-                </div>
-              </button>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-[#263B50]">
+                        {action.title}
+                      </p>
+
+                      <p className="mt-1 text-xs text-[#718096]">
+                        {action.description}
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={17}
+                      className="shrink-0 text-[#8AA0AE] transition group-hover:translate-x-1 group-hover:text-[#0B6F83]"
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* Reading Insight */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-lg sm:p-8">
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0B6F83] to-[#087D91] p-6 text-white shadow-lg shadow-[#0B6F83]/15 sm:p-8">
           <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="mb-3 flex items-center gap-2 text-indigo-100">
+              <div className="mb-3 flex items-center gap-2 text-[#C9F1F3]">
                 <TrendingUp size={18} />
+
                 <span className="text-sm font-medium">
                   Your Reading Insight
                 </span>
@@ -263,19 +330,20 @@ export default function DashboardPage() {
                 Keep your reading streak alive!
               </h2>
 
-              <p className="mt-2 max-w-xl text-sm leading-6 text-indigo-100">
-                You have been making great progress. Read a little every day
-                and keep building your knowledge.
+              <p className="mt-2 max-w-xl text-sm leading-6 text-white/75">
+                You have been making great progress. Read a little every
+                day and keep building your knowledge.
               </p>
             </div>
 
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-4xl">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-4xl backdrop-blur-sm">
               📚
             </div>
           </div>
 
-          <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-white/10" />
-          <div className="absolute -bottom-20 right-32 h-40 w-40 rounded-full bg-white/10" />
+          <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full border-[25px] border-white/5" />
+
+          <div className="absolute -bottom-20 right-32 h-40 w-40 rounded-full bg-[#20B8C4]/10 blur-xl" />
         </section>
       </div>
     </div>

@@ -127,4 +127,23 @@
   html {
     @apply font-sans;
   }
+
+  .booknook-swiper .swiper-pagination {
+  bottom: 18px !important;
+}
+
+.booknook-swiper .swiper-pagination-bullet {
+  width: 9px;
+  height: 9px;
+  background: #0b6f83;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.booknook-swiper .swiper-pagination-bullet-active {
+  width: 26px;
+  border-radius: 999px;
+  background: #0b6f83;
+  opacity: 1;
+}
 }

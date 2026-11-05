@@ -11,6 +11,8 @@ import {
   CalendarDays,
   UserRound,
   X,
+  LibraryBig,
+  CheckCircle2,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
@@ -193,10 +195,13 @@ export default function BookDetailsPage() {
   // Loading UI
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="flex min-h-[60vh] items-center justify-center bg-[#F7FAFB] px-4">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent" />
-          <p className="text-gray-500">Loading book details...</p>
+          <div className="mx-auto mb-4 size-11 animate-spin rounded-full border-4 border-[#16A6B8] border-t-transparent" />
+
+          <p className="text-sm font-medium text-slate-500">
+            Loading book details...
+          </p>
         </div>
       </div>
     );
@@ -205,21 +210,24 @@ export default function BookDetailsPage() {
   // Not found UI
   if (!book) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-        <BookOpen size={48} className="mb-4 text-gray-300" />
+      <div className="flex min-h-[60vh] flex-col items-center justify-center bg-[#F7FAFB] px-4 text-center">
+        <div className="mb-5 flex size-20 items-center justify-center rounded-3xl bg-[#E5F6F8] text-[#16A6B8]">
+          <BookOpen size={42} />
+        </div>
 
-        <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-[#063047]">
           Book Not Found
         </h2>
 
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
           We could not find the book you are looking for.
         </p>
 
         <Link
           href="/books"
-          className="mt-6 rounded-lg bg-indigo-600 px-5 py-3 font-semibold text-white hover:bg-indigo-700"
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#063047] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#16A6B8]"
         >
+          <ArrowLeft size={17} />
           Browse Books
         </Link>
       </div>
@@ -229,123 +237,147 @@ export default function BookDetailsPage() {
   const isAvailable = book.availableCopies > 0;
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen bg-[#F7FAFB] px-4 py-8 sm:px-6 sm:py-10 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl">
         {/* Back Button */}
         <Link
           href="/books"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#DCEBED] bg-white px-4 py-2.5 text-sm font-medium text-[#063047] shadow-sm transition hover:border-[#16A6B8] hover:text-[#16A6B8]"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={17} />
           Back to Books
         </Link>
 
         {/* Book Details */}
-        <div className="grid gap-10 rounded-3xl bg-white p-6 shadow-sm sm:p-10 lg:grid-cols-2">
-          {/* Book Image */}
-          <div className="flex items-center justify-center rounded-2xl bg-indigo-50 p-6">
-            {book.image ? (
-              <Image
-                src={book.image}
-                alt={book.title}
-                width={400}
-                height={560}
-                unoptimized
-                className="max-h-[500px] w-auto rounded-xl object-contain shadow-lg"
-              />
-            ) : (
-              <div className="flex h-[400px] w-full items-center justify-center rounded-xl bg-gray-100">
-                <BookOpen size={64} className="text-gray-300" />
-              </div>
-            )}
-          </div>
-
-          {/* Book Information */}
-          <div className="flex flex-col justify-center">
-            <span className="mb-4 w-fit rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">
-              {book.category}
-            </span>
-
-            <h1 className="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
-              {book.title}
-            </h1>
-
-            <div className="mt-5 flex items-center gap-2 text-gray-600">
-              <UserRound size={18} className="text-indigo-600" />
-              <span>
-                By <strong>{book.author}</strong>
-              </span>
+        <div className="overflow-hidden rounded-3xl border border-[#DCEBED] bg-white shadow-sm">
+          <div className="grid gap-8 p-4 sm:p-7 lg:grid-cols-2 lg:gap-10 lg:p-10">
+            {/* Book Image */}
+            <div className="flex min-h-[360px] items-center justify-center rounded-2xl bg-[#E5F6F8] p-6 sm:min-h-[480px] sm:p-10">
+              {book.image ? (
+                <Image
+                  src={book.image}
+                  alt={book.title}
+                  width={400}
+                  height={560}
+                  unoptimized
+                  className="max-h-[500px] w-auto rounded-xl object-contain shadow-xl"
+                />
+              ) : (
+                <div className="flex h-[400px] w-full items-center justify-center rounded-xl bg-white/70">
+                  <BookOpen size={64} className="text-[#16A6B8]/40" />
+                </div>
+              )}
             </div>
 
-            <div className="my-7 h-px w-full bg-gray-100" />
+            {/* Book Information */}
+            <div className="flex flex-col justify-center py-2 sm:py-4">
+              <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[#16A6B8]/20 bg-[#E5F6F8] px-4 py-2 text-sm font-semibold text-[#063047]">
+                <LibraryBig size={16} />
+                {book.category}
+              </div>
 
-            <h2 className="mb-3 text-lg font-semibold text-gray-900">
-              About This Book
-            </h2>
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-[#063047] sm:text-4xl lg:text-5xl">
+                {book.title}
+              </h1>
 
-            <p className="leading-7 text-gray-600">
-              {book.description ||
-                "No description available for this book."}
-            </p>
+              <div className="mt-5 flex items-center gap-2 text-slate-600">
+                <UserRound size={18} className="text-[#16A6B8]" />
 
-            {/* Copy Availability */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="font-medium text-gray-700">
-                Total Copies: {book.totalCopies}
-              </span>
+                <span className="text-sm sm:text-base">
+                  By <strong className="text-[#063047]">{book.author}</strong>
+                </span>
+              </div>
 
-              <span className="text-gray-300">|</span>
+              <div className="my-7 h-px w-full bg-[#E7EFF1]" />
 
-              <span className="font-medium text-gray-700">
-                Available Copies:
-              </span>
+              <h2 className="mb-3 text-lg font-bold text-[#063047]">
+                About This Book
+              </h2>
 
-              <span
-                className={`rounded-full px-3 py-1 text-sm font-semibold ${
-                  isAvailable
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
+              <p className="text-sm leading-7 text-slate-600 sm:text-base">
+                {book.description ||
+                  "No description available for this book."}
+              </p>
+
+              {/* Copy Availability */}
+              <div className="mt-7 rounded-2xl border border-[#DCEBED] bg-[#F7FAFB] p-4 sm:p-5">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500">
+                      Total Copies
+                    </p>
+
+                    <p className="mt-1 text-2xl font-bold text-[#063047]">
+                      {book.totalCopies}
+                    </p>
+                  </div>
+
+                  <div className="h-10 w-px bg-[#DCEBED]" />
+
+                  <div>
+                    <p className="text-xs font-medium text-slate-500">
+                      Available Copies
+                    </p>
+
+                    <p
+                      className={`mt-1 text-2xl font-bold ${
+                        isAvailable ? "text-[#16A6B8]" : "text-red-500"
+                      }`}
+                    >
+                      {book.availableCopies}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                      isAvailable
+                        ? "bg-[#E5F6F8] text-[#087E8B]"
+                        : "bg-red-50 text-red-600"
+                    }`}
+                  >
+                    {isAvailable && <CheckCircle2 size={14} />}
+
+                    {isAvailable ? "Available" : "Not Available"}
+                  </span>
+                </div>
+              </div>
+
+              {book.addedDate && (
+                <div className="mt-5 flex items-center gap-2 text-sm text-slate-500">
+                  <CalendarDays size={17} className="text-[#16A6B8]" />
+                  Added on {book.addedDate}
+                </div>
+              )}
+
+              {/* Borrow Button */}
+              <button
+                onClick={handleOpenBorrowModal}
+                disabled={!isAvailable || borrowing}
+                className="mt-8 w-full rounded-xl bg-[#063047] px-6 py-4 text-sm font-semibold text-white shadow-md transition hover:bg-[#16A6B8] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none sm:w-fit sm:min-w-[220px]"
               >
-                {isAvailable
-                  ? book.availableCopies
-                  : "Not Available"}
-              </span>
+                {!isAvailable ? "Not Available" : "Borrow This Book"}
+              </button>
             </div>
-
-            {book.addedDate && (
-              <div className="mt-5 flex items-center gap-2 text-sm text-gray-500">
-                <CalendarDays size={17} />
-                Added on {book.addedDate}
-              </div>
-            )}
-
-            {/* Borrow Button */}
-            <button
-              onClick={handleOpenBorrowModal}
-              disabled={!isAvailable || borrowing}
-              className="mt-8 w-full rounded-xl bg-indigo-600 px-6 py-4 font-semibold text-white shadow-md transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:shadow-none sm:w-fit"
-            >
-              {!isAvailable
-                ? "Not Available"
-                : "Borrow This Book"}
-            </button>
           </div>
         </div>
       </div>
 
       {/* Borrow Modal */}
       {showBorrowModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#063047]/50 p-4 backdrop-blur-sm">
+          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-[#DCEBED] bg-white p-5 shadow-2xl sm:p-7">
             {/* Modal Header */}
-            <div className="mb-6 flex items-center justify-between">
+            <div className="mb-6 flex items-start justify-between">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">
+                <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#16A6B8]">
+                  <BookOpen size={22} />
+                </div>
+
+                <h2 className="text-xl font-bold text-[#063047]">
                   Borrow This Book
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-slate-500">
                   Confirm your borrowing details.
                 </p>
               </div>
@@ -353,7 +385,8 @@ export default function BookDetailsPage() {
               <button
                 type="button"
                 onClick={() => setShowBorrowModal(false)}
-                className="rounded-full p-2 text-gray-500 transition hover:bg-gray-100"
+                disabled={borrowing}
+                className="rounded-full p-2 text-slate-500 transition hover:bg-[#E5F6F8] hover:text-[#063047] disabled:cursor-not-allowed"
                 aria-label="Close modal"
               >
                 <X size={20} />
@@ -364,7 +397,7 @@ export default function BookDetailsPage() {
             <form onSubmit={handleBorrow} className="space-y-4">
               {/* User Name */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-[#063047]">
                   User Name
                 </label>
 
@@ -372,13 +405,13 @@ export default function BookDetailsPage() {
                   type="text"
                   value={user?.name || ""}
                   readOnly
-                  className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-gray-600 outline-none"
+                  className="w-full rounded-xl border border-[#DCEBED] bg-[#F7FAFB] px-4 py-3 text-sm text-slate-600 outline-none"
                 />
               </div>
 
               {/* User Email */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-[#063047]">
                   Email Address
                 </label>
 
@@ -386,13 +419,13 @@ export default function BookDetailsPage() {
                   type="email"
                   value={user?.email || ""}
                   readOnly
-                  className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-gray-600 outline-none"
+                  className="w-full rounded-xl border border-[#DCEBED] bg-[#F7FAFB] px-4 py-3 text-sm text-slate-600 outline-none"
                 />
               </div>
 
               {/* Book Title */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-[#063047]">
                   Book
                 </label>
 
@@ -400,13 +433,13 @@ export default function BookDetailsPage() {
                   type="text"
                   value={book.title}
                   readOnly
-                  className="w-full rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-gray-600 outline-none"
+                  className="w-full rounded-xl border border-[#DCEBED] bg-[#F7FAFB] px-4 py-3 text-sm text-slate-600 outline-none"
                 />
               </div>
 
               {/* Return Date */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-[#063047]">
                   Return Date
                 </label>
 
@@ -416,28 +449,24 @@ export default function BookDetailsPage() {
                   min={new Date().toISOString().split("T")[0]}
                   onChange={(e) => setReturnDate(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full rounded-xl border border-[#DCEBED] bg-white px-4 py-3 text-sm text-[#063047] outline-none transition focus:border-[#16A6B8] focus:ring-4 focus:ring-[#16A6B8]/10"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={
-                  borrowing || !user?.email || !isAvailable
-                }
-                className="mt-2 w-full rounded-lg bg-indigo-600 px-4 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+                disabled={borrowing || !user?.email || !isAvailable}
+                className="mt-2 w-full rounded-xl bg-[#063047] px-4 py-3.5 text-sm font-semibold text-white transition hover:bg-[#16A6B8] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {borrowing
-                  ? "Confirming..."
-                  : "Confirm Borrow"}
+                {borrowing ? "Confirming..." : "Confirm Borrow"}
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowBorrowModal(false)}
                 disabled={borrowing}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 font-medium text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-xl border border-[#DCEBED] px-4 py-3.5 text-sm font-semibold text-slate-600 transition hover:bg-[#F7FAFB] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Cancel
               </button>

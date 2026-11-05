@@ -1,37 +1,36 @@
-
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
   ChevronLeft,
   ChevronRight,
+  LibraryBig,
+  Sparkles,
 } from "lucide-react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  Pagination,
-  EffectFade,
-} from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/effect-fade";
 
 const slides = [
   {
     id: 1,
-    eyebrow: "Online Library",
-    title: "Discover Your Next",
-    highlight: "Favorite Book",
+    eyebrow: "Discover BookNook",
+    title: "Get Your New",
+    highlight: "Book Collections",
     description:
-      "Explore a world of stories, knowledge, and imagination. Find the perfect book for your next reading adventure.",
-    image:
-      "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=85",
+      "Find your next favorite book from our growing collection. Explore inspiring stories, discover new ideas, and make every reading moment meaningful.",
+    books: [
+      { name: "STORIES", color: "#0B6F83", spine: "#064B5B" },
+      { name: "KNOWLEDGE", color: "#20B8C4", spine: "#0B6F83" },
+      { name: "DISCOVER", color: "#102A43", spine: "#071B2C" },
+    ],
   },
   {
     id: 2,
@@ -39,9 +38,12 @@ const slides = [
     title: "Every Page Opens",
     highlight: "A New World",
     description:
-      "From timeless classics to exciting new stories, discover books that inspire, educate, and entertain.",
-    image:
-      "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=1200&q=85",
+      "From timeless classics to exciting new stories, discover books that inspire, educate, and entertain. Your next adventure is waiting.",
+    books: [
+      { name: "CLASSICS", color: "#102A43", spine: "#071B2C" },
+      { name: "ADVENTURE", color: "#0B6F83", spine: "#064B5B" },
+      { name: "IMAGINATION", color: "#20B8C4", spine: "#0B6F83" },
+    ],
   },
   {
     id: 3,
@@ -49,182 +51,258 @@ const slides = [
     title: "Read More. Learn",
     highlight: "Grow More.",
     description:
-      "Build your reading habit with BookNook. Borrow your favorite books and make every page count.",
-    image:
-      "https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=1200&q=85",
+      "Build your reading habit with BookNook. Discover new knowledge, borrow your favorite books, and make every page count.",
+    books: [
+      { name: "LEARN", color: "#20B8C4", spine: "#0B6F83" },
+      { name: "GROW", color: "#102A43", spine: "#071B2C" },
+      { name: "READ", color: "#0B6F83", spine: "#064B5B" },
+    ],
   },
 ];
 
-export default function Banner() {
-  const [isMounted, setIsMounted] = useState(false);
-  const swiperRef = useRef<SwiperType | null>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Prevent Swiper from rendering during prerender
-  if (!isMounted) {
-    return (
-      <section className="bg-[#f8f7ef] px-3 py-5 sm:px-6 sm:py-8 lg:px-10">
-        <div className="mx-auto h-[540px] max-w-[1600px] animate-pulse rounded-[28px] bg-[#f7f6ec] sm:rounded-[36px] lg:h-[600px]" />
-      </section>
-    );
-  }
+function BookArtwork({
+  books,
+}: {
+  books: {
+    name: string;
+    color: string;
+    spine: string;
+  }[];
+}) {
+  const bookHeights = ["h-48", "h-56", "h-52"];
+  const bookRotations = ["-rotate-6", "rotate-2", "rotate-6"];
 
   return (
-    <section className="bg-[#f8f7ef] px-3 py-5 sm:px-6 sm:py-8 lg:px-10">
-      <div className="relative mx-auto max-w-[1600px] overflow-hidden rounded-[28px] bg-[#f7f6ec] shadow-xl sm:rounded-[36px]">
-        <Swiper
-          modules={[Autoplay, Pagination, EffectFade]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
-          }}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: false,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          loop
-          speed={700}
-          className="booknook-swiper"
-        >
-          {slides.map((slide) => (
-            <SwiperSlide key={slide.id}>
-              <div className="relative grid min-h-[540px] grid-cols-1 overflow-hidden lg:min-h-[600px] lg:grid-cols-2">
-                {/* Left content */}
-                <div className="relative z-10 flex items-center px-6 py-14 sm:px-10 lg:px-16 lg:py-16">
-                  <div className="max-w-2xl">
+    <div className="relative mx-auto flex h-[280px] w-full max-w-[500px] items-center justify-center sm:h-[340px] lg:h-[430px]">
+      {/* Decorative background */}
+      <div className="absolute right-8 top-8 size-64 rounded-full bg-[#20B8C4]/10 blur-3xl sm:size-80" />
+
+      <div className="absolute bottom-8 left-8 size-48 rounded-full bg-[#0B6F83]/10 blur-3xl" />
+
+      <div className="absolute right-10 top-10 size-16 rotate-12 rounded-2xl border border-[#20B8C4]/20" />
+
+      <div className="absolute bottom-12 left-8 size-12 rounded-full bg-[#20B8C4]/15" />
+
+      <Sparkles className="absolute right-16 top-16 size-7 text-[#20B8C4]" />
+
+      <Sparkles className="absolute left-12 top-24 size-5 text-[#0B6F83]/50" />
+
+      {/* Book platform */}
+      <div className="absolute bottom-10 left-1/2 h-8 w-[80%] -translate-x-1/2 rounded-full bg-[#102A43]/10 blur-md" />
+
+      {/* Books */}
+      <div className="relative z-10 flex items-end justify-center gap-2 sm:gap-4">
+        {books.map((book, index) => (
+          <div
+            key={book.name}
+            className={`relative ${bookHeights[index]} w-20 rounded-r-lg shadow-xl sm:w-28 ${bookRotations[index]}`}
+            style={{
+              backgroundColor: book.color,
+              zIndex: index + 1,
+            }}
+          >
+            {/* Book spine */}
+            <div
+              className="absolute left-0 top-0 h-full w-3 rounded-l-md"
+              style={{ backgroundColor: book.spine }}
+            />
+
+            {/* Book cover */}
+            <div className="absolute inset-x-4 bottom-5 top-5 flex flex-col items-center justify-center border-y border-white/20 text-center">
+              <BookOpen className="mb-3 size-7 text-white/90" />
+
+              <span className="text-[9px] font-bold tracking-widest text-white sm:text-xs">
+                BOOKNOOK
+              </span>
+
+              <span className="mt-2 text-[8px] font-medium text-white/70 sm:text-[10px]">
+                {book.name}
+              </span>
+            </div>
+
+            {/* Book pages */}
+            <div className="absolute -right-1 top-1 h-[calc(100%-8px)] w-1 rounded-r-sm bg-[#F4F8FA]" />
+          </div>
+        ))}
+      </div>
+
+      {/* Floating library card */}
+      <div className="absolute bottom-5 right-0 z-20 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-3 py-3 shadow-xl backdrop-blur-md sm:bottom-8 sm:right-4 sm:px-4">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-[#E5F6F8] text-[#0B6F83] sm:size-12">
+          <LibraryBig className="size-6" />
+        </div>
+
+        <div>
+          <p className="text-xs text-slate-500">Explore</p>
+          <p className="text-sm font-bold text-[#102A43]">
+            Your Library
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Banner() {
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  return (
+    <section className="bg-[#F4F8FA] py-5 sm:py-8">
+      {/* Fixed shared width */}
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative h-[700px] overflow-hidden rounded-[28px] border border-white bg-gradient-to-br from-white via-[#F7FBFC] to-[#E5F6F8] shadow-lg shadow-[#102A43]/5 sm:h-[650px] sm:rounded-[36px] lg:h-[600px]">
+          {/* Background accents */}
+          <div className="pointer-events-none absolute -right-28 -top-28 size-80 rounded-full bg-[#20B8C4]/10 blur-3xl" />
+
+          <div className="pointer-events-none absolute -bottom-32 -left-20 size-80 rounded-full bg-[#0B6F83]/5 blur-3xl" />
+
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            loop
+            speed={650}
+            className="booknook-swiper h-full"
+          >
+            {slides.map((slide) => (
+              <SwiperSlide key={slide.id} className="h-full">
+                <div className="grid h-full grid-cols-1 items-center gap-2 px-6 pb-12 pt-8 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:px-14 xl:px-16">
+                  {/* Left content */}
+                  <div className="relative z-10 order-2 text-center lg:order-1 lg:text-left">
                     {/* Brand */}
                     <Link
                       href="/"
-                      className="mb-8 inline-flex items-center gap-3"
+                      className="mb-5 inline-flex flex-wrap items-center justify-center gap-3 lg:justify-start"
                     >
-                      <BookOpen className="size-9 text-orange-500" />
+                      <span className="flex size-11 items-center justify-center rounded-xl bg-[#0B6F83] text-white shadow-md shadow-[#0B6F83]/20">
+                        <BookOpen className="size-6" />
+                      </span>
 
-                      <span className="text-2xl font-bold tracking-tight text-[#123e2c]">
+                      <span className="text-2xl font-extrabold tracking-tight text-[#102A43]">
                         BookNook
                       </span>
 
-                      <span className="rounded-full bg-orange-100 px-4 py-2 text-xs font-semibold text-orange-600 sm:text-sm">
+                      <span className="rounded-full border border-[#20B8C4]/20 bg-white/80 px-4 py-2 text-xs font-semibold text-[#0B6F83] sm:text-sm">
                         {slide.eyebrow}
                       </span>
                     </Link>
 
                     {/* Heading */}
-                    <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-[#123e2c] sm:text-5xl lg:text-6xl">
+                    <h1 className="text-4xl font-extrabold leading-[1.12] tracking-tight text-[#102A43] sm:text-5xl lg:text-6xl">
                       {slide.title}
 
-                      <span className="mt-1 block text-orange-500">
+                      <span className="mt-2 block text-[#0B6F83]">
                         {slide.highlight}
                       </span>
                     </h1>
 
+                    {/* Accent line */}
+                    <div className="mx-auto mt-5 h-1.5 w-16 rounded-full bg-[#20B8C4] lg:mx-0" />
+
                     {/* Description */}
-                    <p className="mt-6 max-w-xl text-base leading-7 text-[#24372f] sm:text-lg sm:leading-8">
+                    <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7 lg:mx-0 lg:text-lg">
                       {slide.description}
                     </p>
 
-                    {/* CTA */}
-                    <Link
-                      href="/books"
-                      className="mt-8 inline-flex h-12 items-center gap-3 rounded-full bg-orange-500 px-7 text-sm font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600 sm:h-14 sm:px-9 sm:text-base"
-                    >
-                      Browse Books
-                      <ArrowRight className="size-5" />
-                    </Link>
+                    {/* Buttons */}
+                    <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                      <Link
+                        href="/books"
+                        className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#0B6F83] px-7 text-sm font-bold text-white shadow-lg shadow-[#0B6F83]/20 transition duration-300 hover:-translate-y-1 hover:bg-[#102A43] sm:h-14 sm:px-8 sm:text-base"
+                      >
+                        Explore Books
+
+                        <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                      </Link>
+
+                      <Link
+                        href="/about"
+                        className="inline-flex h-12 items-center rounded-full border border-[#0B6F83]/20 bg-white/80 px-6 text-sm font-semibold text-[#102A43] transition hover:border-[#0B6F83] hover:bg-[#E5F6F8] sm:h-14 sm:px-7 sm:text-base"
+                      >
+                        Learn More
+                      </Link>
+                    </div>
+
+                    {/* Small detail */}
+                    <div className="mt-6 flex items-center justify-center gap-3 text-sm text-slate-500 lg:justify-start">
+                      <span className="flex -space-x-2">
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#0B6F83] text-[10px] text-white">
+                          B
+                        </span>
+
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#20B8C4] text-[10px] text-white">
+                          N
+                        </span>
+
+                        <span className="flex size-7 items-center justify-center rounded-full border-2 border-white bg-[#102A43] text-[10px] text-white">
+                          +
+                        </span>
+                      </span>
+
+                      <span>Stories worth discovering</span>
+                    </div>
+                  </div>
+
+                  {/* Right artwork */}
+                  <div className="relative order-1 lg:order-2">
+                    <BookArtwork books={slide.books} />
                   </div>
                 </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-                {/* Right image */}
-                <div className="relative min-h-[300px] lg:min-h-full">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url("${slide.image}")`,
-                    }}
-                  />
+          {/* Previous button */}
+          <button
+            type="button"
+            onClick={() => swiperRef.current?.slidePrev()}
+            aria-label="Previous slide"
+            className="absolute left-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white md:flex"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
 
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#f7f6ec] via-[#f7f6ec]/20 to-transparent lg:bg-gradient-to-r lg:from-[#f7f6ec]/10 lg:via-transparent lg:to-transparent" />
-
-                  <div className="absolute inset-0 bg-[#123e2c]/10" />
-
-                  {/* Decorative circle */}
-                  <div className="absolute -left-20 -top-24 size-72 rounded-full bg-[#c7dfbd]/40 blur-sm" />
-                </div>
-
-                {/* Decorative bottom wave */}
-                <div className="pointer-events-none absolute bottom-0 left-0 z-10 w-full">
-                  <svg
-                    viewBox="0 0 1440 150"
-                    className="h-20 w-full sm:h-28"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M0,80 C180,160 300,130 500,80 C700,20 850,30 1050,100 C1200,150 1320,130 1440,70 L1440,150 L0,150 Z"
-                      fill="#4f865d"
-                      opacity="0.85"
-                    />
-
-                    <path
-                      d="M0,110 C200,160 380,140 580,100 C800,50 920,70 1100,120 C1250,150 1350,140 1440,100 L1440,150 L0,150 Z"
-                      fill="#236342"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* Previous button */}
-        <button
-          type="button"
-          onClick={() => swiperRef.current?.slidePrev()}
-          aria-label="Previous slide"
-          className="absolute left-4 top-1/2 z-20 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#123e2c] shadow-lg transition hover:bg-orange-500 hover:text-white md:flex"
-        >
-          <ChevronLeft className="size-6" />
-        </button>
-
-        {/* Next button */}
-        <button
-          type="button"
-          onClick={() => swiperRef.current?.slideNext()}
-          aria-label="Next slide"
-          className="absolute right-4 top-1/2 z-20 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#123e2c] shadow-lg transition hover:bg-orange-500 hover:text-white md:flex"
-        >
-          <ChevronRight className="size-6" />
-        </button>
+          {/* Next button */}
+          <button
+            type="button"
+            onClick={() => swiperRef.current?.slideNext()}
+            aria-label="Next slide"
+            className="absolute right-3 top-1/2 z-20 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-white/90 text-[#102A43] shadow-lg transition hover:bg-[#0B6F83] hover:text-white md:flex"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+        </div>
       </div>
 
-      {/* Pagination styling */}
-      <style jsx global>{`
+      {/* Pagination */}
+      {/* <style jsx global>{`
         .booknook-swiper .swiper-pagination {
-          bottom: 22px !important;
+          bottom: 18px !important;
         }
 
         .booknook-swiper .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          background: #ffffff;
-          border: 1px solid #4f865d;
-          opacity: 0.8;
+          width: 9px;
+          height: 9px;
+          background: #0b6f83;
+          opacity: 0.3;
+          transition: all 0.3s ease;
         }
 
         .booknook-swiper .swiper-pagination-bullet-active {
           width: 26px;
           border-radius: 999px;
-          background: #f97316;
-          border: 1px solid #f97316;
+          background: #0b6f83;
           opacity: 1;
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 }

@@ -10,6 +10,11 @@ import {
   CheckCircle2,
   Sparkles,
   Link as LinkIcon,
+  ArrowLeft,
+  LibraryBig,
+  Layers3,
+  UserRound,
+  Mail,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getTokenFromClient } from "@/lib/getTokenFromClient";
@@ -127,65 +132,87 @@ export default function AddBookForm() {
       console.error("Add book error:", error);
 
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong"
+        error instanceof Error ? error.message : "Something went wrong"
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-[#DCE7EC] bg-[#F8FAFC] px-4 py-3.5 text-sm text-[#102A43] outline-none transition placeholder:text-[#94A3B8] focus:border-[#0B6F83] focus:bg-white focus:ring-4 focus:ring-[#0B6F83]/10";
+
+  const labelClass =
+    "mb-2 block text-sm font-semibold text-[#263B50]";
+
   return (
-    <div className="min-h-screen bg-[#f7f9f6] px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-        {/* Page Header */}
-        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <main className="relative min-h-screen overflow-hidden bg-[#F4F8FA] px-4 py-8 sm:px-6 lg:px-8">
+      {/* Background decoration */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-[#20B8C4]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-10 h-80 w-80 rounded-full bg-[#0B6F83]/10 blur-3xl" />
+
+      <div className="relative mx-auto max-w-6xl">
+        {/* Page header */}
+        <div className="mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-semibold text-green-700">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="mb-5 inline-flex items-center gap-2 text-sm font-medium text-[#718096] transition hover:text-[#0B6F83]"
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#D5EBEE] bg-[#EAF6F7] px-3.5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#0B6F83]">
               <Sparkles size={14} />
               BookNook Library
             </div>
 
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h1 className="text-3xl font-extrabold tracking-tight text-[#102A43] sm:text-4xl">
               Add a New Book
             </h1>
 
-            <p className="mt-2 max-w-xl text-sm leading-6 text-gray-500 sm:text-base">
-              Share your favorite reads with the community. Add the details
-              below to grow your library.
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#718096] sm:text-base">
+              Share your favorite reads with the community. Add the book
+              information below and grow your library.
             </p>
           </div>
 
-          <div className="hidden h-16 w-16 items-center justify-center rounded-2xl bg-orange-100 text-orange-500 sm:flex">
-            <BookOpen size={32} />
+          <div className="hidden h-20 w-20 items-center justify-center rounded-3xl border border-[#D5EBEE] bg-white text-[#0B6F83] shadow-sm sm:flex">
+            <LibraryBig size={36} strokeWidth={1.6} />
           </div>
         </div>
 
-        {/* Form Card */}
-        <div className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)]">
-          {/* Card Header */}
-          <div className="border-b border-gray-100 px-6 py-5 sm:px-8">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Book Information
-            </h2>
+        {/* Form card */}
+        <div className="overflow-hidden rounded-3xl border border-[#E1EAF0] bg-white shadow-[0_20px_60px_rgba(16,42,67,0.07)]">
+          {/* Card heading */}
+          <div className="border-b border-[#E8EEF2] bg-gradient-to-r from-white to-[#F6FBFC] px-6 py-6 sm:px-8">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF6F7] text-[#0B6F83]">
+                <BookOpen size={22} />
+              </div>
 
-            <p className="mt-1 text-sm text-gray-500">
-              Fields marked with * are required.
-            </p>
+              <div>
+                <h2 className="text-lg font-bold text-[#102A43]">
+                  Book Information
+                </h2>
+                <p className="mt-1 text-sm text-[#718096]">
+                  Fields marked with <span className="text-[#0B6F83]">*</span>{" "}
+                  are required.
+                </p>
+              </div>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_280px]">
-              {/* Left: Form Fields */}
+            <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_300px]">
+              {/* Left: Form fields */}
               <div className="space-y-6">
-                {/* Book Title */}
+                {/* Book title */}
                 <div>
-                  <label
-                    htmlFor="title"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    Book Title <span className="text-orange-500">*</span>
+                  <label htmlFor="title" className={labelClass}>
+                    Book Title <span className="text-[#0B6F83]">*</span>
                   </label>
 
                   <input
@@ -196,17 +223,14 @@ export default function AddBookForm() {
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="e.g. The Alchemist"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                    className={inputClass}
                   />
                 </div>
 
-                {/* Author Name */}
+                {/* Author */}
                 <div>
-                  <label
-                    htmlFor="author"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    Author Name <span className="text-orange-500">*</span>
+                  <label htmlFor="author" className={labelClass}>
+                    Author Name <span className="text-[#0B6F83]">*</span>
                   </label>
 
                   <input
@@ -217,76 +241,75 @@ export default function AddBookForm() {
                     value={formData.author}
                     onChange={handleChange}
                     placeholder="e.g. Paulo Coelho"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                    className={inputClass}
                   />
                 </div>
 
-                {/* Category */}
-                <div>
-                  <label
-                    htmlFor="category"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    Category <span className="text-orange-500">*</span>
-                  </label>
+                {/* Category and copies */}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="category" className={labelClass}>
+                      Category <span className="text-[#0B6F83]">*</span>
+                    </label>
 
-                  <select
-                    id="category"
-                    name="category"
-                    required
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-gray-700 outline-none transition focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
-                  >
-                    <option value="">Choose a category</option>
+                    <select
+                      id="category"
+                      name="category"
+                      required
+                      value={formData.category}
+                      onChange={handleChange}
+                      className={`${inputClass} cursor-pointer`}
+                    >
+                      <option value="">Choose category</option>
 
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                      {categories.map((category) => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Total Copies - ADDED */}
-                <div>
-                  <label
-                    htmlFor="totalCopies"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    Total Copies <span className="text-orange-500">*</span>
-                  </label>
+                  <div>
+                    <label htmlFor="totalCopies" className={labelClass}>
+                      Total Copies <span className="text-[#0B6F83]">*</span>
+                    </label>
 
-                  <input
-                    id="totalCopies"
-                    name="totalCopies"
-                    type="number"
-                    min={1}
-                    step={1}
-                    required
-                    value={formData.totalCopies}
-                    onChange={handleChange}
-                    placeholder="Enter total number of copies"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
-                  />
+                    <div className="relative">
+                      <Layers3
+                        size={17}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#0B6F83]"
+                      />
 
-                  <p className="mt-2 text-xs text-gray-400">
-                    Enter the total number of physical copies in your library.
-                  </p>
+                      <input
+                        id="totalCopies"
+                        name="totalCopies"
+                        type="number"
+                        min={1}
+                        step={1}
+                        required
+                        value={formData.totalCopies}
+                        onChange={handleChange}
+                        placeholder="e.g. 5"
+                        className={`${inputClass} pl-11`}
+                      />
+                    </div>
+
+                    <p className="mt-2 text-xs leading-5 text-[#94A3B8]">
+                      Number of physical copies.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Description */}
                 <div>
                   <div className="mb-2 flex items-center justify-between">
-                    <label
-                      htmlFor="description"
-                      className="text-sm font-semibold text-gray-700"
-                    >
+                    <label htmlFor="description" className={labelClass}>
                       Short Description{" "}
-                      <span className="text-orange-500">*</span>
+                      <span className="text-[#0B6F83]">*</span>
                     </label>
 
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs font-medium text-[#94A3B8]">
                       {formData.description.length}/500
                     </span>
                   </div>
@@ -300,88 +323,99 @@ export default function AddBookForm() {
                     value={formData.description}
                     onChange={handleChange}
                     placeholder="What makes this book special? Write a short description..."
-                    className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3.5 text-sm leading-6 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:bg-white focus:ring-4 focus:ring-green-500/10"
+                    className={`${inputClass} resize-none leading-6`}
                   />
                 </div>
 
-                {/* User Name */}
-                <div>
-                  <label
-                    htmlFor="userName"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    User Name
-                  </label>
+                {/* User details */}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="userName" className={labelClass}>
+                      Added By
+                    </label>
 
-                  <input
-                    id="userName"
-                    type="text"
-                    value={userName}
-                    readOnly
-                    className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 px-4 py-3.5 text-sm text-gray-500"
-                  />
-                </div>
+                    <div className="relative">
+                      <UserRound
+                        size={17}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                      />
 
-                {/* User Email */}
-                <div>
-                  <label
-                    htmlFor="userEmail"
-                    className="mb-2 block text-sm font-semibold text-gray-700"
-                  >
-                    User Email
-                  </label>
+                      <input
+                        id="userName"
+                        type="text"
+                        value={userName}
+                        readOnly
+                        className="w-full cursor-not-allowed rounded-xl border border-[#E1EAF0] bg-[#F1F5F8] py-3.5 pl-11 pr-4 text-sm text-[#718096]"
+                      />
+                    </div>
+                  </div>
 
-                  <input
-                    id="userEmail"
-                    type="email"
-                    value={userEmail}
-                    readOnly
-                    className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 px-4 py-3.5 text-sm text-gray-500"
-                  />
+                  <div>
+                    <label htmlFor="userEmail" className={labelClass}>
+                      User Email
+                    </label>
+
+                    <div className="relative">
+                      <Mail
+                        size={17}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+                      />
+
+                      <input
+                        id="userEmail"
+                        type="email"
+                        value={userEmail}
+                        readOnly
+                        className="w-full cursor-not-allowed rounded-xl border border-[#E1EAF0] bg-[#F1F5F8] py-3.5 pl-11 pr-4 text-sm text-[#718096]"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Right: Image URL and Preview */}
-              <div>
-                <label
-                  htmlFor="image"
-                  className="mb-2 block text-sm font-semibold text-gray-700"
-                >
-                  Book Image URL <span className="text-orange-500">*</span>
-                </label>
+              {/* Right: Book cover preview */}
+              <aside>
+                <div className="rounded-2xl border border-[#E1EAF0] bg-[#F8FAFC] p-4 sm:p-5">
+                  <div className="mb-4">
+                    <h3 className="text-sm font-bold text-[#102A43]">
+                      Book Cover
+                    </h3>
+                    <p className="mt-1 text-xs leading-5 text-[#718096]">
+                      Add a cover image to make your book stand out.
+                    </p>
+                  </div>
 
-                <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4">
-                  <div className="relative">
+                  <div className="relative overflow-hidden rounded-xl border border-[#E1EAF0] bg-white">
                     {formData.image.trim() ? (
                       <img
                         src={formData.image}
                         alt="Book cover preview"
-                        className="h-72 w-full rounded-xl bg-white object-cover shadow-sm"
+                        className="h-72 w-full object-contain"
                       />
                     ) : (
-                      <div className="flex h-72 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-white px-4 text-center">
-                        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 text-green-600">
-                          <ImagePlus size={28} />
+                      <div className="flex h-72 w-full flex-col items-center justify-center bg-gradient-to-br from-[#EAF6F7] to-[#F4F8FA] px-5 text-center">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-[#0B6F83] shadow-sm">
+                          <ImagePlus size={30} strokeWidth={1.6} />
                         </div>
 
-                        <span className="text-sm font-semibold text-gray-800">
-                          Book cover preview
+                        <span className="text-sm font-semibold text-[#263B50]">
+                          Cover preview
                         </span>
 
-                        <span className="mt-2 text-xs text-gray-400">
-                          Paste an image URL below
+                        <span className="mt-2 text-xs leading-5 text-[#94A3B8]">
+                          Paste an image URL below to preview your book cover.
                         </span>
                       </div>
                     )}
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-5">
                     <label
                       htmlFor="image"
-                      className="mb-2 flex items-center gap-2 text-xs font-semibold text-gray-600"
+                      className="mb-2 flex items-center gap-2 text-sm font-semibold text-[#263B50]"
                     >
-                      <LinkIcon size={14} />
-                      Image URL
+                      <LinkIcon size={15} className="text-[#0B6F83]" />
+                      Image URL <span className="text-[#0B6F83]">*</span>
                     </label>
 
                     <input
@@ -391,30 +425,46 @@ export default function AddBookForm() {
                       required
                       value={formData.image}
                       onChange={handleChange}
-                      placeholder="https://i.ibb.co/your-image.jpg"
-                      className="w-full rounded-xl border border-gray-200 bg-white px-3 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-green-500 focus:ring-4 focus:ring-green-500/10"
+                      placeholder="https://example.com/book.jpg"
+                      className="w-full rounded-xl border border-[#DCE7EC] bg-white px-3.5 py-3 text-sm text-[#102A43] outline-none transition placeholder:text-[#94A3B8] focus:border-[#0B6F83] focus:ring-4 focus:ring-[#0B6F83]/10"
                     />
-                  </div>
 
-                  <div className="mt-3 flex items-start gap-2 text-xs leading-5 text-gray-400">
-                    <CheckCircle2 size={15} className="mt-0.5 shrink-0" />
-                    Upload your image to ImgBB and paste its direct image URL
-                    here.
+                    <div className="mt-3 flex items-start gap-2 rounded-xl bg-[#EAF6F7] p-3 text-xs leading-5 text-[#52717D]">
+                      <CheckCircle2
+                        size={15}
+                        className="mt-0.5 shrink-0 text-[#0B6F83]"
+                      />
+                      Upload your image to ImgBB and paste its direct image
+                      URL here.
+                    </div>
                   </div>
                 </div>
-              </div>
+
+                {/* Preview note */}
+                <div className="mt-4 rounded-2xl border border-[#D5EBEE] bg-white p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#0B6F83]">
+                    <Sparkles size={16} />
+                    A little book magic
+                  </div>
+
+                  <p className="mt-2 text-xs leading-5 text-[#718096]">
+                    Every book you add helps another reader discover their
+                    next favorite story.
+                  </p>
+                </div>
+              </aside>
             </div>
 
-            {/* Form Footer */}
-            <div className="flex flex-col-reverse gap-3 border-t border-gray-100 bg-gray-50/70 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <p className="text-xs leading-5 text-gray-400">
+            {/* Form footer */}
+            <div className="flex flex-col-reverse gap-4 border-t border-[#E8EEF2] bg-[#F8FAFC] px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+              <p className="text-xs leading-5 text-[#94A3B8]">
                 Please check your book information before submitting.
               </p>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-green-600/20 transition hover:-translate-y-0.5 hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B6F83] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#0B6F83]/20 transition duration-200 hover:-translate-y-0.5 hover:bg-[#07576B] hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 {loading ? (
                   <>
@@ -432,11 +482,11 @@ export default function AddBookForm() {
           </form>
         </div>
 
-        {/* Bottom Note */}
-        <p className="mt-5 text-center text-xs text-gray-400">
-          Every book you add helps make BookNook a better place for readers.
+        {/* Bottom note */}
+        <p className="mt-6 text-center text-xs text-[#94A3B8]">
+          BookNook — Your next favorite book is waiting.
         </p>
       </div>
-    </div>
+    </main>
   );
 }
