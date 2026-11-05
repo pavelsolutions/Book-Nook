@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -10,6 +11,8 @@ import {
   Sparkles,
   Home,
   User,
+  Menu,
+  X,
 } from "lucide-react";
 
 const sidebarLinks = [
@@ -42,12 +45,19 @@ const sidebarLinks = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[#E1EAF0] bg-white transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#071D2B]">
+  const closeMobileMenu = () => setIsMobileOpen(false);
+
+  const sidebarContent = (
+    <>
       {/* Logo */}
-      <div className="flex h-20 items-center gap-3 border-b border-[#E8EEF2] px-6 dark:border-[#1E3A4A]">
-        <Link href="/dashboard" className="flex items-center gap-3">
+      <div className="flex h-20 shrink-0 items-center gap-3 border-b border-[#E8EEF2] px-6 dark:border-[#1E3A4A]">
+        <Link
+          href="/dashboard"
+          onClick={closeMobileMenu}
+          className="flex items-center gap-3"
+        >
           <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#20B8C4] text-white shadow-lg shadow-[#0B6F83]/20">
             <BookOpen size={24} strokeWidth={2} />
 
@@ -69,7 +79,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-2 px-4 py-7">
+      <nav className="flex-1 space-y-2 overflow-y-auto px-4 py-7">
         <div className="mb-5 flex items-center justify-between px-3">
           <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#94A3B8] dark:text-[#7893A4]">
             Main Menu
@@ -90,13 +100,13 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={closeMobileMenu}
               className={`group relative flex items-center gap-3 overflow-hidden rounded-xl px-4 py-3.5 text-sm font-semibold transition-all duration-200 ${
                 isActive
                   ? "bg-[#EAF6F7] text-[#0B6F83] dark:bg-[#103746] dark:text-[#20B8C4]"
                   : "text-[#607486] hover:bg-[#F4F9FA] hover:text-[#0B6F83] dark:text-[#B6C7D2] dark:hover:bg-[#102A3A] dark:hover:text-[#20B8C4]"
               }`}
             >
-              {/* Active Indicator */}
               {isActive && (
                 <span className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-[#0B6F83] dark:bg-[#20B8C4]" />
               )}
@@ -114,10 +124,7 @@ export default function Sidebar() {
               <span className="flex-1">{item.title}</span>
 
               {isActive && (
-                <ChevronRight
-                  size={16}
-                  className="text-[#20B8C4]"
-                />
+                <ChevronRight size={16} className="text-[#20B8C4]" />
               )}
             </Link>
           );
@@ -125,16 +132,14 @@ export default function Sidebar() {
       </nav>
 
       {/* Library Promo */}
-      <div className="px-4 pb-5">
+      <div className="shrink-0 px-4 pb-5">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#087D91] p-4 text-white dark:from-[#103746] dark:to-[#0B5263]">
           <div className="relative z-10">
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
               <BookOpen size={19} />
             </div>
 
-            <h3 className="text-sm font-semibold">
-              Keep Reading!
-            </h3>
+            <h3 className="text-sm font-semibold">Keep Reading!</h3>
 
             <p className="mt-1 text-xs leading-5 text-white/75">
               Every book opens a new world of knowledge.
@@ -142,6 +147,7 @@ export default function Sidebar() {
 
             <Link
               href="/books"
+              onClick={closeMobileMenu}
               className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-white transition hover:text-[#B8F3F5]"
             >
               Explore books
@@ -154,7 +160,7 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-[#E8EEF2] px-4 py-5 dark:border-[#1E3A4A]">
+      <div className="shrink-0 border-t border-[#E8EEF2] px-4 py-5 dark:border-[#1E3A4A]">
         <p className="text-center text-xs font-medium text-[#94A3B8] dark:text-[#7893A4]">
           © 2026 BookNook
         </p>
@@ -163,6 +169,52 @@ export default function Sidebar() {
           Made for every book lover
         </p>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile menu button */}
+      <button
+        type="button"
+        onClick={() => setIsMobileOpen(true)}
+        aria-label="Open dashboard menu"
+        className="fixed left-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-xl border border-[#E1EAF0] bg-white text-[#063047] shadow-md transition hover:bg-[#F4F9FA] dark:border-[#1E3A4A] dark:bg-[#102A3A] dark:text-[#E2EDF2] dark:hover:bg-[#163746] md:hidden"
+      >
+        <Menu size={22} />
+      </button>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-[#E1EAF0] bg-white transition-colors duration-300 dark:border-[#1E3A4A] dark:bg-[#071D2B] md:sticky md:top-0 md:flex">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile drawer */}
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-[60] md:hidden">
+          {/* Overlay */}
+          <button
+            type="button"
+            aria-label="Close dashboard menu"
+            onClick={closeMobileMenu}
+            className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+          />
+
+          {/* Drawer */}
+          <aside className="absolute left-0 top-0 flex h-full w-72 max-w-[85vw] flex-col border-r border-[#E1EAF0] bg-white shadow-2xl dark:border-[#1E3A4A] dark:bg-[#071D2B]">
+            <button
+              type="button"
+              onClick={closeMobileMenu}
+              aria-label="Close menu"
+              className="absolute right-3 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-lg text-[#607486] transition hover:bg-[#F4F9FA] dark:text-[#B6C7D2] dark:hover:bg-[#102A3A]"
+            >
+              <X size={20} />
+            </button>
+
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+    </>
   );
 }
