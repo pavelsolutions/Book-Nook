@@ -6,7 +6,7 @@ The main idea is simple:
 
 > Add a book. Borrow a book. Return a book.
 
-🔗 **Live Website:** [Visit BookNook](YOUR_LIVE_WEBSITE_URL)
+🔗 **Live Website:** [Visit BookNook](https://book-nook-frontend-khaki.vercel.app/)
 
 ## ✨ Features
 
@@ -35,7 +35,6 @@ The main idea is simple:
 | BetterAuth | Authentication |
 | MongoDB Adapter | Authentication data storage |
 | JWT | Protected API requests |
-| Lucide React | Icons |
 | Sonner | Toast notifications |
 | Express.js API | Backend communication |
 
@@ -46,7 +45,7 @@ Follow these steps to run the frontend locally.
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_FRONTEND_REPOSITORY_URL
+git clone https://github.com/pavelsolutions/Book-Nook
 ```
 
 ### 2. Navigate to the project directory
@@ -97,8 +96,8 @@ http://localhost:3000
 | Add Book | `/add-book` | Private |
 | My Books | `/my-books` | Private |
 | My Borrows | `/my-borrows` | Private |
-| Login | `/login` | Public |
-| Register | `/register` | Public |
+| Login | `/sign-in` | Public |
+| Register | `/sign-up` | Public |
 
 Private routes require the user to be logged in. If a user tries to access a private route without authentication, they are redirected to the login page and can return to their desired route after login.
 

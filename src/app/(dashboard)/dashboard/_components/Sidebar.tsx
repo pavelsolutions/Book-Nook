@@ -6,18 +6,14 @@ import {
   BookOpen,
   BookPlus,
   BookMarked,
-  LayoutDashboard,
-  Library,
   ChevronRight,
   Sparkles,
   Home,
-  LogOutIcon,
-  User2Icon,
   User,
 } from "lucide-react";
 
 const sidebarLinks = [
-    {
+  {
     title: "Back to Home",
     href: "/",
     icon: Home,
@@ -42,11 +38,6 @@ const sidebarLinks = [
     href: "/dashboard/my-profile",
     icon: User,
   },
-  // {
-  //   title: "Logout",
-  //   href: "/dashboard/logout",
-  //   icon: LogOutIcon,
-  // },
 ];
 
 export default function Sidebar() {
@@ -56,18 +47,18 @@ export default function Sidebar() {
     <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[#E1EAF0] bg-white">
       {/* Logo */}
       <div className="flex h-20 items-center gap-3 border-b border-[#E8EEF2] px-6">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-3"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0B6F83] text-white shadow-md shadow-[#0B6F83]/15">
-            <Library size={22} strokeWidth={1.8} />
+        <Link href="/dashboard" className="flex items-center gap-3">
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0B6F83] to-[#20B8C4] text-white shadow-lg shadow-[#0B6F83]/20">
+            <BookOpen size={24} strokeWidth={2} />
+
+            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-[#F5B942]">
+              <span className="h-1 w-1 rounded-full bg-white" />
+            </span>
           </div>
 
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-[#102A43]">
-              Book
-              <span className="text-[#20B8C4]">Nook</span>
+            <h1 className="text-xl font-extrabold tracking-tight text-[#102A43]">
+              Book<span className="text-[#0B6F83]">Nook</span>
             </h1>
 
             <p className="mt-0.5 text-[10px] font-medium tracking-wide text-[#718096]">

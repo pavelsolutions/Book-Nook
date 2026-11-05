@@ -45,16 +45,6 @@ const categories = [
     text: "text-[#0E7490]",
   },
   {
-    name: "Romance",
-    icon: "💗",
-    description: "Heartwarming love stories",
-    href: "/books?category=romance",
-    bg: "bg-[#FFF1F2]",
-    border: "border-[#FFE4E6]",
-    iconBg: "bg-[#FFE4E6]",
-    text: "text-[#BE123C]",
-  },
-  {
     name: "Others",
     icon: "✨",
     description: "Find your next favorite read",
@@ -88,7 +78,7 @@ export default function Categories() {
         </div>
 
         {/* Category cards */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {categories.map((category) => (
             <Link
               key={category.name}

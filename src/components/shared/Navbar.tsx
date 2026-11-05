@@ -105,7 +105,11 @@ export default function Navbar() {
       const borrows = await response.json();
 
       if (isMounted) {
-        setBorrowCount(Array.isArray(borrows) ? borrows.length : 0);
+      const count = Array.isArray(borrows)
+        ? borrows.filter((borrow) => borrow.status === "borrowed").length
+        : 0;
+
+      setBorrowCount(count);
       }
     } catch (error) {
       console.error("Fetch borrow count error:", error);
